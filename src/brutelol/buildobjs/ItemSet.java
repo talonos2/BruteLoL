@@ -166,7 +166,7 @@ public class ItemSet
     
     /**
      * ToString for Debug Convenience.
-     * @return 
+     * @return the string
      */
     public String toString()
     {
