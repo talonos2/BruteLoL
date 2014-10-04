@@ -6,6 +6,10 @@
 
 package brutelol;
 
+import brutelol.characters.lib.LolHeuristic;
+import brutelol.characters.instances.Soraka;
+import brutelol.characters.lib.LolCharacter;
+
 /**
  * Main Entry point into the Program
  * @author Talonos
@@ -18,7 +22,10 @@ public class BruteLoL
      */
     public static void main(String[] args) 
     {
-        // TODO code application logic here
+        //TODO: Provide a way for the player to select a character.
+        LolCharacter selectedCharacter = new Soraka();
+        //TODO: Provide a way for the player to select a heuristic.
+        LolHeuristic selectedHeuristic = new HealingPerSecond();
     }
     
 }
