@@ -6,6 +6,8 @@
 
 package brutelol.items.instances;
 
+import brutelol.items.abstracts.Item;
+
 /**
  *
  * @author Talonos

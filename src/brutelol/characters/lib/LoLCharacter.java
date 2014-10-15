@@ -25,7 +25,7 @@ public interface LolCharacter
      * on a per character basis. (Example: Ashe would be DPS, Soraka would be Healing/Sec,
      * etc.)
      */
-    public double getUtility(Build b);
+    //public double getUtility(Build b);
     
     /**
      * Given an item and mastery set, returns an optimized runeset.
@@ -41,4 +41,6 @@ public interface LolCharacter
      * @param b the Build to show for.
      */
     public void showWork (Build b);
+
+    public Build getFinalUtility(ItemSet items, LolHeuristic selectedHeuristic);
 }

@@ -6,6 +6,7 @@
 
 package brutelol.items.instances;
 
+import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.List;
 

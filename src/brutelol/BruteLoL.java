@@ -6,6 +6,7 @@
 
 package brutelol;
 
+import brutelol.buildobjs.Build;
 import brutelol.characters.lib.LolHeuristic;
 import brutelol.characters.instances.Soraka;
 import brutelol.characters.lib.LolCharacter;
@@ -26,6 +27,8 @@ public class BruteLoL
         LolCharacter selectedCharacter = new Soraka();
         //TODO: Provide a way for the player to select a heuristic.
         LolHeuristic selectedHeuristic = new HealingPerSecond();
+        
+        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, selectedHeuristic);
     }
     
 }

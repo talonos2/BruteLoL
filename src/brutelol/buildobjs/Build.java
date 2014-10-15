@@ -12,5 +12,9 @@ package brutelol.buildobjs;
  */
 public class Build 
 {
+
+    public double getUtility() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

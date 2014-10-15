@@ -11,6 +11,7 @@ import brutelol.buildobjs.ItemSet;
 import brutelol.buildobjs.MasterySet;
 import brutelol.buildobjs.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
+import brutelol.characters.lib.LolHeuristic;
 
 /**
  *
@@ -41,17 +42,28 @@ public class Soraka extends AbstractLolCharacter
     }
 
     @Override
-    public double getUtility(Build b) {
+    public RunePage optimizeRunepageFor(ItemSet items, MasterySet masteries) 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RunePage optimizeRunepageFor(ItemSet items, MasterySet masteries) {
+    public void showWork(Build b) 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * When passed an itemset, returns a build that best makes use of that itemset.
+     * The build is a combination of items, runes, masteries, etc. It also contains
+     * a "utility" that can be extracted for comparing purposes.
+     * @param items
+     * @param selectedHeuristic
+     * @return 
+     */
     @Override
-    public void showWork(Build b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Build getFinalUtility(ItemSet items, LolHeuristic selectedHeuristic) 
+    {
+        
     }
 }

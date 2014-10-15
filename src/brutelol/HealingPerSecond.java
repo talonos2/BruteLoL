@@ -4,17 +4,17 @@
  * and open the template in the editor.
  */
 
-package brutelol.items.instances;
+package brutelol;
 
-import brutelol.items.abstracts.Item;
+import brutelol.characters.lib.LolHeuristic;
 
 /**
  *
  * @author Talonos
  */
-class NeedlesslyLargeRod extends Item {
+public class HealingPerSecond extends LolHeuristic {
 
-    public NeedlesslyLargeRod() {
+    public HealingPerSecond() {
     }
     
 }
