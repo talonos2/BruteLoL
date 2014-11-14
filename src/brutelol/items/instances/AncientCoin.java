@@ -14,33 +14,21 @@ import brutelol.items.abstracts.Item;
  */
 public class AncientCoin extends Item
 {
-    @Override
-    public int getCost() 
+    public AncientCoin()
     {
-        return 365;
-    }
-
-    @Override
-    public int getSalePrice() 
-    {
-        return 146;
-    }
-    
-    @Override
-    public double getManaRegen()
-    {
-        return 3;
-    }
-    
-    @Override
-    public double getFavorEffect()
-    {
-        return 2;
-    }
-    
-    @Override
-    public boolean isGoldItem()
-    {
-        return true;
+        //Since patch 4.19;
+        super();
+        this.manaRegen = 3;
+        this.cost = 365;
+        
+        this.goldItem = true;
+        this.sellsForLittle = true;
+                
+        this.favorLevel = 1;
+        
+        this.summonersRift = true;
+        this.twistedTreeline = true;
+        this.howlingAbyss = true;
+        this.crystalScar = true;
     }
 }

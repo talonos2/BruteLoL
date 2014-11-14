@@ -12,10 +12,18 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class RejuvenationBead extends Item 
+public class RejuvenationBead extends Item
 {
-
-    public RejuvenationBead() {
+    public RejuvenationBead()
+    {
+        //Since patch 4.19;
+        super();
+        this.healthRegen = 5;
+        this.cost = 180;
+        
+        this.summonersRift = true;
+        this.twistedTreeline = true;
+        this.howlingAbyss = true;
+        this.crystalScar = true;
     }
-    
 }

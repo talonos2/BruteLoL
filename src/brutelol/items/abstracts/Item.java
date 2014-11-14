@@ -16,63 +16,90 @@ import java.util.List;
  */
 public abstract class Item 
 {
-    public double getGoldPer10Boost()
-    {
-        return 0;
-    }
-    public double getGoldPerKillBoost()
-    {
-        return 0;
-    }
+    //Item base stats
+    protected double attackSpeed = 0;
+    protected double attackDamage = 0;
+    protected double critChance = 0;
+    
+    protected double moveSpeedPercent = 0;
+    protected double moveSpeedFlat = 0;
+    
+    protected double abilityPower = 0;
+    protected double cooldownReduction = 0;
+    
+    protected double armor = 0;
+    protected double magicresist = 0;
+    
+    protected double hp = 0;
+    protected double healthRegen = 0;
+    protected double mana = 0;
+    protected double manaRegen = 0;
+    
+    protected double spellVamp = 0;
+    protected double lifesteal = 0;
+    
+    //Flags to help item related logic
+    protected boolean goldItem = false;
+    protected boolean pOptimal = false;
+    
+    //Flags to help shop related logic
+    protected int cost = 0;
+    protected boolean sellsForLittle = false;
+    
+    //What are this items prerequisites?
+    private List<Item> prerequisites = new ArrayList<>();
+    
+    //Where is this available?
+    protected boolean summonersRift = false;
+    protected boolean twistedTreeline = false;
+    protected boolean crystalScar = false;
+    protected boolean howlingAbyss = false;
+    
+    //Some unique effects are too complicated to be simple boolean flags. Those
+    //are listed here.
+    
+    protected double enhancedMovement = 0;
+    protected int favorLevel = 0;
+    
     public double getAttackSpeed()
     {
-        return 0;
+        return this.attackSpeed;
     }
     public double getAttackDamage()
     {
-        return 0;
+        return this.attackDamage;
     }
-    public double getArmorPenetrationFlat()
-    {
-        return 0;
-    }
-    public double getArmorPenetrationPercent()
-    {
-        return 0;
-    }
+    
+    //APen flat and percent removed, because there are only ever
+    //unique sources of it, and those are handled now with flags.
+    
     public double getCritChance()
     {
-        return 0;
+        return this.critChance;
     }
     public double getMoveSpeedPercent()
     {
-        return 0;
+        return this.moveSpeedPercent;
     }
     public double getMoveSpeedFlat()
     {
-        return 0;
+        return this.moveSpeedFlat;
     }
-    public boolean enhancedCrit()
-    {
-        return false;
-    }
-    public boolean shivEffect()
-    {
-        return false;
-    }
-
     public int getCost() 
     {
-        return 0;
+        return this.cost;
     }
 
     public List<Item> getPrerequisites() 
     {
-        return new ArrayList<>();
+        return this.prerequisites;
     }
-
-    public int getSalePrice() 
+    public final int getSalePrice() 
     {
+        if (this.sellsForLittle)
+        {
+            return (int)(this.getCost()*.4);
+        }
         return (int)(this.getCost()*.7);
     }
 
@@ -94,278 +121,101 @@ public abstract class Item
         return this.getClass().getSimpleName();
     }
 
-    public boolean isBoots() 
-    {
-        return false;
-    }
-    
-    public boolean lastWhisperEffect()
-    {
-        return false;
-    }
-    
-    public double getLifeSteal()
-    {
-        return 0;
-    }
-
     public boolean isPOptimal() 
     {
-        return false;
+        return this.pOptimal;
     }
     
     public double getAbilityPower()
     {
-        return 0;
+        return this.abilityPower;
     }
     
     public double getSpellvamp()
     {
-        return 0;
+        return this.spellVamp;
     }
         
     public double getCooldownReduction()
     {
-        return 0;
+        return this.cooldownReduction;
     }
             
     public double getMana()
     {
-        return 0;
+        return this.mana;
     }
                 
     public double getHP()
     {
-        return 0;
+        return this.hp;
     }
                     
     public double getArmor()
     {
-        return 0;
+        return this.armor;
     }
                         
     public double getMagicResist()
     {
-        return 0;
-    }
-    
-    public double getTenacity()
-    {
-        return 0;
+        return this.magicresist;
     }
     
     public double getHealthRegen()
     {
-        return 0;
+        return this.healthRegen;
     }
     
     public double getManaRegen()
     {
-        return 0;
+        return this.manaRegen;
     }
     
-    public double getMagicPenetrationFlat()
+    public double getLifesteal()
     {
-        return 0;
+        return this.lifesteal;
     }
     
-    public double getMagicPenetrationPercent()
+    public double getEnhancedMovement()
     {
-        return 0;
+        return this.enhancedMovement;
     }
     
-    public boolean getScepterEffect()
-    {
-        return false;
-    }
-    
-    public boolean getLegionEffect()
-    {
-        return false;
-    }
-    
-    public double getManaChargeEffect()
-    {
-        return 0;
-    }
-    
-    public double getFavorEffect()
-    {
-        return 0;
-    }
+    //MPen flat and percent removed for the same reason as armor,
+    //above.
     
     public boolean isGoldItem()
     {
-        return false;
+        return this.goldItem;
     }
-    
-    public boolean getManaFontEffect()
-    {
-        return false;
-    }
-    
-    public boolean getImpalerEffect()
-    {
-        return false;
-    }
-    
+        
     public boolean availableOnSummonersRift()
     {
-        return true;
+        return this.summonersRift;
     }
     
     public boolean availableOnTwistedTreeline() 
     {
-        return true;
+        return this.twistedTreeline;
     }
     
     public boolean availableOnCrystalScar() 
     {
-        return true;
+        return this.crystalScar;
     }
     
     public boolean availableOnHowlingAbyss() 
     {
-        return true;
+        return this.howlingAbyss;
     }
     
-    public boolean getInsightEffect()
-    {
-        return false;
-    }
-    
-    public boolean getIdolEffect() 
-    {
-        return false;
-    }  
-    
-    public int getTributeLevel() 
-    {
-        return 0;
-    }  
-    
-    public boolean getDeathcapEffect()
-    {
-        return false;
-    }
-    
-    public boolean getNashorsEffect()
-    {
-        return false;
-    }
-
-    public int getSpellbladeLevel() 
-    {
-        return 0;
-    }
-    
-    public boolean getAweEffect()
-    {
-        return false;
-    }
-    
-    public boolean getGhostbladeEffect()
-    {
-        return false;
-    }
-
-    public boolean getBlackCleaverEffect() 
-    {
-        return false;
-    }
-
-    public boolean hurricaneEffect() 
-    {
-        return false;
-    }
-
-    public boolean ruinedKingEffect() 
-    {
-        return false;
-    }
-
-    public boolean deathfireGraspEffect() 
-    {
-        return false;
-    }
-    
-    public boolean bloodthirsterEffect()
-    {
-        return false;
-    }
-    
-    public boolean reaverEffect()
-    {
-        return false;
-    }
-    
-    public boolean bilgewaterEffect() 
-    {
-        return false;
-    }
-
     public int compareTo(Item o2) 
     {
         return Items.getItemID(this).compareTo(Items.getItemID(o2));
     }
     
-    public boolean ragebladeEffect()
+    public int getFavorLevel()
     {
-        return false;
-    }
-    
-    public boolean guiseEffect()
-    {
-        return false;
-    }
-    
-    public boolean gunbladeEffect()
-    {
-        return false;
-    }
-    
-    public boolean revolverEffect()
-    {
-        return false;
-    }
-    
-    public boolean sweeperEffect()
-    {
-        return false;
-    }
-    
-    public int maimLevel()
-    {
-        return 0;
-    }
-    
-    public boolean ionianEffect()
-    {
-        return false;
-    }
-    
-    public boolean kindleEffect()
-    {
-        return false;
-    }
-    
-    public boolean bloodrazorEffect()
-    {
-        return false;
-    }
-    
-    public boolean machetteEffect() 
-    {
-        return false;
-    }
-    
-    public boolean solariEffect() 
-    {
-        return false;
-    }
-        
-    public boolean tormentEffect() 
-    {
-        return false;
+        return this.favorLevel;
     }
 }

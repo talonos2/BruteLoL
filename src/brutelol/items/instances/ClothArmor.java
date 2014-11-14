@@ -14,21 +14,16 @@ import brutelol.items.abstracts.Item;
  */
 public class ClothArmor extends Item
 {
-    @Override
-    public double getArmor() 
+    public ClothArmor()
     {
-        return 15;
-    }
-
-    @Override
-    public int getCost() 
-    {
-        return 300;
-    }
-
-    @Override
-    public int getSalePrice() 
-    {
-        return 210;
+        //Since patch 4.19;
+        super();
+        this.armor = 3;
+        this.cost = 300;
+        
+        this.summonersRift = true;
+        this.twistedTreeline = true;
+        this.howlingAbyss = true;
+        this.crystalScar = true;
     }
 }

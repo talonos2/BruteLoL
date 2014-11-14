@@ -12,23 +12,18 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class FaerieCharm extends Item 
+public class FaerieCharm extends Item
 {
-    @Override
-    public double getManaRegen() 
+    public FaerieCharm()
     {
-        return 3;
+        //Since patch 4.19;
+        super();
+        this.manaRegen = 3;
+        this.cost = 180;
+        
+        this.summonersRift = true;
+        this.twistedTreeline = true;
+        this.howlingAbyss = true;
+        this.crystalScar = true;
     }
-
-    @Override
-    public int getCost() 
-    {
-        return 180;
-    }
-
-    @Override
-    public int getSalePrice() 
-    {
-        return 126;
-    }  
 }

@@ -14,21 +14,16 @@ import brutelol.items.abstracts.Item;
  */
 public class BootsOfSpeed extends Item
 {
-    @Override
-    public int getCost() 
+    public BootsOfSpeed()
     {
-        return 325;
-    }
-
-    @Override
-    public int getSalePrice() 
-    {
-        return 227;
-    }
-    
-    @Override
-    public boolean isBoots()
-    {
-        return true;
+        //Since patch 4.19;
+        super();
+        this.enhancedMovement = 25;
+        this.cost = 325;
+        
+        this.summonersRift = true;
+        this.twistedTreeline = true;
+        this.howlingAbyss = true;
+        this.crystalScar = true;
     }
 }

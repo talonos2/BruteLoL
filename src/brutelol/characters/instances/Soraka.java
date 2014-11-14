@@ -13,8 +13,6 @@ import brutelol.buildobjs.MasterySet;
 import brutelol.buildobjs.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolHeuristic;
-import brutelol.items.instances.ArdentCenser;
-import brutelol.items.instances.BootsOfSpeed;
 
 /**
  *
@@ -48,8 +46,8 @@ public class Soraka extends AbstractLolCharacter
     public Soraka()
     {
         //Required items; lacking these will cause problems.
-        this.requiredItems.add(BootsOfSpeed.class);
-        this.requiredItems.add(ArdentCenser.class);
+        //this.requiredItems.add(BootsOfSpeed.class);
+        //this.requiredItems.add(ArdentCenser.class);
         
         //Variables representing the starting state
         this.HP_AT_0 = 405;

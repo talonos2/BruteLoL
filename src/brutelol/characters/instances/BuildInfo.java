@@ -43,7 +43,7 @@ public class BuildInfo
             attackDamage += i.getAttackDamage();
             critChance += i.getCritChance();
             attackSpeed+=i.getAttackSpeed();
-            lifeSteal += i.getLifeSteal();
+            lifeSteal += i.getLifesteal();
             
             //Magic
             abilityPower += i.getAbilityPower();
@@ -61,13 +61,6 @@ public class BuildInfo
             moveSpeedPercent += i.getMoveSpeedPercent();
             healthRegen+=i.getHealthRegen();
             manaRegen += i.getManaRegen();
-            tenacity += i.getTenacity();
-            
-            //penetration
-            armorPenetrationFlat += i.getArmorPenetrationFlat();
-            armorPenetrationPercent += i.getArmorPenetrationPercent();
-            magicPenetrationFlat += i.getMagicPenetrationFlat();
-            magicPenetrationPercent += i.getMagicPenetrationPercent();
         }
             
         //attack
@@ -158,9 +151,9 @@ public class BuildInfo
             {
                 attackSpeedString.append(" + "+i.getAttackSpeed()+" ("+i+")");
             }
-            if (i.getLifeSteal()!=0)
+            if (i.getLifesteal()!=0)
             {
-                lifeStealString.append(" + "+i.getLifeSteal()+" ("+i+")");
+                lifeStealString.append(" + "+i.getLifesteal()+" ("+i+")");
             }
             
             //Magic
@@ -211,28 +204,6 @@ public class BuildInfo
             if (i.getManaRegen()!=0)
             {
                 manaRegenString.append(" + "+i.getManaRegen()+" ("+i+")");
-            }
-            if (i.getTenacity()!=0)
-            {
-                tenacityString.append(" + "+i.getTenacity()+" ("+i+")");
-            }
-            
-            //penetration
-            if (i.getArmorPenetrationFlat()!=0)
-            {
-                armorPenetrationFlatString.append(" + "+i.getArmorPenetrationFlat()+" ("+i+")");
-            }
-            if (i.getArmorPenetrationPercent()!=0)
-            {
-                armorPenetrationPercentString.append(" + "+i.getArmorPenetrationPercent()+" ("+i+")");
-            }
-            if (i.getMagicPenetrationFlat()!=0)
-            {
-                magicPenetrationFlatString.append(" + "+i.getMagicPenetrationFlat()+" ("+i+")");
-            }
-            if (i.getMagicPenetrationPercent()!=0)
-            {
-                magicPenetrationPercentString.append(" + "+i.getMagicPenetrationPercent()+" ("+i+")");
             }
         }
         
