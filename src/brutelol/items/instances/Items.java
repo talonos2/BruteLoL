@@ -9,7 +9,9 @@ package brutelol.items.instances;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,6 +20,101 @@ import java.util.List;
 public class Items 
 {
     private static List<Item> pOptimalItems;
+    private static List<Item> allItems;
+    private static Map<Item, Integer> itemIDs = new HashMap();
+    
+    private static void initItems()
+    {
+        allItems = new ArrayList<>();
+        allItems.add(new AbyssalScepter());
+        allItems.add(new AegisOfTheLegion());
+        allItems.add(new AetherWisp());
+        allItems.add(new AmplifyingTome());
+        allItems.add(new AncientCoin());
+        allItems.add(new ArchangelsStaff());
+        allItems.add(new ArdentCenser());
+        allItems.add(new AthenesUnholyGrail());
+        allItems.add(new AtmasImpaler());
+        allItems.add(new AvariceBlade());
+        allItems.add(new BFSword());
+        allItems.add(new BannerOfCommand());
+        allItems.add(new BansheesVeil());
+        allItems.add(new BerserkersGreaves());
+        allItems.add(new BilgewaterCutlass());
+        allItems.add(new BlackfireTorch());
+        allItems.add(new BlackCleaver());
+        allItems.add(new BladeOfTheRuinedKing());
+        allItems.add(new BlastingWand());
+        allItems.add(new BloodThirster());
+        allItems.add(new BootsOfSpeed());
+        allItems.add(new BootsOfSwiftness());
+        allItems.add(new BrawlersGloves());
+        allItems.add(new CatalystTheProtector());
+        allItems.add(new ChainVest());
+        allItems.add(new ChaliceOfHarmony());
+        allItems.add(new CloakOfAgility());
+        allItems.add(new ClothArmor());
+        allItems.add(new Dagger());
+        allItems.add(new DeathfireGrasp());
+        allItems.add(new DervishBlade());
+        allItems.add(new DoransBlade());
+        allItems.add(new DoransShield());
+        allItems.add(new DoransRing());
+        allItems.add(new Entropy());
+        allItems.add(new EssenceReaver());
+        allItems.add(new ExecutionersCalling());
+        allItems.add(new FaceOfTheMountain());
+        allItems.add(new FaerieCharm());
+        allItems.add(new FiendishCodex());
+        allItems.add(new ForbiddenIdol());
+        allItems.add(new FrostFang());
+        allItems.add(new FrostQueensClaim());
+        allItems.add(new FrozenHeart());
+        allItems.add(new FrozenMallet());
+        allItems.add(new GiantsBelt());
+        allItems.add(new GuardianAngel());
+        allItems.add(new GuardiansHorn());
+        allItems.add(new GuinsoosRageblade());
+        allItems.add(new HauntingGuise());
+        allItems.add(new Hexdrinker());
+        allItems.add(new HextechGunblade());
+        allItems.add(new HextechRevolver());
+        allItems.add(new HextechSweeper());
+        allItems.add(new HuntersMachette());
+        allItems.add(new IcebornGuantlet());
+        allItems.add(new InfinityEdge());
+        allItems.add(new IonianBootsOfLucidity());
+        allItems.add(new Kindlegem());
+        allItems.add(new KitaesBloodrazor());
+        allItems.add(new LastWhisper());
+        allItems.add(new LiandrysTorment());
+        allItems.add(new LichBane());
+        allItems.add(new LocketOfTheIronSolari());
+        allItems.add(new Longsword());
+        allItems.add(new LordVanDammsPillager());
+        allItems.add(new MadredsRazors());
+        
+        allItems.add(new RabadonsDeathcap());
+        allItems.add(new SeraphsEmbrace());
+        allItems.add(new NashorsTooth());
+        
+        allItems.add(new SorcerersShoes());
+        allItems.add(new RunaansHurricane());
+        allItems.add(new StattikShiv());
+        allItems.add(new Zephyr());
+        allItems.add(new PhantomDancer());
+        allItems.add(new TrinityForce());
+        allItems.add(new Muramana());
+        allItems.add(new YoumuusGhostBlade());
+        
+        allItems.add(new NoItem());
+        
+        int id = 0;
+        for (Item i : allItems)
+        {
+            itemIDs.put(i, id++);
+        }
+    }
 
     public static List<Item> getAllPOptimalItems() 
     {
@@ -44,89 +141,15 @@ public class Items
     
     public static List<Item> getAllItems() 
     {
-        List<Item> toReturn = new ArrayList<>();
-        toReturn.add(new AbyssalScepter());
-        toReturn.add(new AegisOfTheLegion());
-        toReturn.add(new AetherWisp());
-        toReturn.add(new AmplifyingTome());
-        toReturn.add(new AncientCoin());
-        toReturn.add(new ArchangelsStaff());
-        toReturn.add(new ArdentCenser());
-        toReturn.add(new AthenesUnholyGrail());
-        toReturn.add(new AtmasImpaler());
-        toReturn.add(new AvariceBlade());
-        toReturn.add(new BFSword());
-        toReturn.add(new BannerOfCommand());
-        toReturn.add(new BansheesVeil());
-        toReturn.add(new BerserkersGreaves());
-        toReturn.add(new BilgewaterCutlass());
-        toReturn.add(new BlackfireTorch());
-        toReturn.add(new BlackCleaver());
-        toReturn.add(new BladeOfTheRuinedKing());
-        toReturn.add(new BlastingWand());
-        toReturn.add(new BloodThirster());
-        toReturn.add(new BootsOfSpeed());
-        toReturn.add(new BootsOfSwiftness());
-        toReturn.add(new BrawlersGloves());
-        toReturn.add(new CatalystTheProtector());
-        toReturn.add(new ChainVest());
-        toReturn.add(new ChaliceOfHarmony());
-        toReturn.add(new CloakOfAgility());
-        toReturn.add(new ClothArmor());
-        toReturn.add(new Dagger());
-        toReturn.add(new DeathfireGrasp());
-        toReturn.add(new DervishBlade());
-        toReturn.add(new DoransBlade());
-        toReturn.add(new DoransShield());
-        toReturn.add(new DoransRing());
-        toReturn.add(new Entropy());
-        toReturn.add(new EssenceReaver());
-        toReturn.add(new ExecutionersCalling());
-        toReturn.add(new FaceOfTheMountain());
-        toReturn.add(new FaerieCharm());
-        toReturn.add(new FiendishCodex());
-        toReturn.add(new ForbiddenIdol());
-        toReturn.add(new FrostFang());
-        toReturn.add(new FrostQueensClaim());
-        toReturn.add(new FrozenHeart());
-        toReturn.add(new FrozenMallet());
-        toReturn.add(new GiantsBelt());
-        toReturn.add(new GuardianAngel());
-        toReturn.add(new GuardiansHorn());
-        toReturn.add(new GuinsoosRageblade());
-        toReturn.add(new HauntingGuise());
-        toReturn.add(new Hexdrinker());
-        toReturn.add(new HextechGunblade());
-        toReturn.add(new HextechRevolver());
-        toReturn.add(new HextechSweeper());
-        toReturn.add(new HuntersMachette());
-        toReturn.add(new IcebornGuantlet());
-        toReturn.add(new InfinityEdge());
-        toReturn.add(new IonianBootsOfLucidity());
-        toReturn.add(new Kindlegem());
-        toReturn.add(new KitaesBloodrazor());
-        toReturn.add(new LastWhisper());
-        toReturn.add(new LiandrysTorment());
-        toReturn.add(new LichBane());
-        toReturn.add(new LocketOfTheIronSolari());
-        toReturn.add(new Longsword());
-        toReturn.add(new LordVanDammsPillager());
-        toReturn.add(new MadredsRazors());
-        
-        toReturn.add(new RabadonsDeathcap());
-        toReturn.add(new SeraphsEmbrace());
-        toReturn.add(new NashorsTooth());
-        
-        toReturn.add(new SorcerersShoes());
-        toReturn.add(new RunaansHurricane());
-        toReturn.add(new StattikShiv());
-        toReturn.add(new Zephyr());
-        toReturn.add(new PhantomDancer());
-        toReturn.add(new TrinityForce());
-        toReturn.add(new Muramana());
-        toReturn.add(new YoumuusGhostBlade());
-        
-        toReturn.add(new NoItem());
-        return toReturn;
+        if (allItems == null)
+        {
+            initItems();
+        }
+        return allItems;
+    }
+
+    public static Integer getItemID(Item i) 
+    {
+        return itemIDs.get(i);
     }
 }

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package brutelol.buildobjs;
 
 /**
@@ -12,9 +6,24 @@ package brutelol.buildobjs;
  */
 public class Build 
 {
+    private double utility = 0;
+    
+    private ItemSet items;
+    
+    public Build(double utility, ItemSet items)
+    {
+        this.items = items;
+        this.utility = utility;
+    }
 
-    public double getUtility() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double getUtility() 
+    {
+        return utility;
+    }
+    
+    public ItemSet getItems()
+    {
+        return items;
     }
     
 }

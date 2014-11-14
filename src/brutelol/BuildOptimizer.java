@@ -40,7 +40,7 @@ public class BuildOptimizer
         CombinatoricsVector<Item> initialVector = new CombinatoricsVector<Item>(array);
 
         // create multi-combination generator.
-        Generator<Item> gen = new MultiCombinationGenerator<Item>(initialVector , 6);
+        Generator<Item> gen = new MultiCombinationGenerator<Item>(initialVector , 4);
         //Generator<Item> gen = new SimpleCombinationGenerator<Item>(initialVector , 6);
     
         // create an iterator to pull combinations from.
@@ -78,28 +78,55 @@ public class BuildOptimizer
         for (List<Item> itemList : allItemsets)
         {
             numberOfTrials++;
-            if (numberOfTrials % 10000 == 0)
+            if (numberOfTrials % 25000 == 0)
             {
                 pruneBestBuilds(bestBuilds);
                 System.out.println("Progress: "+numberOfTrials+"/"+numberOfItemsets);
             }
             ItemSet items = new ItemSet(itemList);
-            Build utility = selectedCharacter.getFinalUtility(items, selectedHeuristic);
-            if (utility.getUtility() > bestSoFar)
+            Build build = selectedCharacter.getFinalUtility(items, selectedHeuristic);
+            if (build.getUtility() > bestSoFar)
             {
                 System.out.println("Build: "+items);
-                System.out.println("Utility1: "+utility);
-                bestSoFar = utility.getUtility();
+                System.out.println("Utility1: "+build);
+                bestSoFar = build.getUtility();
             }
             
-            bestBuilds.put(1.0-utility.getUtility(), utility);
+            bestBuilds.put(1.0-build.getUtility(), build);
         }
+        System.out.println("=-=-=-=Results:=-=-=-=-=");
+        pruneBestBuilds(bestBuilds);
+        for (Build b : bestBuilds.values())
+        {
+            selectedCharacter.showWork(b);
+        }
+        
         return bestBuilds.get(bestSoFar);
     }
 
     private static void pruneBestBuilds(Map<Double, Build> bestBuilds) 
     {
+        System.out.println("Current top 10 builds:");
+        int top = 10;
+        Map<Double, Build> newMap = new TreeMap<>();
+        for (Map.Entry<Double, Build> d : bestBuilds.entrySet())
+        {
+            newMap.put(d.getKey(), d.getValue());
+            System.out.println("  "+top+": ("+d+")"+d.getValue().getItems());
+            System.out.println("  Total Utility: "+d.getValue().getUtility());
+            top -=1;
+            if (top == 0)
+            {
+                break;
+            }
+        }
         
+        bestBuilds.clear();
+        
+        for (Double d : newMap.keySet())
+        {
+            bestBuilds.put(d, newMap.get(d));
+        }
     }
     
 }

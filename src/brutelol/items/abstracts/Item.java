@@ -6,6 +6,7 @@
 
 package brutelol.items.abstracts;
 
+import brutelol.items.instances.Items;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -305,7 +306,7 @@ public abstract class Item
 
     public int compareTo(Item o2) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Items.getItemID(this).compareTo(Items.getItemID(o2));
     }
     
     public boolean ragebladeEffect()
