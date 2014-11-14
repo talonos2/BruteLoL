@@ -27,6 +27,13 @@ public class Items
     {
         allItems = new ArrayList<>();
         
+        allItems.add(new AncientCoin());
+        allItems.add(new BootsOfSpeed());
+        allItems.add(new ClothArmor());
+        allItems.add(new FaerieCharm());
+        allItems.add(new LongSword());
+        allItems.add(new RejuvenationBead());
+        
         allItems.add(new NoItem());
         
         int id = 0;
