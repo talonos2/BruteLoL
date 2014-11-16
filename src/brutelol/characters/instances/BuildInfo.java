@@ -7,9 +7,11 @@
 package brutelol.characters.instances;
 
 import brutelol.Masteries;
+import brutelol.buildobjs.Build;
 import brutelol.buildobjs.ItemSet;
 import brutelol.buildobjs.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
+import brutelol.characters.lib.LolCharacter;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +26,13 @@ public class BuildInfo
     private AbstractLolCharacter c = null;
     private RunePage runes = null;
     private Masteries masteries = null;
-    private int level = 0;
     
-    public BuildInfo(AbstractLolCharacter c, ItemSet items, RunePage runes, Masteries masteries)
+    public BuildInfo(AbstractLolCharacter c, Build b)
     {
-        this.items = items;
-        this.c=c;
-        this.runes=runes;
-        this.masteries=masteries;
-        level = c.getLevel();
+        this.items = b.getItems();
+        this.c=b.getCharacter();
+        this.runes=b.getRunes();
+        this.masteries=b.getMasteries();
         
         for (Item i : items.itemsInList)
         {   
@@ -64,24 +64,24 @@ public class BuildInfo
         }
             
         //attack
-        attackDamage += c.getAttackDamage();
-        attackSpeed+=c.getAttackSpeed();
+        attackDamage += c.getAttackDamage(b);
+        attackSpeed+=c.getAttackSpeed(b);
             
         //Magic
-        mana += c.getMaxMana();
+        mana += c.getMaxMana(b);
             
         //defense
-        hp+=c.getMaxHP();
-        armor+=c.getArmor();
-        magicResist+=c.getMagicResist();
+        hp+=c.getMaxHP(b);
+        armor+=c.getArmor(b);
+        magicResist+=c.getMagicResist(b);
         
         //Regen and Speed
-        moveSpeed += c.getMoveSpeed();
-        healthRegen+=c.getHealthRegen();
-        manaRegen += c.getManaRegen();
+        moveSpeed += c.getMoveSpeed(b);
+        healthRegen+=c.getHealthRegen(b);
+        manaRegen += c.getManaRegen(b);
     }
 
-    public StringBuilder showWork() 
+    public StringBuilder showWork(Build b) 
     {   
         StringBuilder mathNotes = new StringBuilder();
         mathNotes.append("From items we get the following:\n");
@@ -91,11 +91,11 @@ public class BuildInfo
         StringBuilder costString = new StringBuilder("  Cost: "); attributes.add(costString);
         costString.append("0");
         StringBuilder attackDamageString = new StringBuilder("  Attack Damage: "); attributes.add(attackDamageString);
-        attackDamageString.append(c.getAttackDamage());
+        attackDamageString.append(c.getAttackDamage(b));
         StringBuilder critChanceString = new StringBuilder("  Crit Chance: "); attributes.add(critChanceString);
         critChanceString.append("0");
         StringBuilder attackSpeedString = new StringBuilder("  Attack Speed: "); attributes.add(attackSpeedString);
-        attackSpeedString.append(c.getAttackSpeed());
+        attackSpeedString.append(c.getAttackSpeed(b));
         StringBuilder lifeStealString = new StringBuilder("  Lifesteal: "); attributes.add(lifeStealString);
         lifeStealString.append("0");
         StringBuilder abilityPowerString = new StringBuilder("  Ability Power: "); attributes.add(abilityPowerString);
@@ -105,21 +105,21 @@ public class BuildInfo
         StringBuilder cooldownReductionString = new StringBuilder("  Cooldown Reduction: "); attributes.add(cooldownReductionString);
         cooldownReductionString.append("0");
         StringBuilder manaString = new StringBuilder("  Mana: 0"); attributes.add(manaString);
-        manaString.append(c.getMaxMana());
+        manaString.append(c.getMaxMana(b));
         StringBuilder hpString = new StringBuilder("  HP: "); attributes.add(hpString); 
-        hpString.append(c.getMaxHP());
+        hpString.append(c.getMaxHP(b));
         StringBuilder armorString = new StringBuilder("  Armor: "); attributes.add(armorString);
-        armorString.append(c.getArmor());
+        armorString.append(c.getArmor(b));
         StringBuilder magicResistString = new StringBuilder("  Magic Resistance: "); attributes.add(magicResistString);
-        magicResistString.append(c.getMagicResist());
+        magicResistString.append(c.getMagicResist(b));
         StringBuilder moveSpeedString = new StringBuilder("  Flat Move Speed: "); attributes.add(moveSpeedString);
-        moveSpeedString.append(c.getMoveSpeed());
+        moveSpeedString.append(c.getMoveSpeed(b));
         StringBuilder moveSpeedPercentString = new StringBuilder("  Percent move speed: "); attributes.add(moveSpeedPercentString);
         moveSpeedPercentString.append("0");
         StringBuilder healthRegenString = new StringBuilder("  Health regeneration: "); attributes.add(healthRegenString);
-        healthRegenString.append(c.getHealthRegen());
+        healthRegenString.append(c.getHealthRegen(b));
         StringBuilder manaRegenString = new StringBuilder("  Mana Regeneration: "); attributes.add(manaRegenString);
-        manaRegenString.append(c.getManaRegen());
+        manaRegenString.append(c.getManaRegen(b));
         StringBuilder tenacityString = new StringBuilder("  Tenacity: "); attributes.add(tenacityString);
         tenacityString.append("0");
         StringBuilder armorPenetrationFlatString = new StringBuilder("  Flat Armor Penetration: "); attributes.add(armorPenetrationFlatString);

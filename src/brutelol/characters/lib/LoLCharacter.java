@@ -10,37 +10,37 @@ import brutelol.buildobjs.ItemSet;
 import brutelol.buildobjs.MasterySet;
 import brutelol.buildobjs.RunePage;
 import brutelol.buildobjs.Build;
+import brutelol.characters.instances.BuildInfo;
+import java.util.List;
 
 /**
  *
  * @author Talonos
  */
 public interface LolCharacter 
-{
+{       
     /**
-     * Gets the utility of a given, inputted build at level 18 with essentially infinite
-     * gold.
+     * When passed a build and heuristic, returns how high that heuristic is.
      * @param b the build to evaluate.
-     * @return the utility of the build, where "Utility" is often defined differently
-     * on a per character basis. (Example: Ashe would be DPS, Soraka would be Healing/Sec,
-     * etc.)
+     * @param selectedHeuristic the heuristic to evaluate.
+     * @return 
      */
-    //public double getUtility(Build b);
+    public double getComponentUtility(Build b, HeuristicComponent selectedHeuristic);
     
     /**
-     * Given an item and mastery set, returns an optimized runeset.
-     * @param items the ItemSet to optimize for.
-     * @param masteries the MasterySet to optimize for.
-     * @return the RuneSet that will maximize the utility for the given item and mastery set.
+     * Returns a list of all heuristics that could be applied to this character.
+     * @return the aforementioned list.
      */
-    public RunePage optimizeRunepageFor(ItemSet items, MasterySet masteries);
+    public List<HeuristicComponent>supportedComponents();
     
     /**
-     * Prints, to the console, all the relevant math to determine the utility of
-     * the given build.
-     * @param b the Build to show for.
+     * Returns a string that describes information about the character, given the
+     * build you pass in. I envision this being implemented as an iteration over
+     * all possible heuristics.
+     * @return 
      */
-    public void showWork (Build b);
+    public String getInfo(Build b);
 
-    public Build getFinalUtility(ItemSet items, LolHeuristic selectedHeuristic);
+    public BuildInfo getBuildInfo(Build aThis);
+
 }

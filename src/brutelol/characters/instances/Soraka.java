@@ -12,7 +12,8 @@ import brutelol.buildobjs.ItemSet;
 import brutelol.buildobjs.MasterySet;
 import brutelol.buildobjs.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.LolHeuristic;
+import brutelol.characters.lib.HeuristicComponent;
+import java.util.List;
 
 /**
  *
@@ -76,48 +77,56 @@ public class Soraka extends AbstractLolCharacter
         this.RANGE = 550;
     }
 
-    @Override
-    public RunePage optimizeRunepageFor(ItemSet items, MasterySet masteries) 
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void showWork(Build b) 
-    {
-        this.turnOnNotes();
-        this.getFinalUtility(b.getItems(), null);
-    }
-
     /**
-     * When passed an itemset, returns a build that best makes use of that itemset.
-     * The build is a combination of items, runes, masteries, etc. It also contains
-     * a "utility" that can be extracted for comparing purposes.
-     * @param items
-     * @param selectedHeuristic
+     * When passed a build, returns a numeric representation of how good that 
+     * build is at fulfilling the heuristic.
+     * @param b the build to evaluate.
+     * @param h the component heuristic to get
+     * @param selectedHeuristic the heuristic to evaluate.
      * @return 
      */
     @Override
-    public Build getFinalUtility(ItemSet items, LolHeuristic selectedHeuristic) 
+    public double getComponentUtility(Build b, HeuristicComponent h) 
     {
-        return new Build(getUtilityAtPointInTime(items, selectedHeuristic, 1000000, 1000000, null), items);
+        switch(h)
+        {
+            case BASE_PHYSICAL_DAMAGE_PER_ATTACK:
+                return this.getBasePhysicalDamagePerAttack(b);
+            case BONUS_PHYSICAL_DAMAGE_PER_ATTACK:
+                return this.getBonusPhysicalDamagePerAttack(b);
+            case MAGIC_DAMAGE_PER_ATTACK:
+                return this.getMagicDamagePerAttack(b);
+            case ATTACK_PER_SECOND:
+                return this.getAttacksPerSecond(b);
+            default:
+                throw new IllegalArgumentException("Bad HeuristicComponent: "+h);
+        }
+        //return getUtilityAtPointInTime(b.getItems(), h, 100000, 100000, b.getRunes());
     }
-    
-    public double getUtilityAtPointInTime(ItemSet items, LolHeuristic selectedHeuristic,
-            int xp, int time, RunePage runes)
+
+    /**
+     * Returns a numeric representation of how good a set of items and runes is at
+     * a given time and XP amount.
+     * @param items the items you have at this point in the game.
+     * @param selectedHeuristic the heuristic to evaluate.
+     * @param xp the amount of XP you have.
+     * @param time how much time has passed in game.
+     * @param runes the runeset you have.
+     * @return 
+     */
+    public double getUtilityAtPointInTime(ItemSet items, HeuristicComponent h,
+            int xp, int time, RunePage runes, Build b)
     {
         if (this.missingItems(items))
         {
             return 0;
         }
         
-        this.level = Funcs.getLevelFromXP(xp);
+        BuildInfo stats = new BuildInfo(this, b);
         
-        BuildInfo stats = new BuildInfo(this, items, runes, null);
-        
-        double basePhysicalDamagePerAttack = getPhysicalDamagePerAttack(stats);
-        double bonusPhysicalDamagePerAttack = getBonusPhysicalDamagePerAttack(stats);
-        double numberOfAttacksPerSecond = getOverallAttackSpeed(stats);
+        double basePhysicalDamagePerAttack = getBasePhysicalDamagePerAttack(null);
+        double bonusPhysicalDamagePerAttack = getBonusPhysicalDamagePerAttack(null);
+        double numberOfAttacksPerSecond = getAttacksPerSecond(null);
         
         ///LIMITING GREAGENT: COOLDOWN
         double cdr = stats.cooldownReduction;
@@ -138,7 +147,7 @@ public class Soraka extends AbstractLolCharacter
         double infusesPerSecondMP = manaPerSecond/manaCostOfInfuse;
         
         ///LIMITING GREAGENT: HEALTH
-        double lifestealPerShotAgainstEnemy = getLifestealPerShot(stats);
+        double lifestealPerShotAgainstEnemy = getLifestealPerShot(null);
         double lifestealPerSecond = numberOfAttacksPerSecond*lifestealPerShotAgainstEnemy;
         
         double healthRegennedPerSecond = stats.healthRegen/5;
@@ -168,4 +177,24 @@ public class Soraka extends AbstractLolCharacter
         
         return healingPerInfuse * infusesPerSecond;
     }
+
+    @Override
+    public List<HeuristicComponent> supportedComponents() 
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getInfo(Build b) 
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public BuildInfo getBuildInfo(Build b) 
+    {
+        BuildInfo info = new BuildInfo(this, b);
+        return info;
+    }
+
 }

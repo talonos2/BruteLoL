@@ -7,8 +7,9 @@
 package brutelol;
 
 import brutelol.buildobjs.Build;
-import brutelol.characters.lib.LolHeuristic;
+import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.instances.Soraka;
+import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
 
 /**
@@ -24,11 +25,11 @@ public class BruteLoL
     public static void main(String[] args) 
     {
         //TODO: Provide a way for the player to select a character.
-        LolCharacter selectedCharacter = new Soraka();
+        AbstractLolCharacter selectedCharacter = new Soraka();
         //TODO: Provide a way for the player to select a heuristic.
-        LolHeuristic selectedHeuristic = new HealingPerSecond();
+        HeuristicComponent h = HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK;
         
-        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, selectedHeuristic);
+        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, h);
     }
     
 }

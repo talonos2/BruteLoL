@@ -9,6 +9,10 @@ package brutelol.characters.lib;
  *
  * @author Emily
  */
-public class LolHeuristic {
-    
+public enum HeuristicComponent 
+{
+    BASE_PHYSICAL_DAMAGE_PER_ATTACK,
+    BONUS_PHYSICAL_DAMAGE_PER_ATTACK,
+    MAGIC_DAMAGE_PER_ATTACK,
+    ATTACK_PER_SECOND,
 }

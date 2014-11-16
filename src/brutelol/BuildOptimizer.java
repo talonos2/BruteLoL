@@ -8,8 +8,9 @@ package brutelol;
 
 import brutelol.buildobjs.Build;
 import brutelol.buildobjs.ItemSet;
+import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
-import brutelol.characters.lib.LolHeuristic;
+import brutelol.characters.lib.HeuristicComponent;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
 import brutelol.items.instances.NoItem;
@@ -30,7 +31,7 @@ import org.paukov.combinatorics.combination.multi.MultiCombinationGenerator;
 public class BuildOptimizer 
 {
 
-    public static Build deriveOptimalBuild(LolCharacter selectedCharacter, LolHeuristic selectedHeuristic) 
+    public static Build deriveOptimalBuild(AbstractLolCharacter selectedCharacter, HeuristicComponent h) 
     {
         // create array of initial items
         List<Item> array = new ArrayList<>();
@@ -40,7 +41,7 @@ public class BuildOptimizer
         CombinatoricsVector<Item> initialVector = new CombinatoricsVector<Item>(array);
 
         // create multi-combination generator.
-        Generator<Item> gen = new MultiCombinationGenerator<Item>(initialVector , 4);
+        Generator<Item> gen = new MultiCombinationGenerator<Item>(initialVector , 6);
         //Generator<Item> gen = new SimpleCombinationGenerator<Item>(initialVector , 6);
     
         // create an iterator to pull combinations from.
@@ -80,31 +81,32 @@ public class BuildOptimizer
             numberOfTrials++;
             if (numberOfTrials % 25000 == 0)
             {
-                pruneBestBuilds(bestBuilds);
+                pruneBestBuilds(bestBuilds, h);
                 System.out.println("Progress: "+numberOfTrials+"/"+numberOfItemsets);
             }
             ItemSet items = new ItemSet(itemList);
-            Build build = selectedCharacter.getFinalUtility(items, selectedHeuristic);
-            if (build.getUtility() > bestSoFar)
+            Build build = new Build(items, selectedCharacter, 100000, 100000, 100000);
+            double utility = build.getComponent(h);
+            if (utility > bestSoFar)
             {
                 System.out.println("Build: "+items);
                 System.out.println("Utility1: "+build);
-                bestSoFar = build.getUtility();
+                bestSoFar = utility;
             }
             
-            bestBuilds.put(1.0-build.getUtility(), build);
+            bestBuilds.put(1.0-utility, build);
         }
         System.out.println("=-=-=-=Results:=-=-=-=-=");
-        pruneBestBuilds(bestBuilds);
+        pruneBestBuilds(bestBuilds, h);
         for (Build b : bestBuilds.values())
         {
-            selectedCharacter.showWork(b);
+            //selectedCharacter.showWork(b);
         }
         
         return bestBuilds.get(bestSoFar);
     }
 
-    private static void pruneBestBuilds(Map<Double, Build> bestBuilds) 
+    private static void pruneBestBuilds(Map<Double, Build> bestBuilds, HeuristicComponent h) 
     {
         System.out.println("Current top 10 builds:");
         int top = 10;
@@ -113,7 +115,7 @@ public class BuildOptimizer
         {
             newMap.put(d.getKey(), d.getValue());
             System.out.println("  "+top+": ("+d+")"+d.getValue().getItems());
-            System.out.println("  Total Utility: "+d.getValue().getUtility());
+            System.out.println("  Total Utility: "+d.getValue().getComponent(h));
             top -=1;
             if (top == 0)
             {

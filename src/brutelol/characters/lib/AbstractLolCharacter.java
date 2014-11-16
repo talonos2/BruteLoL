@@ -6,6 +6,7 @@
 
 package brutelol.characters.lib;
 
+import brutelol.Funcs;
 import brutelol.buildobjs.Build;
 import brutelol.buildobjs.ItemSet;
 import brutelol.buildobjs.MasterySet;
@@ -54,9 +55,6 @@ public abstract class AbstractLolCharacter implements LolCharacter
     //List of items required.
     protected List<Class<? extends Item>> requiredItems = new ArrayList<>();
     
-    //Cache: What level is this character?
-    protected int level;
-    
     /**
      * Returns whether or not any items are missing.
      * @param items the items to check.
@@ -101,65 +99,67 @@ public abstract class AbstractLolCharacter implements LolCharacter
         notes = new StringBuilder();
     }
 
-    public int getLevel() 
+    public int getLevel(Build b) 
     {
-        return level;
+        return Funcs.getLevelFromXP(b.getXP());
     }
 
-    public double getManaRegen() 
+    public double getManaRegen(Build b) 
     {
-        return this.MANA_REGEN_AT_0+(level*this.MANA_REGEN_PER_LEVEL);
+        return this.MANA_REGEN_AT_0+(getLevel(b)*this.MANA_REGEN_PER_LEVEL);
     }
 
-    public double getHealthRegen() 
+    public double getHealthRegen(Build b) 
     {
-        return this.HP_REGEN_AT_0+(level*this.HP_REGEN_PER_LEVEL);
+        return this.HP_REGEN_AT_0+(getLevel(b)*this.HP_REGEN_PER_LEVEL);
     }
 
-    public double getMoveSpeed() 
+    public double getMoveSpeed(Build b) 
     {
         return this.MOVE_SPEED;
     }
 
-    public double getMagicResist() 
+    public double getMagicResist(Build b) 
     {
-        return this.MAGIC_RES_AT_0+(level*this.MAGIC_RES_PER_LEVEL);
+        return this.MAGIC_RES_AT_0+(getLevel(b)*this.MAGIC_RES_PER_LEVEL);
     }
 
-    public double getArmor() 
+    public double getArmor(Build b) 
     {
-        return this.ARMOR_AT_0+(level*this.ARMOR_PER_LEVEL);
+        return this.ARMOR_AT_0+(getLevel(b)*this.ARMOR_PER_LEVEL);
     }
 
-    public double getMaxHP() 
+    public double getMaxHP(Build b) 
     {
-        return this.HP_AT_0+(level*this.HP_PER_LEVEL);
+        return this.HP_AT_0+(getLevel(b)*this.HP_PER_LEVEL);
     }
 
-    public double getMaxMana() 
+    public double getMaxMana(Build b) 
     {
-        return this.MANA_AT_0+(level*this.MANA_PER_LEVEL);
+        return this.MANA_AT_0+(getLevel(b)*this.MANA_PER_LEVEL);
     }
 
-    public double getAttackSpeed() 
+    public double getAttackSpeed(Build b) 
     {
         //Works differently!
-        return ((level-1)*this.ATTACK_SPEED_PER_LEVEL);
+        return ((getLevel(b)-1)*this.ATTACK_SPEED_PER_LEVEL);
     }
 
-    public double getAttackDamage() 
+    public double getAttackDamage(Build b) 
     {
-        return this.ATTACK_DAMAGE_AT_0+(level*this.ATTACK_DAMAGE_PER_LEVEL);
+        return this.ATTACK_DAMAGE_AT_0+(getLevel(b)*this.ATTACK_DAMAGE_PER_LEVEL);
     }
     
     
-    protected double getLifestealPerShot(BuildInfo stats) 
+    protected double getLifestealPerShot(Build b) 
     {
-        return getPhysicalDamagePerAttack(stats) * stats.lifeSteal;
+        BuildInfo stats = b.getBuildInfo();
+        return getBasePhysicalDamagePerAttack(b) * stats.lifeSteal;
     }
 
-    protected double getPhysicalDamagePerAttack(BuildInfo stats) 
+    protected double getBasePhysicalDamagePerAttack(Build b) 
     {
+        BuildInfo stats = b.getBuildInfo();
         double critChance = Math.min(stats.critChance,1.0);
         
         //Calculate basic damage.
@@ -173,13 +173,14 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return damageIncludingCrits;
     }
 
-    protected double getBonusPhysicalDamagePerAttack(BuildInfo stats) 
+    protected double getBonusPhysicalDamagePerAttack(Build b) 
     {
         return 0;
     }
 
-    protected double getOverallAttackSpeed(BuildInfo stats) 
+    protected double getAttacksPerSecond(Build b) 
     {
+        BuildInfo stats = b.getBuildInfo();
         double attacksPerSecond = ATTACK_SPEED_AT_1;
         double addedAttackSpeed = stats.attackSpeed;
         
@@ -192,5 +193,10 @@ public abstract class AbstractLolCharacter implements LolCharacter
         }
         
         return attacksPerSecond;
+    }
+    
+    protected double getMagicDamagePerAttack(Build b) 
+    {
+        return 0;
     }
 }
