@@ -8,6 +8,7 @@ package brutelol;
 
 import brutelol.buildobjs.Build;
 import brutelol.buildobjs.ItemSet;
+import brutelol.buildobjs.MapEnum;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
@@ -35,7 +36,7 @@ public class BuildOptimizer
     {
         // create array of initial items
         List<Item> array = new ArrayList<>();
-        array.addAll(Items.getAllItems());
+        array.addAll(Items.getAllPOptimalItems(MapEnum.SUMMONERS_RIFT));
 
         // create combinatorics vector. This holds the items we're going to make a multicombination from.
         CombinatoricsVector<Item> initialVector = new CombinatoricsVector<Item>(array);

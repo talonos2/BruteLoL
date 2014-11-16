@@ -6,6 +6,7 @@
 
 package brutelol.items.instances;
 
+import brutelol.buildobjs.MapEnum;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,22 +44,22 @@ public class Items
         }
     }
 
-    public static List<Item> getAllPOptimalItems() 
+    public static List<Item> getAllPOptimalItems(MapEnum map) 
     {
         if (pOptimalItems == null)
         {
-            pOptimalItems = generatePOptimalItems();
+            pOptimalItems = generateOptimalItemsForMap(map);
         }
         return pOptimalItems;
     }
 
-    private static List<Item> generatePOptimalItems() 
+    private static List<Item> generateOptimalItemsForMap(MapEnum map) 
     {
         List<Item> toReturn = new ArrayList<>();
         List<Item> allItems = getAllItems();
         for (Item i : allItems)
         {
-            if (i.isPOptimal()&&i.availableOnSummonersRift())
+            if (i.isPOptimal()&&i.availableOnMap(map))
             {
                 toReturn.add(i);
             }

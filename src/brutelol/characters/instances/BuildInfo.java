@@ -12,9 +12,13 @@ import brutelol.buildobjs.ItemSet;
 import brutelol.buildobjs.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
+import brutelol.items.abstracts.BPassive;
+import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -26,6 +30,9 @@ public class BuildInfo
     private AbstractLolCharacter c = null;
     private RunePage runes = null;
     private Masteries masteries = null;
+    
+    private Set<BPassive> basicPassives = EnumSet.noneOf(BPassive.class);
+    private Set<CPassive> complicatedPassives = EnumSet.noneOf(CPassive.class);
     
     public BuildInfo(AbstractLolCharacter c, Build b)
     {
@@ -61,6 +68,9 @@ public class BuildInfo
             moveSpeedPercent += i.getMoveSpeedPercent();
             healthRegen+=i.getHealthRegen();
             manaRegen += i.getManaRegen();
+            
+            basicPassives.addAll(i.getAllBasicPassives());
+            complicatedPassives.addAll(i.getAllComplicatedPassives());
         }
             
         //attack
@@ -79,6 +89,9 @@ public class BuildInfo
         moveSpeed += c.getMoveSpeed(b);
         healthRegen+=c.getHealthRegen(b);
         manaRegen += c.getManaRegen(b);
+        
+        //Add benefits from basic passives:
+        if (basicPassives.contains(BPassive.INFINITY_EDGE_PASSIVE)) {this.addedCritDamage += .5;}
     }
 
     public StringBuilder showWork(Build b) 

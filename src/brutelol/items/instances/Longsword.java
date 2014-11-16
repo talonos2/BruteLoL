@@ -21,9 +21,6 @@ public class LongSword extends Item
         this.attackDamage = 10;
         this.cost = 360;
         
-        this.summonersRift = true;
-        this.twistedTreeline = true;
-        this.howlingAbyss = true;
-        this.crystalScar = true;
+        this.makeAvailableOnAllMaps();
     }
 }

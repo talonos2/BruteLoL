@@ -26,9 +26,6 @@ public class AncientCoin extends Item
                 
         this.favorLevel = 1;
         
-        this.summonersRift = true;
-        this.twistedTreeline = true;
-        this.howlingAbyss = true;
-        this.crystalScar = true;
+        this.makeAvailableOnAllMaps();
     }
 }

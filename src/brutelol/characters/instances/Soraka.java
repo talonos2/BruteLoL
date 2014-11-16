@@ -88,6 +88,10 @@ public class Soraka extends AbstractLolCharacter
     @Override
     public double getComponentUtility(Build b, HeuristicComponent h) 
     {
+        if (this.missingItems(b.getItems()))
+        {
+            return -0.5;
+        }
         switch(h)
         {
             case BASE_PHYSICAL_DAMAGE_PER_ATTACK:
@@ -96,8 +100,14 @@ public class Soraka extends AbstractLolCharacter
                 return this.getBonusPhysicalDamagePerAttack(b);
             case MAGIC_DAMAGE_PER_ATTACK:
                 return this.getMagicDamagePerAttack(b);
-            case ATTACK_PER_SECOND:
+            case ATTACKS_PER_SECOND:
                 return this.getAttacksPerSecond(b);
+            case HEALING_PER_SECOND:
+                return getHealingPerSecond(b);
+            case LIFE_STOLEN_PER_ATTACK:
+                return getLifeStolenPerAttack(b);
+            case LIFE_STOLEN_PER_SECOND:
+                return getLifeStolenPerSecond(b);
             default:
                 throw new IllegalArgumentException("Bad HeuristicComponent: "+h);
         }
@@ -114,19 +124,11 @@ public class Soraka extends AbstractLolCharacter
      * @param runes the runeset you have.
      * @return 
      */
-    public double getUtilityAtPointInTime(ItemSet items, HeuristicComponent h,
-            int xp, int time, RunePage runes, Build b)
+    public double getHealingPerSecond(Build b)
     {
-        if (this.missingItems(items))
-        {
-            return 0;
-        }
+        BuildInfo stats = b.getBuildInfo();
         
-        BuildInfo stats = new BuildInfo(this, b);
-        
-        double basePhysicalDamagePerAttack = getBasePhysicalDamagePerAttack(null);
-        double bonusPhysicalDamagePerAttack = getBonusPhysicalDamagePerAttack(null);
-        double numberOfAttacksPerSecond = getAttacksPerSecond(null);
+        double numberOfAttacksPerSecond = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
         
         ///LIMITING GREAGENT: COOLDOWN
         double cdr = stats.cooldownReduction;
@@ -147,8 +149,7 @@ public class Soraka extends AbstractLolCharacter
         double infusesPerSecondMP = manaPerSecond/manaCostOfInfuse;
         
         ///LIMITING GREAGENT: HEALTH
-        double lifestealPerShotAgainstEnemy = getLifestealPerShot(null);
-        double lifestealPerSecond = numberOfAttacksPerSecond*lifestealPerShotAgainstEnemy;
+        double lifestealPerSecond = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_SECOND);
         
         double healthRegennedPerSecond = stats.healthRegen/5;
         double extraHealthPerSecond = 0;
@@ -196,5 +197,4 @@ public class Soraka extends AbstractLolCharacter
         BuildInfo info = new BuildInfo(this, b);
         return info;
     }
-
 }

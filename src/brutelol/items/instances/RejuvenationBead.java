@@ -21,9 +21,6 @@ public class RejuvenationBead extends Item
         this.healthRegen = 5;
         this.cost = 180;
         
-        this.summonersRift = true;
-        this.twistedTreeline = true;
-        this.howlingAbyss = true;
-        this.crystalScar = true;
+        this.makeAvailableOnAllMaps();
     }
 }

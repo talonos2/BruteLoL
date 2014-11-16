@@ -149,13 +149,6 @@ public abstract class AbstractLolCharacter implements LolCharacter
     {
         return this.ATTACK_DAMAGE_AT_0+(getLevel(b)*this.ATTACK_DAMAGE_PER_LEVEL);
     }
-    
-    
-    protected double getLifestealPerShot(Build b) 
-    {
-        BuildInfo stats = b.getBuildInfo();
-        return getBasePhysicalDamagePerAttack(b) * stats.lifeSteal;
-    }
 
     protected double getBasePhysicalDamagePerAttack(Build b) 
     {
@@ -175,6 +168,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
 
     protected double getBonusPhysicalDamagePerAttack(Build b) 
     {
+        //Stuff like muramana toggle, BotRK stuff, etc. Anything not affected by crit.
         return 0;
     }
 
@@ -197,6 +191,24 @@ public abstract class AbstractLolCharacter implements LolCharacter
     
     protected double getMagicDamagePerAttack(Build b) 
     {
+        //Nashors tooth... Um... IDK.
         return 0;
+    }
+    
+    protected double getLifeStolenPerAttack(Build b) 
+    {
+        double damage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK);
+        damage += b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
+        
+        double lifeStealPercent = b.getBuildInfo().lifeSteal;
+        
+        return damage*lifeStealPercent;
+    }
+
+    protected double getLifeStolenPerSecond(Build b) 
+    {
+        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
+        double lifesteal = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_ATTACK);
+        return attacks*lifesteal;
     }
 }

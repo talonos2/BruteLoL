@@ -21,9 +21,6 @@ public class FaerieCharm extends Item
         this.manaRegen = 3;
         this.cost = 180;
         
-        this.summonersRift = true;
-        this.twistedTreeline = true;
-        this.howlingAbyss = true;
-        this.crystalScar = true;
+        this.makeAvailableOnAllMaps();
     }
 }

@@ -6,9 +6,14 @@
 
 package brutelol.items.abstracts;
 
+import brutelol.buildobjs.MapEnum;
 import brutelol.items.instances.Items;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -50,16 +55,24 @@ public abstract class Item
     private List<Item> prerequisites = new ArrayList<>();
     
     //Where is this available?
-    protected boolean summonersRift = false;
-    protected boolean twistedTreeline = false;
-    protected boolean crystalScar = false;
-    protected boolean howlingAbyss = false;
+    Set<MapEnum> maps;
+    
+    //What passive flags are on?
+    Set<BPassive> basicPassives;
+    Set<CPassive> complicatedPassives;
     
     //Some unique effects are too complicated to be simple boolean flags. Those
     //are listed here.
     
     protected double enhancedMovement = 0;
     protected int favorLevel = 0;
+
+    public Item() 
+    {
+        this.maps = EnumSet.noneOf(MapEnum.class);
+        this.basicPassives = EnumSet.noneOf(BPassive.class);
+        this.complicatedPassives = EnumSet.noneOf(CPassive.class);
+    }
     
     public double getAttackSpeed()
     {
@@ -189,24 +202,9 @@ public abstract class Item
         return this.goldItem;
     }
         
-    public boolean availableOnSummonersRift()
+    public boolean availableOnMap(MapEnum map)
     {
-        return this.summonersRift;
-    }
-    
-    public boolean availableOnTwistedTreeline() 
-    {
-        return this.twistedTreeline;
-    }
-    
-    public boolean availableOnCrystalScar() 
-    {
-        return this.crystalScar;
-    }
-    
-    public boolean availableOnHowlingAbyss() 
-    {
-        return this.howlingAbyss;
+        return this.maps.contains(map);
     }
     
     public int compareTo(Item o2) 
@@ -217,5 +215,38 @@ public abstract class Item
     public int getFavorLevel()
     {
         return this.favorLevel;
+    }
+    
+    protected void makeAvailableOnAllMaps()
+    {
+        this.maps.add(MapEnum.SUMMONERS_RIFT);
+        this.maps.add(MapEnum.TWISTED_TREELINE);
+        this.maps.add(MapEnum.HOWLING_ABYSS);
+        this.maps.add(MapEnum.CRYSTAL_SCAR);
+    }
+    
+    protected void makeAvailableOnMap(MapEnum mapEnum) 
+    {
+        this.maps.add(mapEnum);
+    }
+    
+    protected void setBasicPassive(BPassive passive) 
+    {
+        this.basicPassives.add(passive);
+    }
+    
+    protected void setComplicatedPassive(CPassive passive) 
+    {
+        this.complicatedPassives.add(passive);
+    }
+    
+    public Collection<BPassive> getAllBasicPassives()
+    {
+        return Collections.unmodifiableSet(basicPassives);
+    }
+    
+    public Collection<CPassive> getAllComplicatedPassives()
+    {
+        return Collections.unmodifiableSet(complicatedPassives);
     }
 }

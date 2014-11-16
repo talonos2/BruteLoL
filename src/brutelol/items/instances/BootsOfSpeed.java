@@ -21,9 +21,6 @@ public class BootsOfSpeed extends Item
         this.enhancedMovement = 25;
         this.cost = 325;
         
-        this.summonersRift = true;
-        this.twistedTreeline = true;
-        this.howlingAbyss = true;
-        this.crystalScar = true;
+        this.makeAvailableOnAllMaps();
     }
 }

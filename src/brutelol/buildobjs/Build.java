@@ -5,6 +5,9 @@ import brutelol.characters.instances.BuildInfo;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -18,6 +21,7 @@ public class Build
     private AbstractLolCharacter character;
     private BuildInfo info;
     private Masteries masteries;
+    private Map<HeuristicComponent, Double> components = new EnumMap<>(HeuristicComponent.class);
     
     private int gold;
     private int time;
@@ -35,7 +39,11 @@ public class Build
 
     public double getComponent(HeuristicComponent h) 
     {
-        return character.getComponentUtility(this, h);
+        if (!components.containsKey(h))
+        {
+            components.put(h, character.getComponentUtility(this, h));
+        }
+        return components.get(h);
     }
     
     public ItemSet getItems()
