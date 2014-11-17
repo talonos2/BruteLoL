@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package brutelol.buildobjs;
+package brutelol.charbuild;
 
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;

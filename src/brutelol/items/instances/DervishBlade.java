@@ -6,29 +6,32 @@
 
 package brutelol.items.instances;
 
-import brutelol.items.abstracts.BPassive;
 import brutelol.charbuild.MapEnum;
+import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 
 /**
  *
  * @author Talonos
  */
-public class LordVanDammsPillager extends Item
+public class DervishBlade extends Item 
 {
-    public LordVanDammsPillager()
+
+    public DervishBlade() 
     {
         //Since patch 4.19;
         super();
-        this.critChance = .25;
-        this.attackDamage = 80;
-        this.cost = 3800;
+        this.attackSpeed = .5;
+        this.magicResist = 45;
+        this.cooldownReduction = .1;
+        this.cost = 3000;
         
-        this.makeAvailableOnMap(MapEnum.CRYSTAL_SCAR);
         this.makeAvailableOnMap(MapEnum.TWISTED_TREELINE);
+        this.makeAvailableOnMap(MapEnum.CRYSTAL_SCAR);
         
-        this.setBasicPassive(BPassive.INFINITY_EDGE_PASSIVE);
+        this.setComplicatedPassive(CPassive.QUICKSILVER_ACTIVE);
         
         this.pOptimal = true;
     }
+    
 }

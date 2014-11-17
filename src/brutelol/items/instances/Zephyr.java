@@ -7,28 +7,31 @@
 package brutelol.items.instances;
 
 import brutelol.items.abstracts.BPassive;
-import brutelol.charbuild.MapEnum;
+import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 
 /**
  *
  * @author Talonos
  */
-public class LordVanDammsPillager extends Item
+public class Zephyr extends Item 
 {
-    public LordVanDammsPillager()
+
+    public Zephyr() 
     {
         //Since patch 4.19;
         super();
-        this.critChance = .25;
-        this.attackDamage = 80;
-        this.cost = 3800;
+        this.attackSpeed = .5;
+        this.attackDamage = 25;
+        this.moveSpeedFlat = .1;
+        this.cooldownReduction = .1;
+        this.cost = 2850;
         
-        this.makeAvailableOnMap(MapEnum.CRYSTAL_SCAR);
-        this.makeAvailableOnMap(MapEnum.TWISTED_TREELINE);
+        this.makeAvailableOnAllMaps();
         
-        this.setBasicPassive(BPassive.INFINITY_EDGE_PASSIVE);
+        this.setComplicatedPassive(CPassive.TENACITY_PASSIVE);
         
         this.pOptimal = true;
     }
+    
 }

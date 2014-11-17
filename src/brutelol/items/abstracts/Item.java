@@ -6,7 +6,7 @@
 
 package brutelol.items.abstracts;
 
-import brutelol.buildobjs.MapEnum;
+import brutelol.charbuild.MapEnum;
 import brutelol.items.instances.Items;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +33,7 @@ public abstract class Item
     protected double cooldownReduction = 0;
     
     protected double armor = 0;
-    protected double magicresist = 0;
+    protected double magicResist = 0;
     
     protected double hp = 0;
     protected double healthRegen = 0;
@@ -46,6 +46,8 @@ public abstract class Item
     //Flags to help item related logic
     protected boolean goldItem = false;
     protected boolean pOptimal = false;
+    protected boolean isMeleeOnly = false;
+    protected boolean isRangedOnly = false;
     
     //Flags to help shop related logic
     protected int cost = 0;
@@ -66,6 +68,7 @@ public abstract class Item
     
     protected double enhancedMovement = 0;
     protected int favorLevel = 0;
+    protected int spellBladeLevel = 0;
 
     public Item() 
     {
@@ -171,7 +174,7 @@ public abstract class Item
                         
     public double getMagicResist()
     {
-        return this.magicresist;
+        return this.magicResist;
     }
     
     public double getHealthRegen()
@@ -215,6 +218,16 @@ public abstract class Item
     public int getFavorLevel()
     {
         return this.favorLevel;
+    }
+    
+    public boolean isMeleeOnly()
+    {
+        return this.isMeleeOnly;
+    }
+    
+        public boolean isRangedOnly()
+    {
+        return this.isRangedOnly;
     }
     
     protected void makeAvailableOnAllMaps()

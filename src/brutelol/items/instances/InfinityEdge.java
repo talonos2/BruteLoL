@@ -14,9 +14,9 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class LordVanDammsPillager extends Item
+public class InfinityEdge extends Item
 {
-    public LordVanDammsPillager()
+    public InfinityEdge()
     {
         //Since patch 4.19;
         super();
@@ -24,8 +24,8 @@ public class LordVanDammsPillager extends Item
         this.attackDamage = 80;
         this.cost = 3800;
         
-        this.makeAvailableOnMap(MapEnum.CRYSTAL_SCAR);
-        this.makeAvailableOnMap(MapEnum.TWISTED_TREELINE);
+        this.makeAvailableOnMap(MapEnum.SUMMONERS_RIFT);
+        this.makeAvailableOnMap(MapEnum.HOWLING_ABYSS);
         
         this.setBasicPassive(BPassive.INFINITY_EDGE_PASSIVE);
         

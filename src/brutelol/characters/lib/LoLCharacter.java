@@ -6,10 +6,10 @@
 
 package brutelol.characters.lib;
 
-import brutelol.buildobjs.ItemSet;
-import brutelol.buildobjs.MasterySet;
-import brutelol.buildobjs.RunePage;
-import brutelol.buildobjs.Build;
+import brutelol.charbuild.ItemSet;
+import brutelol.charbuild.MasterySet;
+import brutelol.charbuild.RunePage;
+import brutelol.charbuild.Build;
 import brutelol.characters.instances.BuildInfo;
 import java.util.List;
 
@@ -22,10 +22,12 @@ public interface LolCharacter
     /**
      * When passed a build and heuristic, returns how high that heuristic is.
      * @param b the build to evaluate.
+     * @param enemies the build representing the enemy you are "doing" this to. Often 
+     * doesn't matter. Also often only uses the first index as the "target".
      * @param selectedHeuristic the heuristic to evaluate.
      * @return 
      */
-    public double getComponentUtility(Build b, HeuristicComponent selectedHeuristic);
+    public double getComponentUtility(Build b, Build enemy, HeuristicComponent selectedHeuristic);
     
     /**
      * Returns a list of all heuristics that could be applied to this character.

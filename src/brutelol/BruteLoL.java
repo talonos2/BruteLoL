@@ -6,11 +6,16 @@
 
 package brutelol;
 
-import brutelol.buildobjs.Build;
+import brutelol.characters.instances.Minions;
+import brutelol.charbuild.Build;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.instances.Soraka;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
+import brutelol.charbuild.ItemSet;
+import brutelol.items.abstracts.Item;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main Entry point into the Program
@@ -29,7 +34,9 @@ public class BruteLoL
         //TODO: Provide a way for the player to select a heuristic.
         HeuristicComponent h = HeuristicComponent.HEALING_PER_SECOND;
         
-        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, h);
+        Build enemy = new Build(new ItemSet(new ArrayList<Item>()), new Minions(), 100000, 10000, 10000);
+        
+        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h);
     }
     
 }

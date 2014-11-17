@@ -6,28 +6,28 @@
 
 package brutelol.items.instances;
 
-import brutelol.items.abstracts.BPassive;
 import brutelol.charbuild.MapEnum;
+import brutelol.items.abstracts.BPassive;
+import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 
 /**
  *
  * @author Talonos
  */
-public class LordVanDammsPillager extends Item
+public class RabadonsDeathcap extends Item
 {
-    public LordVanDammsPillager()
+    public RabadonsDeathcap()
     {
         //Since patch 4.19;
         super();
-        this.critChance = .25;
-        this.attackDamage = 80;
-        this.cost = 3800;
+        this.abilityPower = 120;
+        this.cost = 3300;
         
-        this.makeAvailableOnMap(MapEnum.CRYSTAL_SCAR);
-        this.makeAvailableOnMap(MapEnum.TWISTED_TREELINE);
+        this.makeAvailableOnMap(MapEnum.SUMMONERS_RIFT);
+        this.makeAvailableOnMap(MapEnum.HOWLING_ABYSS);
         
-        this.setBasicPassive(BPassive.INFINITY_EDGE_PASSIVE);
+        this.setBasicPassive(BPassive.DEATHCAP_PASSIVE);
         
         this.pOptimal = true;
     }

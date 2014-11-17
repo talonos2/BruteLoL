@@ -6,7 +6,7 @@
 
 package brutelol.items.instances;
 
-import brutelol.buildobjs.MapEnum;
+import brutelol.charbuild.MapEnum;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,12 +28,38 @@ public class Items
     {
         allItems = new ArrayList<>();
         
-        allItems.add(new AncientCoin());
-        allItems.add(new BootsOfSpeed());
-        allItems.add(new ClothArmor());
-        allItems.add(new FaerieCharm());
-        allItems.add(new LongSword());
         allItems.add(new RejuvenationBead());
+        allItems.add(new FaerieCharm());
+        allItems.add(new ClothArmor());
+        allItems.add(new BootsOfSpeed());
+        allItems.add(new LongSword());
+        allItems.add(new AncientCoin());
+        
+        allItems.add(new WarmogsArmor());
+        allItems.add(new Zephyr());
+        allItems.add(new LiandrysTorment());
+        allItems.add(new IcebornGauntlet());
+        allItems.add(new RylaisCrystalSceptor());
+        allItems.add(new NashorsTooth());
+        allItems.add(new LichBane());
+        allItems.add(new RanduinsOmen());
+        allItems.add(new BlackCleaver());
+        allItems.add(new DervishBlade());
+        allItems.add(new DeathfireGrasp());
+        allItems.add(new EssenceReaver());
+        allItems.add(new BladeOfTheRuinedKing());
+        allItems.add(new MawOfMalmortius());
+        allItems.add(new ZhonyasHourglass());
+        allItems.add(new FrozenMallet());
+        allItems.add(new RabadonsDeathcap());
+        allItems.add(new RavenousHydra());
+        allItems.add(new HextechGunblade());
+        allItems.add(new WoogletsWitchcap());
+        allItems.add(new Bloodthirster());
+        allItems.add(new TrinityForce());
+        allItems.add(new InfinityEdge());
+        allItems.add(new MercurialScimitar());
+        allItems.add(new LordVanDammsPillager());
         
         allItems.add(new NoItem());
         

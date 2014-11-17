@@ -7,11 +7,12 @@
 package brutelol.characters.lib;
 
 import brutelol.Funcs;
-import brutelol.buildobjs.Build;
-import brutelol.buildobjs.ItemSet;
-import brutelol.buildobjs.MasterySet;
-import brutelol.buildobjs.RunePage;
+import brutelol.charbuild.Build;
+import brutelol.charbuild.ItemSet;
+import brutelol.charbuild.MasterySet;
+import brutelol.charbuild.RunePage;
 import brutelol.characters.instances.BuildInfo;
+import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,7 @@ import java.util.List;
  * @author Talonos
  */
 public abstract class AbstractLolCharacter implements LolCharacter
-{
-    AbstractLolCharacter enemy;
-    
+{   
     private StringBuilder notes = null;
     
     //Variables representing the starting state
@@ -55,6 +54,8 @@ public abstract class AbstractLolCharacter implements LolCharacter
     //List of items required.
     protected List<Class<? extends Item>> requiredItems = new ArrayList<>();
     
+    protected boolean isMelee = false;
+    
     /**
      * Returns whether or not any items are missing.
      * @param items the items to check.
@@ -77,6 +78,14 @@ public abstract class AbstractLolCharacter implements LolCharacter
             {
                 return true;
             }
+        }
+        
+        for (Item buildItem : items.itemsInList)
+        {
+            if (isMelee&&buildItem.isRangedOnly()||!isMelee&&buildItem.isMeleeOnly())
+                {
+                    return true;
+                }
         }
         return false;
     }
@@ -150,7 +159,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return this.ATTACK_DAMAGE_AT_0+(getLevel(b)*this.ATTACK_DAMAGE_PER_LEVEL);
     }
 
-    protected double getBasePhysicalDamagePerAttack(Build b) 
+    protected double getBasePhysicalDamagePerAttack(Build b, Build enemy) 
     {
         BuildInfo stats = b.getBuildInfo();
         double critChance = Math.min(stats.critChance,1.0);
@@ -163,13 +172,20 @@ public abstract class AbstractLolCharacter implements LolCharacter
         double damageIncludingCrits = damagePerAttack+(damagePerAttack*stats.critChance*(1+stats.addedCritDamage));
         
         //Apply Armor
+        damageIncludingCrits = applyEnemyArmor(damageIncludingCrits, b, enemy);
+        
         return damageIncludingCrits;
     }
 
-    protected double getBonusPhysicalDamagePerAttack(Build b) 
+    protected double getBonusPhysicalDamagePerAttack(Build b, Build enemy) 
     {
-        //Stuff like muramana toggle, BotRK stuff, etc. Anything not affected by crit.
-        return 0;
+        double bonusDamage = 0;
+        if (b.getBuildInfo().hasPassive(CPassive.RUINED_KING_PASSIVE))
+        {
+            bonusDamage += enemy.getBuildInfo().hp * .08;
+        }
+        bonusDamage = applyEnemyArmor(bonusDamage, b, enemy);
+        return bonusDamage;
     }
 
     protected double getAttacksPerSecond(Build b) 
@@ -195,20 +211,46 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return 0;
     }
     
-    protected double getLifeStolenPerAttack(Build b) 
+    protected double getLifeStolenPerAttack(Build b, Build enemy) 
     {
-        double damage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK);
-        damage += b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
+        double damage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
+        damage += b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
         
         double lifeStealPercent = b.getBuildInfo().lifeSteal;
         
         return damage*lifeStealPercent;
     }
 
-    protected double getLifeStolenPerSecond(Build b) 
+    protected double getLifeStolenPerSecond(Build b, Build enemy) 
     {
-        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
-        double lifesteal = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_ATTACK);
+        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND, enemy);
+        double lifesteal = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_ATTACK, enemy);
         return attacks*lifesteal;
+    }
+
+    private double applyEnemyArmor(double damage, Build b, Build enemy) 
+    {
+        double armor = enemy.getBuildInfo().armor;
+        armor*=(1.0-b.getBuildInfo().armorPenetrationPercent);
+        armor-=b.getBuildInfo().armorPenetrationFlat;
+        if (armor < 0)
+        {
+            armor = 0;
+        }
+        damage *= (100.0/(100.0+armor));
+        return damage;
+    }
+    
+    private double applyEnemyMagicResist(double damage, Build b, Build enemy) 
+    {
+        double armor = enemy.getBuildInfo().magicResist;
+        armor*=(1.0-b.getBuildInfo().magicPenetrationPercent);
+        armor-=b.getBuildInfo().magicPenetrationFlat;
+        if (armor < 0)
+        {
+            armor = 0;
+        }
+        damage *= (100.0/(100.0+armor));
+        return damage;
     }
 }

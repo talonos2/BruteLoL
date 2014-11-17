@@ -1,4 +1,4 @@
-package brutelol.buildobjs;
+package brutelol.charbuild;
 
 import brutelol.Masteries;
 import brutelol.characters.instances.BuildInfo;
@@ -7,6 +7,7 @@ import brutelol.characters.lib.LolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,11 +38,11 @@ public class Build
         this.xp=xp;
     }
 
-    public double getComponent(HeuristicComponent h) 
+    public double getComponent(HeuristicComponent h, Build enemy) 
     {
         if (!components.containsKey(h))
         {
-            components.put(h, character.getComponentUtility(this, h));
+            components.put(h, character.getComponentUtility(this, enemy, h));
         }
         return components.get(h);
     }

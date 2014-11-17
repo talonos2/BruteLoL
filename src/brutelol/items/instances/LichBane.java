@@ -6,29 +6,30 @@
 
 package brutelol.items.instances;
 
-import brutelol.items.abstracts.BPassive;
 import brutelol.charbuild.MapEnum;
+import brutelol.items.abstracts.BPassive;
 import brutelol.items.abstracts.Item;
 
 /**
  *
  * @author Talonos
  */
-public class LordVanDammsPillager extends Item
-{
-    public LordVanDammsPillager()
+public class LichBane extends Item {
+
+    public LichBane() 
     {
         //Since patch 4.19;
         super();
-        this.critChance = .25;
-        this.attackDamage = 80;
-        this.cost = 3800;
+        this.mana = 250;
+        this.abilityPower = 80;
+        this.moveSpeedPercent = .05;
+        this.cost = 3000;
         
-        this.makeAvailableOnMap(MapEnum.CRYSTAL_SCAR);
-        this.makeAvailableOnMap(MapEnum.TWISTED_TREELINE);
+        this.makeAvailableOnAllMaps();
         
-        this.setBasicPassive(BPassive.INFINITY_EDGE_PASSIVE);
+        this.spellBladeLevel = 4;
         
         this.pOptimal = true;
     }
+    
 }

@@ -7,10 +7,10 @@
 package brutelol.characters.instances;
 
 import brutelol.Funcs;
-import brutelol.buildobjs.Build;
-import brutelol.buildobjs.ItemSet;
-import brutelol.buildobjs.MasterySet;
-import brutelol.buildobjs.RunePage;
+import brutelol.charbuild.Build;
+import brutelol.charbuild.ItemSet;
+import brutelol.charbuild.MasterySet;
+import brutelol.charbuild.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
 import java.util.List;
@@ -72,7 +72,7 @@ public class Soraka extends AbstractLolCharacter
         this.ARMOR_PER_LEVEL = 3.8;
         this.MAGIC_RES_PER_LEVEL = 0;
     
-    //Variables representing more constant attributes.
+        //Variables representing more constant attributes.
         this.MOVE_SPEED = 340;
         this.RANGE = 550;
     }
@@ -86,7 +86,7 @@ public class Soraka extends AbstractLolCharacter
      * @return 
      */
     @Override
-    public double getComponentUtility(Build b, HeuristicComponent h) 
+    public double getComponentUtility(Build b, Build enemy, HeuristicComponent h) 
     {
         if (this.missingItems(b.getItems()))
         {
@@ -95,19 +95,19 @@ public class Soraka extends AbstractLolCharacter
         switch(h)
         {
             case BASE_PHYSICAL_DAMAGE_PER_ATTACK:
-                return this.getBasePhysicalDamagePerAttack(b);
+                return this.getBasePhysicalDamagePerAttack(b, enemy);
             case BONUS_PHYSICAL_DAMAGE_PER_ATTACK:
-                return this.getBonusPhysicalDamagePerAttack(b);
+                return this.getBonusPhysicalDamagePerAttack(b, enemy);
             case MAGIC_DAMAGE_PER_ATTACK:
                 return this.getMagicDamagePerAttack(b);
             case ATTACKS_PER_SECOND:
                 return this.getAttacksPerSecond(b);
             case HEALING_PER_SECOND:
-                return getHealingPerSecond(b);
+                return getHealingPerSecond(b, enemy);
             case LIFE_STOLEN_PER_ATTACK:
-                return getLifeStolenPerAttack(b);
+                return getLifeStolenPerAttack(b, enemy);
             case LIFE_STOLEN_PER_SECOND:
-                return getLifeStolenPerSecond(b);
+                return getLifeStolenPerSecond(b, enemy);
             default:
                 throw new IllegalArgumentException("Bad HeuristicComponent: "+h);
         }
@@ -124,11 +124,9 @@ public class Soraka extends AbstractLolCharacter
      * @param runes the runeset you have.
      * @return 
      */
-    public double getHealingPerSecond(Build b)
+    public double getHealingPerSecond(Build b, Build enemy)
     {
         BuildInfo stats = b.getBuildInfo();
-        
-        double numberOfAttacksPerSecond = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
         
         ///LIMITING GREAGENT: COOLDOWN
         double cdr = stats.cooldownReduction;
@@ -149,11 +147,11 @@ public class Soraka extends AbstractLolCharacter
         double infusesPerSecondMP = manaPerSecond/manaCostOfInfuse;
         
         ///LIMITING GREAGENT: HEALTH
-        double lifestealPerSecond = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_SECOND);
+        double lifestealPerSecond = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_SECOND, enemy);
         
         double healthRegennedPerSecond = stats.healthRegen/5;
         double extraHealthPerSecond = 0;
-
+        
         //Conditional: If we have mana to spare.
         if (infusesPerSecondMP > infusesPerSecondCooldown)
         {

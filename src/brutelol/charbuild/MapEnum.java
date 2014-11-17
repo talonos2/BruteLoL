@@ -4,13 +4,16 @@
  * and open the template in the editor.
  */
 
-package brutelol.buildobjs;
+package brutelol.charbuild;
 
 /**
  *
  * @author Talonos
  */
-public class RunePage 
+public enum MapEnum 
 {
-    
+    SUMMONERS_RIFT,
+    TWISTED_TREELINE,
+    HOWLING_ABYSS,
+    CRYSTAL_SCAR
 }

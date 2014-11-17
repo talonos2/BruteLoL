@@ -7,9 +7,9 @@
 package brutelol.characters.instances;
 
 import brutelol.Masteries;
-import brutelol.buildobjs.Build;
-import brutelol.buildobjs.ItemSet;
-import brutelol.buildobjs.RunePage;
+import brutelol.charbuild.Build;
+import brutelol.charbuild.ItemSet;
+import brutelol.charbuild.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.items.abstracts.BPassive;
@@ -32,7 +32,7 @@ public class BuildInfo
     private Masteries masteries = null;
     
     private Set<BPassive> basicPassives = EnumSet.noneOf(BPassive.class);
-    private Set<CPassive> complicatedPassives = EnumSet.noneOf(CPassive.class);
+    private Set<CPassive> passives = EnumSet.noneOf(CPassive.class);
     
     public BuildInfo(AbstractLolCharacter c, Build b)
     {
@@ -43,6 +43,10 @@ public class BuildInfo
         
         for (Item i : items.itemsInList)
         {   
+            if (i == null)
+            {
+                continue;
+            }
             //cost
             cost += i.getCost();
             
@@ -70,7 +74,7 @@ public class BuildInfo
             manaRegen += i.getManaRegen();
             
             basicPassives.addAll(i.getAllBasicPassives());
-            complicatedPassives.addAll(i.getAllComplicatedPassives());
+            passives.addAll(i.getAllComplicatedPassives());
         }
             
         //attack
@@ -91,7 +95,15 @@ public class BuildInfo
         manaRegen += c.getManaRegen(b);
         
         //Add benefits from basic passives:
-        if (basicPassives.contains(BPassive.INFINITY_EDGE_PASSIVE)) {this.addedCritDamage += .5;}
+        if (basicPassives.contains(BPassive.INFINITY_EDGE_PASSIVE))   {this.addedCritDamage += .5;}
+        if (basicPassives.contains(BPassive.BLOODTHIRSTER_PASSIVE))   {this.lifeSteal += .2;}
+        if (basicPassives.contains(BPassive.HEXTECH_GUNBLADE_PASSIVE)){this.spellvamp += .2;}
+        if (basicPassives.contains(BPassive.BLACK_CLEAVER_PASSIVE))   {this.armorPenetrationFlat += 10;}
+        if (basicPassives.contains(BPassive.NASHOR_PASSIVE))          {this.cooldownReduction += .2;}
+        if (basicPassives.contains(BPassive.EYES_OF_PAIN_PASSIVE))    {this.magicPenetrationFlat += 15;}
+        if (basicPassives.contains(BPassive.WOOGLETS_PASSIVE))        {this.abilityPower *= 1.25;}
+        if (basicPassives.contains(BPassive.DEATHCAP_PASSIVE))        {this.abilityPower *= 1.3;}
+        if (basicPassives.contains(BPassive.WARMOGS_PASSIVE))         {this.healthRegen += this.hp*.01;}
     }
 
     public StringBuilder showWork(Build b) 
@@ -267,4 +279,9 @@ public class BuildInfo
         public double armorPenetrationPercent = 0;
         public double magicPenetrationFlat = 0;
         public double magicPenetrationPercent = 0;
+
+    public boolean hasPassive(CPassive cPassive) 
+    {
+        return passives.contains(cPassive);
+    }
 }
