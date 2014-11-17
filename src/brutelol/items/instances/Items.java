@@ -35,6 +35,14 @@ public class Items
         allItems.add(new LongSword());
         allItems.add(new AncientCoin());
         
+        allItems.add(new ArchangelsStaff());
+        allItems.add(new SeraphsEmbrace());
+        allItems.add(new GuardianAngel());
+        allItems.add(new BansheesVeil());
+        allItems.add(new SpiritVisage());
+        allItems.add(new LocketOfTheIronSolari());
+        allItems.add(new RodOfAges());
+        allItems.add(new PhantomDancer());
         allItems.add(new WarmogsArmor());
         allItems.add(new Zephyr());
         allItems.add(new LiandrysTorment());

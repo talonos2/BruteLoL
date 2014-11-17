@@ -101,9 +101,13 @@ public class BuildInfo
         if (basicPassives.contains(BPassive.BLACK_CLEAVER_PASSIVE))   {this.armorPenetrationFlat += 10;}
         if (basicPassives.contains(BPassive.NASHOR_PASSIVE))          {this.cooldownReduction += .2;}
         if (basicPassives.contains(BPassive.EYES_OF_PAIN_PASSIVE))    {this.magicPenetrationFlat += 15;}
+        if (basicPassives.contains(BPassive.LOCKET_PASSIVE))          {this.healthRegen += 10;this.magicResist += 20;}
+        if (basicPassives.contains(BPassive.INSIGHT_PASSIVE))         {this.abilityPower += this.mana*.03;}
         if (basicPassives.contains(BPassive.WOOGLETS_PASSIVE))        {this.abilityPower *= 1.25;}
         if (basicPassives.contains(BPassive.DEATHCAP_PASSIVE))        {this.abilityPower *= 1.3;}
         if (basicPassives.contains(BPassive.WARMOGS_PASSIVE))         {this.healthRegen += this.hp*.01;}
+        if (basicPassives.contains(BPassive.SPIRIT_VISAGE_PASSIVE))   {this.healthRegen *= 1.2; this.lifeSteal *= 1.2; this.spellvamp *= 1.2;}
+        
     }
 
     public StringBuilder showWork(Build b) 

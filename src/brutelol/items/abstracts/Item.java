@@ -48,6 +48,7 @@ public abstract class Item
     protected boolean pOptimal = false;
     protected boolean isMeleeOnly = false;
     protected boolean isRangedOnly = false;
+    protected boolean cannotBuy = false;
     
     //Flags to help shop related logic
     protected int cost = 0;

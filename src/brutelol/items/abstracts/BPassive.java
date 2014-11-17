@@ -21,4 +21,7 @@ public enum BPassive
     NASHOR_PASSIVE,           //+20% CDR
     EYES_OF_PAIN_PASSIVE,     //+15 Magic Pen
     WARMOGS_PASSIVE,          //HP/5 += hp*.01
+    LOCKET_PASSIVE,           //MR + 20, HPRegen + 10
+    SPIRIT_VISAGE_PASSIVE,    //HPRegen, spellvamp, and lifesteal all + 20%.
+    INSIGHT_PASSIVE,          //Ability power += mana*.03
 }
