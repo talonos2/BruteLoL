@@ -35,6 +35,11 @@ public class Items
         allItems.add(new LongSword());
         allItems.add(new AncientCoin());
         
+        allItems.add(new GuinsoosRageblade());
+        allItems.add(new AthenesUnholyGrail());
+        allItems.add(new FrozenHeart());
+        allItems.add(new MoonflairSpellblade());
+        allItems.add(new SunfireCape());
         allItems.add(new BlackfireTorch());
         allItems.add(new Entropy());
         allItems.add(new YoumuusGhostblade());
