@@ -32,7 +32,7 @@ public class BruteLoL
         //TODO: Provide a way for the player to select a character.
         AbstractLolCharacter selectedCharacter = new Soraka();
         //TODO: Provide a way for the player to select a heuristic.
-        HeuristicComponent h = HeuristicComponent.HEALING_PER_SECOND;
+        HeuristicComponent h = HeuristicComponent.LIFE_STOLEN_PER_ATTACK;
         
         Build enemy = new Build(new ItemSet(new ArrayList<Item>()), new Minions(), 100000, 10000, 10000);
         

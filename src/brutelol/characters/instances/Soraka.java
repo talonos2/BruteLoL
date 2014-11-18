@@ -92,6 +92,7 @@ public class Soraka extends AbstractLolCharacter
         {
             return -0.5;
         }
+        //System.out.println("Here at "+h);
         switch(h)
         {
             case BASE_PHYSICAL_DAMAGE_PER_ATTACK:

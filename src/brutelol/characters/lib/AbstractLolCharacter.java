@@ -89,24 +89,6 @@ public abstract class AbstractLolCharacter implements LolCharacter
         }
         return false;
     }
-    
-    public String getNotes()
-    {
-        return notes.toString();
-    }
-    
-    protected void addLineToNotes(String s)
-    {
-        if (notes != null)
-        {
-            notes.append(s);
-        }
-    }
-    
-    protected void turnOnNotes()
-    {
-        notes = new StringBuilder();
-    }
 
     public int getLevel(Build b) 
     {
@@ -158,23 +140,40 @@ public abstract class AbstractLolCharacter implements LolCharacter
     {
         return this.ATTACK_DAMAGE_AT_0+(getLevel(b)*this.ATTACK_DAMAGE_PER_LEVEL);
     }
+    
+    //From this point forward, we have generic functions that calculate components.
 
     protected double getBasePhysicalDamagePerAttack(Build b, Build enemy) 
     {
         BuildInfo stats = b.getBuildInfo();
-        double critChance = Math.min(stats.critChance,1.0);
+        
+        double critChance = stats.critChance;
+        double cappedCritChance = Math.min(critChance,1.0);
         
         //Calculate basic damage.
         double damagePerAttack = 0;
         damagePerAttack+=stats.attackDamage;
         
         //Add crit modifiers.
-        double damageIncludingCrits = damagePerAttack+(damagePerAttack*stats.critChance*(1+stats.addedCritDamage));
+        double damageIncludingCrits = damagePerAttack+(damagePerAttack*critChance*(1+stats.addedCritDamage));
+        
+        b.addLineToNotes("CALCULATION OF BASE PHYSICAL DAMAGE PER ATTACK: ");
+        b.addLineToNotes(" - Crit chance is "+(critChance*100)+"%.");
+        if (critChance >= 1.0)
+        {
+            b.addLineToNotes(" - That's above the crit chance cap, so we cap it at "+(cappedCritChance*100)+"%");
+        }
+        b.addLineToNotes(" - Base attack damage is "+damagePerAttack+".");
+        b.addLineToNotes(" - We add average crit damage: "+damagePerAttack+"×"+cappedCritChance+"×(1 + "+stats.addedCritDamage+").");
+        b.addLineToNotes(" - Total damage so far is "+damageIncludingCrits+".");
+        b.addLineToNotes(" - We then apply enemy armor: ");
         
         //Apply Armor
-        damageIncludingCrits = applyEnemyArmor(damageIncludingCrits, b, enemy);
+        double damageAfterArmor = applyEnemyArmor(damageIncludingCrits, b, enemy);
         
-        return damageIncludingCrits;
+        b.addLineToNotes(" - Final base physical damager per attack: "+damageAfterArmor);
+        
+        return damageAfterArmor;
     }
 
     protected double getBonusPhysicalDamagePerAttack(Build b, Build enemy) 
@@ -184,7 +183,20 @@ public abstract class AbstractLolCharacter implements LolCharacter
         {
             bonusDamage += enemy.getBuildInfo().hp * .08;
         }
-        bonusDamage = applyEnemyArmor(bonusDamage, b, enemy);
+        
+        if (bonusDamage != 0)
+        {
+            b.addLineToNotes("CALCULATION OF BONUS PHYSICAL DAMAGE PER ATTACK: ");
+            if (b.getBuildInfo().hasPassive(CPassive.RUINED_KING_PASSIVE))
+            {
+                b.addLineToNotes(" - The Ruin passive adds (Enemy max HP × 8% to the attack, or "+enemy.getBuildInfo().hp +" × .08 = "+(enemy.getBuildInfo().hp * .08));
+            }
+            b.addLineToNotes(" - Subtotal bonus damage per attack: "+bonusDamage);
+            
+            bonusDamage = this.applyEnemyArmor(bonusDamage, b, enemy);
+            b.addLineToNotes(" - final bonus damage per attack: "+bonusDamage);
+        }
+        
         return bonusDamage;
     }
 
@@ -231,26 +243,31 @@ public abstract class AbstractLolCharacter implements LolCharacter
     private double applyEnemyArmor(double damage, Build b, Build enemy) 
     {
         double armor = enemy.getBuildInfo().armor;
-        armor*=(1.0-b.getBuildInfo().armorPenetrationPercent);
-        armor-=b.getBuildInfo().armorPenetrationFlat;
+        b.addLineToNotes("   - Enemy armor is "+armor);
+        
+        if (b.getBuildInfo().armorPenetrationPercent > 0)
+        {
+            double apenpercent = b.getBuildInfo().armorPenetrationPercent;
+            armor*=(1.0-apenpercent);
+            b.addLineToNotes("   - It is reduced to "+((1.0-apenpercent)*100)+" % effectiveness by our "+(apenpercent*100)+"% Armor Penetration, leaving it at "+armor+".");
+        }
+
+        if (b.getBuildInfo().armorPenetrationFlat > 0)
+        {
+            double apenflat = b.getBuildInfo().armorPenetrationFlat;
+            armor-=apenflat;
+            b.addLineToNotes("   - It is reduced by another "+apenflat+" by our flat armor penetration, leaving it at "+armor);
+        }
+        
         if (armor < 0)
         {
             armor = 0;
+            b.addLineToNotes("   - This is below zero, so we set armor to "+armor);
         }
-        damage *= (100.0/(100.0+armor));
-        return damage;
-    }
-    
-    private double applyEnemyMagicResist(double damage, Build b, Build enemy) 
-    {
-        double armor = enemy.getBuildInfo().magicResist;
-        armor*=(1.0-b.getBuildInfo().magicPenetrationPercent);
-        armor-=b.getBuildInfo().magicPenetrationFlat;
-        if (armor < 0)
-        {
-            armor = 0;
-        }
-        damage *= (100.0/(100.0+armor));
+        
+        double newDamage = damage*(100.0/(100.0+armor));
+        b.addLineToNotes("   - The damage of "+damage+" is multiplied by the armor ratio:  (100)/(100+"+armor+"), leaving us with "+newDamage+".");
+        
         return damage;
     }
 }

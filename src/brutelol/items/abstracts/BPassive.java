@@ -23,5 +23,5 @@ public enum BPassive
     WARMOGS_PASSIVE,          //HP/5 += hp*.01
     LOCKET_PASSIVE,           //MR + 20, HPRegen + 10
     SPIRIT_VISAGE_PASSIVE,    //HPRegen, spellvamp, and lifesteal all + 20%.
-    INSIGHT_PASSIVE,          //Ability power += mana*.03
+    INSIGHT_PASSIVE, YOUMUUS_GHOSTBLADE_PASSIVE,          //Ability power += mana*.03
 }

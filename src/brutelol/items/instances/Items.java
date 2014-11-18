@@ -35,6 +35,9 @@ public class Items
         allItems.add(new LongSword());
         allItems.add(new AncientCoin());
         
+        allItems.add(new BlackfireTorch());
+        allItems.add(new Entropy());
+        allItems.add(new YoumuusGhostblade());
         allItems.add(new ArchangelsStaff());
         allItems.add(new SeraphsEmbrace());
         allItems.add(new GuardianAngel());

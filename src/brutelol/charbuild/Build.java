@@ -28,6 +28,8 @@ public class Build
     private int time;
     private int xp;
     
+    private StringBuilder notes;
+    
     public Build(ItemSet items, AbstractLolCharacter character, int gold, int xp, int time)
     {
         this.items = items;
@@ -67,9 +69,10 @@ public class Build
         return xp;
     }
     
-    //Has this build explain its stuff in excruciating detail, such that you can
-    //put it in a spoiler to satisfy the mathematicians/unbelivers on mobafire.
-    public String getDetailedInfo()
+    //Has this build explain every heuristic stuff in excruciating detail, such 
+    //that you can put it in a spoiler to satisfy the mathematicians/unbelivers 
+    //on mobafire.
+    public String getAllInfo()
     {
         return "";
     }
@@ -80,12 +83,36 @@ public class Build
     {
         return "";
     }
+    
+    /**
+     * Calculates the heuristic, printing attendant math notes to the console.
+     * @param h
+     * @param enemy
+     * @return 
+     */
+    public String getComponentMathNotes(HeuristicComponent h, Build enemy)
+    {
+        //We might have already calculated the component, so clear our component
+        //cache. This shouldn't be a problem, because we should never be printing
+        //more than hundreds of math logs at a time.
+        this.components.clear();
+        this.turnOnNotes();
+        this.getComponent(h, enemy);
+        String toReturn = notes.toString();
+        this.turnOffNotes();
+        return toReturn;
+    }
 
     public RunePage getRunes() 
     {
         return runes;
     }
 
+    /**
+     * Gets the raw stats of this build, such as armor, attack damage, etc.
+     * Basically, anything that comes from items and base stats.
+     * @return a wrapper class around those stats.
+     */
     public BuildInfo getBuildInfo() 
     {
         if (info == null)
@@ -103,6 +130,25 @@ public class Build
     public Masteries getMasteries() 
     {
         return masteries;
+    }
+    
+    public void addLineToNotes(String s)
+    {
+        if (notes != null)
+        {
+            notes.append(s);
+            notes.append("\n");
+        }
+    }
+    
+    private void turnOnNotes()
+    {
+        notes = new StringBuilder();
+    }
+
+    private void turnOffNotes() 
+    {
+        notes = null;
     }
     
 }
