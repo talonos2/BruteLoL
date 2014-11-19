@@ -34,10 +34,10 @@ public class Build
     {
         this.items = items;
         this.character = character;
-        this.info = character.getBuildInfo(this);
         this.time = time;
         this.gold=gold;
         this.xp=xp;
+        this.info = character.getBuildInfo(this);
     }
 
     public double getComponent(HeuristicComponent h, Build enemy) 

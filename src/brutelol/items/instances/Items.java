@@ -35,6 +35,12 @@ public class Items
         allItems.add(new LongSword());
         allItems.add(new AncientCoin());
         
+        allItems.add(new BootsOfSwiftness());
+
+        allItems.add(new FeralFlare());
+        
+        allItems.add(new WitsEnd());
+        
         allItems.add(new GuinsoosRageblade());
         allItems.add(new AthenesUnholyGrail());
         allItems.add(new FrozenHeart());

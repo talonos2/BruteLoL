@@ -14,19 +14,21 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-class GuinsoosRageblade extends Item {
+public class WitsEnd extends Item 
+{
 
-    public GuinsoosRageblade()
+    public WitsEnd() 
     {
         //Since patch 4.19;
         super();
-        this.abilityPower = 40;
-        this.attackDamage = 30;
-        this.cost = 2600;
+        this.attackSpeed = .50;
+        this.magicResist = 25;
+        this.lifesteal = .12;
+        this.cost = 2500;
         
         this.makeAvailableOnAllMaps();
         
-        this.setComplicatedPassive(CPassive.GUINSOOS_RAGEBLADE_PASSIVE);
+        this.setComplicatedPassive(CPassive.WITS_END_PASSIVE);
         
         this.pOptimal = true;
     }

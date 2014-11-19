@@ -100,7 +100,7 @@ public class Soraka extends AbstractLolCharacter
             case BONUS_PHYSICAL_DAMAGE_PER_ATTACK:
                 return this.getBonusPhysicalDamagePerAttack(b, enemy);
             case MAGIC_DAMAGE_PER_ATTACK:
-                return this.getMagicDamagePerAttack(b);
+                return this.getMagicDamagePerAttack(b, enemy);
             case ATTACKS_PER_SECOND:
                 return this.getAttacksPerSecond(b);
             case HEALING_PER_SECOND:
@@ -109,6 +109,12 @@ public class Soraka extends AbstractLolCharacter
                 return getLifeStolenPerAttack(b, enemy);
             case LIFE_STOLEN_PER_SECOND:
                 return getLifeStolenPerSecond(b, enemy);
+            case DAMAGE_PER_SECOND:
+                return getDamagePerSecond(b, enemy);
+            case ENEMY_ARMOR_DAMAGE_MULTIPLIER:
+                return getEnemyArmorDamageMultiplier(b, enemy);
+            case ENEMY_MAGIC_RESIST_DAMAGE_MULTIPLIER:
+                return getEnemyMagicResistDamageMultiplier(b, enemy);
             default:
                 throw new IllegalArgumentException("Bad HeuristicComponent: "+h);
         }

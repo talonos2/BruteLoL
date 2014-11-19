@@ -155,7 +155,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
         damagePerAttack+=stats.attackDamage;
         
         //Add crit modifiers.
-        double damageIncludingCrits = damagePerAttack+(damagePerAttack*critChance*(1+stats.addedCritDamage));
+        double damageIncludingCrits = damagePerAttack+(damagePerAttack*cappedCritChance*(1+stats.addedCritDamage));
         
         b.addLineToNotes("CALCULATION OF BASE PHYSICAL DAMAGE PER ATTACK: ");
         b.addLineToNotes(" - Crit chance is "+(critChance*100)+"%.");
@@ -171,7 +171,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
         //Apply Armor
         double damageAfterArmor = applyEnemyArmor(damageIncludingCrits, b, enemy);
         
-        b.addLineToNotes(" - Final base physical damager per attack: "+damageAfterArmor);
+        b.addLineToNotes(" - Final base physical damage per attack: "+damageAfterArmor);
         
         return damageAfterArmor;
     }
@@ -209,18 +209,61 @@ public abstract class AbstractLolCharacter implements LolCharacter
         //Calculate final atacks per second.
         attacksPerSecond *= (1+addedAttackSpeed);
         
+        b.addLineToNotes("CALCULATION OF ATTACKS PER SECOND: ");
+        b.addLineToNotes(" - Attack speed starts at "+ATTACK_SPEED_AT_1+" for "+this.getClass().getName()+".");
+        b.addLineToNotes(" - From items, levels, and powers, we get a "+(addedAttackSpeed*100)+"% bonus.");
+        b.addLineToNotes(" - Thus, attacks per second is "+ATTACK_SPEED_AT_1+" × (1+"+addedAttackSpeed+") = "+attacksPerSecond);
+        
+        
+        
         if (attacksPerSecond > 2.5)
         {
             attacksPerSecond = 2.5;
+            b.addLineToNotes(" - That's over the cap of 2.5, so we cap it at "+attacksPerSecond);
         }
         
         return attacksPerSecond;
     }
     
-    protected double getMagicDamagePerAttack(Build b) 
+    protected double getMagicDamagePerAttack(Build b, Build enemy) 
     {
-        //Nashors tooth... Um... IDK.
-        return 0;
+        double toReturn = 0;
+        if (b.getBuildInfo().hasPassive(CPassive.NASHOR_PASSIVE))
+        {
+            toReturn += b.getBuildInfo().abilityPower*.15;
+            toReturn += 15;
+        }
+        if (b.getBuildInfo().hasPassive(CPassive.WITS_END_PASSIVE))
+        {
+            toReturn += 42;
+        }
+        if (b.getBuildInfo().hasPassive(CPassive.FERAL_FLARE_PASSIVE))
+        {
+            toReturn += 55;
+        }
+        if (toReturn != 0)
+        {
+            b.addLineToNotes("CALCULATION OF BONUS MAGICAL DAMAGE PER ATTACK: ");
+            if (b.getBuildInfo().hasPassive(CPassive.NASHOR_PASSIVE))
+            {
+                b.addLineToNotes(" - Nashors Tooth adds (AP × 15% to the attack, or "+b.getBuildInfo().abilityPower +" × .15 = "+(b.getBuildInfo().abilityPower * .15));
+                b.addLineToNotes(" - It also adds another flat 15 damage.");
+            }
+            if (b.getBuildInfo().hasPassive(CPassive.WITS_END_PASSIVE))
+            {
+                b.addLineToNotes(" - Wits End adds 42 damage.");
+            }
+            if (b.getBuildInfo().hasPassive(CPassive.FERAL_FLARE_PASSIVE))
+            {
+                b.addLineToNotes(" - Feral flare adds 55 damage (Because we assume super late game).");
+            }
+            b.addLineToNotes(" - Subtotal bonus damage per attack: "+toReturn);
+            
+            toReturn = this.applyEnemyMagicResist(toReturn, b, enemy);
+            b.addLineToNotes(" - final bonus damage per attack: "+toReturn);
+        }
+        
+        return toReturn;
     }
     
     protected double getLifeStolenPerAttack(Build b, Build enemy) 
@@ -232,6 +275,25 @@ public abstract class AbstractLolCharacter implements LolCharacter
         
         return damage*lifeStealPercent;
     }
+    
+    protected double getDamagePerSecond(Build b, Build enemy) 
+    {
+        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND, enemy);
+        double basePhysicalDamage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
+        double bonusPhysicalDamage = b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
+        double bonusMagicDamage = b.getComponent(HeuristicComponent.MAGIC_DAMAGE_PER_ATTACK, enemy);
+        double totalDamage = basePhysicalDamage+bonusPhysicalDamage+bonusMagicDamage;
+        b.addLineToNotes("CALCULATION OF DAMAGE PER SECOND: ");
+        b.addLineToNotes(" - As stated earlier, we have "+attacks+" attacks per second.");
+        b.addLineToNotes(" - Also stated earlier, we have "+basePhysicalDamage+" base damage.");
+        b.addLineToNotes("                                "+bonusPhysicalDamage+" bonus damage.");
+        b.addLineToNotes("                              + "+bonusMagicDamage+" magic damage.");
+        b.addLineToNotes("                                -----------------------------------");
+        b.addLineToNotes("                              = "+totalDamage+" total damage. ");
+        b.addLineToNotes(" - multiply that by "+attacks+" to give you a total of "+attacks*(totalDamage));
+        
+        return attacks*(totalDamage);
+    }
 
     protected double getLifeStolenPerSecond(Build b, Build enemy) 
     {
@@ -239,35 +301,96 @@ public abstract class AbstractLolCharacter implements LolCharacter
         double lifesteal = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_ATTACK, enemy);
         return attacks*lifesteal;
     }
-
-    private double applyEnemyArmor(double damage, Build b, Build enemy) 
+    
+    protected double getEnemyArmorDamageMultiplier(Build b, Build enemy) 
     {
         double armor = enemy.getBuildInfo().armor;
-        b.addLineToNotes("   - Enemy armor is "+armor);
+        b.addLineToNotes("CALCULATION OF DAMAGE MULTIPLIER DUE TO ENEMY ARMOR:");
+        b.addLineToNotes(" - Enemy armor is "+armor);
         
         if (b.getBuildInfo().armorPenetrationPercent > 0)
         {
             double apenpercent = b.getBuildInfo().armorPenetrationPercent;
             armor*=(1.0-apenpercent);
-            b.addLineToNotes("   - It is reduced to "+((1.0-apenpercent)*100)+" % effectiveness by our "+(apenpercent*100)+"% Armor Penetration, leaving it at "+armor+".");
+            b.addLineToNotes(" - It is reduced to "+((1.0-apenpercent)*100)+" % effectiveness by our "+(apenpercent*100)+"% Armor Penetration, leaving it at "+armor+".");
         }
 
         if (b.getBuildInfo().armorPenetrationFlat > 0)
         {
             double apenflat = b.getBuildInfo().armorPenetrationFlat;
             armor-=apenflat;
-            b.addLineToNotes("   - It is reduced by another "+apenflat+" by our flat armor penetration, leaving it at "+armor);
+            b.addLineToNotes(" - It is reduced by another "+apenflat+" by our flat armor penetration, leaving it at "+armor);
         }
         
         if (armor < 0)
         {
             armor = 0;
-            b.addLineToNotes("   - This is below zero, so we set armor to "+armor);
+            b.addLineToNotes(" - This is below zero, so we set armor to "+armor);
         }
         
-        double newDamage = damage*(100.0/(100.0+armor));
-        b.addLineToNotes("   - The damage of "+damage+" is multiplied by the armor ratio:  (100)/(100+"+armor+"), leaving us with "+newDamage+".");
+        double ratio = (100.0/(100.0+armor));
         
-        return damage;
+        b.addLineToNotes(" - the armor ratio is:  (100)/(100+"+armor+") = "+ratio+".");
+        
+        return ratio;
+    }
+    
+    protected double getEnemyMagicResistDamageMultiplier(Build b, Build enemy) 
+    {
+        double mr = enemy.getBuildInfo().magicResist;
+        b.addLineToNotes("CALCULATION OF DAMAGE MULTIPLIER DUE TO ENEMY MAGIC RESIST:");
+        b.addLineToNotes(" - Enemy magic resist is "+mr);
+        
+        if (b.getBuildInfo().hasPassive(CPassive.WITS_END_PASSIVE))
+        {
+            mr-=12.5;
+            b.addLineToNotes(" - We assume your opponent has an average of 2.5 stacks of wits end on him. That's -12.5 Magic resist, for "+mr+" resist. ");
+        }
+        
+        if (b.getBuildInfo().magicPenetrationPercent > 0)
+        {
+            double mpenpercent = b.getBuildInfo().magicPenetrationPercent;
+            mr*=(1.0-mpenpercent);
+            b.addLineToNotes(" - It is reduced to "+((1.0-mpenpercent)*100)+" % effectiveness by our "+(mpenpercent*100)+"% Magic Penetration, leaving it at "+mr+".");
+        }
+
+        if (b.getBuildInfo().magicPenetrationFlat > 0)
+        {
+            double mpenflat = b.getBuildInfo().magicPenetrationFlat;
+            mr-=mpenflat;
+            b.addLineToNotes(" - It is reduced by another "+mpenflat+" by our flat magic penetration, leaving it at "+mr);
+        }
+        
+        if (mr < 0)
+        {
+            mr = 0;
+            b.addLineToNotes(" - This is below zero, so we set magic resist to "+mr);
+        }
+        
+        double ratio = (100.0/(100.0+mr));
+        
+        b.addLineToNotes(" - the magic resist ratio is:  (100)/(100+"+mr+") = "+ratio+".");
+        
+        return ratio;
+    }
+
+    protected double applyEnemyArmor(double damage, Build b, Build enemy) 
+    {
+        double ratio = b.getComponent(HeuristicComponent.ENEMY_ARMOR_DAMAGE_MULTIPLIER, enemy);
+        double newDamage = damage * ratio;
+        
+        b.addLineToNotes("   - The damage of "+damage+" is multiplied by the armor ratio: "+ratio+", leaving us with "+newDamage+".");
+        
+        return newDamage;
+    }
+    
+    protected double applyEnemyMagicResist(double damage, Build b, Build enemy) 
+    {
+        double ratio = b.getComponent(HeuristicComponent.ENEMY_MAGIC_RESIST_DAMAGE_MULTIPLIER, enemy);
+        double newDamage = damage * ratio;
+        
+        b.addLineToNotes("   - The damage of "+damage+" is multiplied by the magic resist ratio: "+ratio+", leaving us with "+newDamage+".");
+        
+        return newDamage;
     }
 }

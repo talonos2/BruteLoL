@@ -14,19 +14,17 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-class GuinsoosRageblade extends Item {
+public class BootsOfSwiftness extends Item 
+{
 
-    public GuinsoosRageblade()
+    public BootsOfSwiftness() 
     {
         //Since patch 4.19;
         super();
-        this.abilityPower = 40;
-        this.attackDamage = 30;
-        this.cost = 2600;
+        this.enhancedMovement = 60;
+        this.cost = 1000;
         
         this.makeAvailableOnAllMaps();
-        
-        this.setComplicatedPassive(CPassive.GUINSOOS_RAGEBLADE_PASSIVE);
         
         this.pOptimal = true;
     }

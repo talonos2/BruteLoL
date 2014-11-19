@@ -10,10 +10,14 @@ import brutelol.characters.instances.Minions;
 import brutelol.charbuild.Build;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.instances.Soraka;
+import brutelol.characters.instances.Udyr;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.charbuild.ItemSet;
 import brutelol.items.abstracts.Item;
+import brutelol.items.instances.GuardianAngel;
+import brutelol.items.instances.Items;
+import brutelol.items.instances.ZhonyasHourglass;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +34,16 @@ public class BruteLoL
     public static void main(String[] args) 
     {
         //TODO: Provide a way for the player to select a character.
-        AbstractLolCharacter selectedCharacter = new Soraka();
+        AbstractLolCharacter selectedCharacter = new Udyr();
         //TODO: Provide a way for the player to select a heuristic.
-        HeuristicComponent h = HeuristicComponent.LIFE_STOLEN_PER_ATTACK;
+        HeuristicComponent h = HeuristicComponent.DAMAGE_PER_SECOND;
+        Items.getAllItems();
         
-        Build enemy = new Build(new ItemSet(new ArrayList<Item>()), new Minions(), 100000, 10000, 10000);
+        List<Item> items = new ArrayList<Item>();
+        items.add(new ZhonyasHourglass());
+        items.add(new GuardianAngel());
+        
+        Build enemy = new Build(new ItemSet(items), new Soraka(), 100000, 10000, 10000);
         
         Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h);
     }

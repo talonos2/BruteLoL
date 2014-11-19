@@ -12,16 +12,18 @@ package brutelol.items.abstracts;
  */
 public enum BPassive 
 {
-    INFINITY_EDGE_PASSIVE,    //+50% to crit damage
-    BLOODTHIRSTER_PASSIVE,    //+20% Lifesteal
-    WOOGLETS_PASSIVE,         //+25% Ability Power
-    HEXTECH_GUNBLADE_PASSIVE, //+20% Spellvamp    
-    DEATHCAP_PASSIVE,         //+30% Ability Power
-    BLACK_CLEAVER_PASSIVE,    //+10 Armor Pen
-    NASHOR_PASSIVE,           //+20% CDR
-    EYES_OF_PAIN_PASSIVE,     //+15 Magic Pen
-    WARMOGS_PASSIVE,          //HP/5 += hp*.01
-    LOCKET_PASSIVE,           //MR + 20, HPRegen + 10
-    SPIRIT_VISAGE_PASSIVE,    //HPRegen, spellvamp, and lifesteal all + 20%.
-    INSIGHT_PASSIVE, YOUMUUS_GHOSTBLADE_PASSIVE, MANA_FONT_PASSIVE,          //Ability power += mana*.03
+    INFINITY_EDGE_PASSIVE,      //+50% to crit damage
+    BLOODTHIRSTER_PASSIVE,      //+20% Lifesteal
+    WOOGLETS_PASSIVE,           //+25% Ability Power
+    HEXTECH_GUNBLADE_PASSIVE,   //+20% Spellvamp    
+    DEATHCAP_PASSIVE,           //+30% Ability Power
+    BLACK_CLEAVER_PASSIVE,      //+10 Armor Pen
+    NASHOR_PASSIVE,             //+20% CDR
+    EYES_OF_PAIN_PASSIVE,       //+15 Magic Pen
+    WARMOGS_PASSIVE,            //HP/5 += hp*.01
+    LOCKET_PASSIVE,             //MR + 20, HPRegen + 10
+    SPIRIT_VISAGE_PASSIVE,      //HPRegen, spellvamp, and lifesteal all + 20%.
+    INSIGHT_PASSIVE,            //Ability power += mana*.03
+    YOUMUUS_GHOSTBLADE_PASSIVE, //+20 Armor Pen
+    MANA_FONT_PASSIVE,          //Assume you are at 50% mana: +50% mana regen
 }

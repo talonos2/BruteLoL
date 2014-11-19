@@ -14,19 +14,23 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-class GuinsoosRageblade extends Item {
+public class FeralFlare extends Item 
+{
 
-    public GuinsoosRageblade()
+    public FeralFlare() 
     {
         //Since patch 4.19;
         super();
-        this.abilityPower = 40;
-        this.attackDamage = 30;
-        this.cost = 2600;
+        this.attackSpeed = .3;
+        this.attackDamage = 12;
+        this.cost = 1800;
+        
+        this.sellsForLittle = true;
+        this.goldItem = true;
         
         this.makeAvailableOnAllMaps();
         
-        this.setComplicatedPassive(CPassive.GUINSOOS_RAGEBLADE_PASSIVE);
+        this.setComplicatedPassive(CPassive.FERAL_FLARE_PASSIVE);
         
         this.pOptimal = true;
     }

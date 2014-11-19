@@ -14,7 +14,9 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-class YoumuusGhostblade extends Item {
+public class YoumuusGhostblade extends Item 
+{
+    public static final double PERCENT_TIME_ON = .3333;
 
     public YoumuusGhostblade() 
     {
