@@ -11,7 +11,6 @@ import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;
 import brutelol.items.abstracts.CPassive;
 import brutelol.items.instances.BootsOfSwiftness;
-import brutelol.items.instances.FeralFlare;
 import brutelol.items.instances.NashorsTooth;
 import java.util.List;
 
@@ -57,8 +56,7 @@ public class Udyr extends AbstractLolCharacter
         this.MOVE_SPEED = 345;
         this.RANGE = 125;
         
-        //this.requiredItems.add(FeralFlare.class);
-        //this.requiredItems.add(BootsOfSwiftness.class);
+        this.requiredItems.add(BootsOfSwiftness.class);
     }
 
     /**

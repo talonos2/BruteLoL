@@ -9,7 +9,7 @@ package brutelol.characters.instances;
 import brutelol.Masteries;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
-import brutelol.charbuild.RunePage;
+import brutelol.charbuild.runes.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.items.abstracts.BPassive;
@@ -34,6 +34,9 @@ public class BuildInfo
     
     private Set<BPassive> basicPassives = EnumSet.noneOf(BPassive.class);
     private Set<CPassive> passives = EnumSet.noneOf(CPassive.class);
+    
+    //TODO: This will probably need to change as we work on build paths. For now, it's hardcoded.
+    public double level = 18;
     
     public BuildInfo(AbstractLolCharacter c, Build b)
     {
@@ -95,6 +98,8 @@ public class BuildInfo
         healthRegen+=c.getHealthRegen(b);
         manaRegen += c.getManaRegen(b);
         
+        runes.applyRunesPass1(this);
+        
         if (passives.contains(CPassive.WITS_END_PASSIVE))          {this.magicResist += 12.5;} //Assume 2.5 hits.
         if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.attackSpeed += .4*YoumuusGhostblade.PERCENT_TIME_ON;}
         if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.moveSpeedPercent += .2*YoumuusGhostblade.PERCENT_TIME_ON;}
@@ -115,6 +120,7 @@ public class BuildInfo
         if (basicPassives.contains(BPassive.YOUMUUS_GHOSTBLADE_PASSIVE)){this.armorPenetrationFlat += 20;}
         if (basicPassives.contains(BPassive.MANA_FONT_PASSIVE))         {this.manaRegen *= 1.5;}
         if (basicPassives.contains(BPassive.WARMOGS_PASSIVE))           {this.healthRegen += this.hp*.01;}
+        if (basicPassives.contains(BPassive.LAST_WHISPER_PASIVE))       {this.armorPenetrationPercent += .35;}
         
         
     }

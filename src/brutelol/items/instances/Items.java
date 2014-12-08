@@ -36,10 +36,15 @@ public class Items
         allItems.add(new AncientCoin());
         
         allItems.add(new BootsOfSwiftness());
-
-        allItems.add(new FeralFlare());
+        allItems.add(new BerserkersGreaves());
+        
+        
+        allItems.add(new LastWhisper());
+        
+        allItems.add(new RunaansHurricane());
         
         allItems.add(new WitsEnd());
+        
         
         allItems.add(new GuinsoosRageblade());
         allItems.add(new AthenesUnholyGrail());

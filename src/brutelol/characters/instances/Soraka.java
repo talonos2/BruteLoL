@@ -10,7 +10,7 @@ import brutelol.Funcs;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MasterySet;
-import brutelol.charbuild.RunePage;
+import brutelol.charbuild.runes.RunePage;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
 import java.util.List;

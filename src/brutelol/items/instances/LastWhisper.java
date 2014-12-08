@@ -14,20 +14,19 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class WitsEnd extends Item 
+public class LastWhisper extends Item 
 {
 
-    public WitsEnd() 
+    public LastWhisper() 
     {
         //Since patch 4.20;
         super();
-        this.attackSpeed = .50;
-        this.magicResist = 30;
-        this.cost = 2600;
+        this.attackDamage = 40;
+        this.cost = 2300;
         
         this.makeAvailableOnAllMaps();
         
-        this.setComplicatedPassive(CPassive.WITS_END_PASSIVE);
+        this.setBasicPassive(BPassive.LAST_WHISPER_PASIVE);
         
         this.pOptimal = true;
     }

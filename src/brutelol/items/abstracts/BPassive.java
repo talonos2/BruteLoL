@@ -26,4 +26,5 @@ public enum BPassive
     INSIGHT_PASSIVE,            //Ability power += mana*.03
     YOUMUUS_GHOSTBLADE_PASSIVE, //+20 Armor Pen
     MANA_FONT_PASSIVE,          //Assume you are at 50% mana: +50% mana regen
+    LAST_WHISPER_PASIVE,        //+35% Armor Pen
 }

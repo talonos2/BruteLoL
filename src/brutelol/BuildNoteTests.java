@@ -12,10 +12,10 @@ import brutelol.characters.instances.Udyr;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
+import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.BladeOfTheRuinedKing;
 import brutelol.items.instances.BootsOfSwiftness;
-import brutelol.items.instances.FeralFlare;
 import brutelol.items.instances.GuardianAngel;
 import brutelol.items.instances.InfinityEdge;
 import brutelol.items.instances.Items;
@@ -39,7 +39,7 @@ public class BuildNoteTests
     {
         List<Item> items1 = new ArrayList<>();
         Items.getAllItems();
-        items1.add(new FeralFlare());
+        items1.add(new TrinityForce());
         items1.add(new BootsOfSwiftness());
         items1.add(new NashorsTooth());
         items1.add(new TrinityForce());
@@ -51,8 +51,11 @@ public class BuildNoteTests
         eItems.add(new ZhonyasHourglass());
         eItems.add(new GuardianAngel());
         ItemSet ei = new ItemSet(eItems);
-        Build b = new Build(i, new Udyr(), 100000, 100000, 100000);
-        Build enemy = new Build(ei, new Soraka(), 100000, 100000, 100000);
+        Build b = new Build(i, new Udyr(), 100000, 100000, 100000, new RunePage());
+        Build enemy = new Build(ei, new Soraka(), 100000, 100000, 100000, new RunePage());
+        
+        b = BuildOptimizer.optimizeRunePage(b, enemy, HeuristicComponent.DAMAGE_PER_SECOND);
+        
         System.out.println(b.getComponentMathNotes(HeuristicComponent.DAMAGE_PER_SECOND, enemy));
         
         
@@ -61,7 +64,7 @@ public class BuildNoteTests
         System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         
         List<Item> items2= new ArrayList<>();
-        items2.add(new FeralFlare());
+        items2.add(new TrinityForce());
         items2.add(new BootsOfSwiftness());
         items2.add(new NashorsTooth());
         items2.add(new InfinityEdge());
@@ -69,7 +72,8 @@ public class BuildNoteTests
         items2.add(new InfinityEdge());
         i = new ItemSet(items2);
         
-        b = new Build(i, new Udyr(), 100000, 100000, 100000);
+        b = new Build(i, new Udyr(), 100000, 100000, 100000, new RunePage());
+        
         System.out.println(b.getComponentMathNotes(HeuristicComponent.DAMAGE_PER_SECOND, enemy));
         
         

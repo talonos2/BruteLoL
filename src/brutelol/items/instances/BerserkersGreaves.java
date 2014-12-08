@@ -6,28 +6,24 @@
 
 package brutelol.items.instances;
 
-import brutelol.items.abstracts.BPassive;
-import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 
 /**
  *
  * @author Talonos
  */
-public class WitsEnd extends Item 
+public class BerserkersGreaves extends BootsOfSwiftness 
 {
 
-    public WitsEnd() 
+    public BerserkersGreaves() 
     {
         //Since patch 4.20;
         super();
-        this.attackSpeed = .50;
-        this.magicResist = 30;
-        this.cost = 2600;
+        this.enhancedMovement = 45;
+        this.attackSpeed = .25;
+        this.cost = 1000;
         
         this.makeAvailableOnAllMaps();
-        
-        this.setComplicatedPassive(CPassive.WITS_END_PASSIVE);
         
         this.pOptimal = true;
     }

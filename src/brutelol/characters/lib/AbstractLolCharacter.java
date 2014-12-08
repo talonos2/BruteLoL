@@ -10,7 +10,7 @@ import brutelol.Funcs;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MasterySet;
-import brutelol.charbuild.RunePage;
+import brutelol.charbuild.runes.RunePage;
 import brutelol.characters.instances.BuildInfo;
 import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
@@ -97,12 +97,12 @@ public abstract class AbstractLolCharacter implements LolCharacter
 
     public double getManaRegen(Build b) 
     {
-        return this.MANA_REGEN_AT_0+(getLevel(b)*this.MANA_REGEN_PER_LEVEL);
+        return this.MANA_REGEN_AT_0+((getLevel(b)-1)*this.MANA_REGEN_PER_LEVEL);
     }
 
     public double getHealthRegen(Build b) 
     {
-        return this.HP_REGEN_AT_0+(getLevel(b)*this.HP_REGEN_PER_LEVEL);
+        return this.HP_REGEN_AT_0+((getLevel(b)-1)*this.HP_REGEN_PER_LEVEL);
     }
 
     public double getMoveSpeed(Build b) 
@@ -112,22 +112,22 @@ public abstract class AbstractLolCharacter implements LolCharacter
 
     public double getMagicResist(Build b) 
     {
-        return this.MAGIC_RES_AT_0+(getLevel(b)*this.MAGIC_RES_PER_LEVEL);
+        return this.MAGIC_RES_AT_0+((getLevel(b)-1)*this.MAGIC_RES_PER_LEVEL);
     }
 
     public double getArmor(Build b) 
     {
-        return this.ARMOR_AT_0+(getLevel(b)*this.ARMOR_PER_LEVEL);
+        return this.ARMOR_AT_0+((getLevel(b)-1)*this.ARMOR_PER_LEVEL);
     }
 
     public double getMaxHP(Build b) 
     {
-        return this.HP_AT_0+(getLevel(b)*this.HP_PER_LEVEL);
+        return this.HP_AT_0+((getLevel(b)-1)*this.HP_PER_LEVEL);
     }
 
     public double getMaxMana(Build b) 
     {
-        return this.MANA_AT_0+(getLevel(b)*this.MANA_PER_LEVEL);
+        return this.MANA_AT_0+((getLevel(b)-1)*this.MANA_PER_LEVEL);
     }
 
     public double getAttackSpeed(Build b) 
@@ -138,7 +138,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
 
     public double getAttackDamage(Build b) 
     {
-        return this.ATTACK_DAMAGE_AT_0+(getLevel(b)*this.ATTACK_DAMAGE_PER_LEVEL);
+        return this.ATTACK_DAMAGE_AT_0+((getLevel(b)-1)*this.ATTACK_DAMAGE_PER_LEVEL);
     }
     
     //From this point forward, we have generic functions that calculate components.

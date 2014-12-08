@@ -6,7 +6,6 @@
 
 package brutelol.items.instances;
 
-import brutelol.items.abstracts.BPassive;
 import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 
@@ -14,23 +13,17 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class FeralFlare extends Item 
-{
+class RunaansHurricane extends Item {
 
-    public FeralFlare() 
-    {
-        //Since patch 4.19;
+    public RunaansHurricane() {
+        //Since patch 4.20;
         super();
-        this.attackSpeed = .3;
-        this.attackDamage = 12;
-        this.cost = 1800;
-        
-        this.sellsForLittle = true;
-        this.goldItem = true;
+        this.attackSpeed = .70;
+        this.cost = 2400;
         
         this.makeAvailableOnAllMaps();
         
-        this.setComplicatedPassive(CPassive.FERAL_FLARE_PASSIVE);
+        this.setComplicatedPassive(CPassive.RUUNANS_PASSIVE);
         
         this.pOptimal = true;
     }

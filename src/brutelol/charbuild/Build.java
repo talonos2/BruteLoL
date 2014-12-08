@@ -1,5 +1,6 @@
 package brutelol.charbuild;
 
+import brutelol.charbuild.runes.RunePage;
 import brutelol.Masteries;
 import brutelol.characters.instances.BuildInfo;
 import brutelol.characters.lib.AbstractLolCharacter;
@@ -18,7 +19,7 @@ public class Build
 {
     private double utility = 0;
     private ItemSet items;
-    private RunePage runes = new RunePage();
+    private RunePage runes;
     private AbstractLolCharacter character;
     private BuildInfo info;
     private Masteries masteries;
@@ -30,13 +31,14 @@ public class Build
     
     private StringBuilder notes;
     
-    public Build(ItemSet items, AbstractLolCharacter character, int gold, int xp, int time)
+    public Build(ItemSet items, AbstractLolCharacter character, int gold, int xp, int time, RunePage runes)
     {
         this.items = items;
         this.character = character;
         this.time = time;
         this.gold=gold;
         this.xp=xp;
+        this.runes = runes;
         this.info = character.getBuildInfo(this);
     }
 
@@ -97,6 +99,13 @@ public class Build
         //more than hundreds of math logs at a time.
         this.components.clear();
         this.turnOnNotes();
+        this.addLineToNotes("===================================================");
+        this.addLineToNotes("Analysis of build "+this.items);
+        this.addLineToNotes("===================================================");
+        this.addLineToNotes("Runes: "+this.runes);
+        this.addLineToNotes("===================================================");
+        this.addLineToNotes("===================================================");
+        
         this.getComponent(h, enemy);
         String toReturn = notes.toString();
         this.turnOffNotes();
