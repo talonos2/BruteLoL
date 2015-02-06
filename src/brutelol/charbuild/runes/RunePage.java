@@ -9,7 +9,7 @@ package brutelol.charbuild.runes;
 import brutelol.charbuild.runes.AttackDamageRune;
 import brutelol.charbuild.runes.AttackSpeedRune;
 import brutelol.charbuild.runes.AbilityPowerRune;
-import brutelol.characters.instances.BuildInfo;
+import brutelol.characters.lib.BuildInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

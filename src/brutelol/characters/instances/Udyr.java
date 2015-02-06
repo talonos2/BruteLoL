@@ -6,6 +6,7 @@
 
 package brutelol.characters.instances;
 
+import brutelol.characters.lib.BuildInfo;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;

@@ -6,6 +6,7 @@
 
 package brutelol.characters.instances;
 
+import brutelol.characters.lib.BuildInfo;
 import brutelol.Funcs;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;

@@ -6,13 +6,14 @@
 
 package brutelol.characters.instances;
 
+import brutelol.characters.lib.BuildInfo;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;
 import brutelol.items.instances.BerserkersGreaves;
 import brutelol.items.instances.Bloodthirster;
-import brutelol.items.instances.BootsOfSpeed;
 import brutelol.items.instances.LastWhisper;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -101,7 +102,17 @@ public class Ashe extends AbstractLolCharacter
     @Override
     public List<HeuristicComponent> supportedComponents() 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<HeuristicComponent> toReturn = new ArrayList<>();
+        toReturn.add(HeuristicComponent.DAMAGE_PER_SECOND);
+        toReturn.add(HeuristicComponent.LIFE_STOLEN_PER_SECOND);
+        toReturn.add(HeuristicComponent.BURST_DAMAGE);
+        toReturn.add(HeuristicComponent.DAMAGE_PER_ATTACK);
+        toReturn.add(HeuristicComponent.KITING_DAMAGE_PER_SECOND);
+        toReturn.add(HeuristicComponent.TIME_SURVIVING_AGAINST);
+        toReturn.add(HeuristicComponent.MAGIC_BURST_HP);
+        toReturn.add(HeuristicComponent.PHYSICAL_BURST_HP);
+        toReturn.add(HeuristicComponent.COST);
+        return toReturn;
     }
 
     @Override

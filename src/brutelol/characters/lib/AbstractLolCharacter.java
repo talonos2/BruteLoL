@@ -11,7 +11,6 @@ import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MasterySet;
 import brutelol.charbuild.runes.RunePage;
-import brutelol.characters.instances.BuildInfo;
 import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
@@ -392,5 +391,9 @@ public abstract class AbstractLolCharacter implements LolCharacter
         b.addLineToNotes("   - The damage of "+damage+" is multiplied by the magic resist ratio: "+ratio+", leaving us with "+newDamage+".");
         
         return newDamage;
+    }
+
+    public Object getColorString() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -10,7 +10,6 @@ import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MasterySet;
 import brutelol.charbuild.runes.RunePage;
 import brutelol.charbuild.Build;
-import brutelol.characters.instances.BuildInfo;
 import java.util.List;
 
 /**

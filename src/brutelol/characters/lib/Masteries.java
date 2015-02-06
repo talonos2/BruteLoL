@@ -4,12 +4,17 @@
  * and open the template in the editor.
  */
 
-package brutelol;
+package brutelol.characters.lib;
+
+import brutelol.characters.lib.BuildInfo;
 
 /**
  *
  * @author Talonos
  */
-public class Masteries {
+public abstract class Masteries 
+{
+    public abstract void applyMasteries(BuildInfo bi);
     
+    public abstract boolean hasMastery(Mastery m);
 }

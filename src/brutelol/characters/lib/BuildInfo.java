@@ -4,9 +4,8 @@
  * and open the template in the editor.
  */
 
-package brutelol.characters.instances;
+package brutelol.characters.lib;
 
-import brutelol.Masteries;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.runes.RunePage;
@@ -80,6 +79,16 @@ public class BuildInfo
             basicPassives.addAll(i.getAllBasicPassives());
             passives.addAll(i.getAllComplicatedPassives());
         }
+        
+        //Because of the warlord mastery, we must do masteries after all other sources
+        //of attack damage, but before adding character stuff. Luckily, there seems to
+        //be no passives that affect AD, so we can still apply item passives last...
+        
+        runes.applyRunesPass1(this);
+        masteries.applyMasteries(this);
+        
+        //Note: Warlord won't account for character-based steroids! We'll have to factor
+        //them in later. Ugly... :(
             
         //attack
         attackDamage += c.getAttackDamage(b);
@@ -98,7 +107,6 @@ public class BuildInfo
         healthRegen+=c.getHealthRegen(b);
         manaRegen += c.getManaRegen(b);
         
-        runes.applyRunesPass1(this);
         
         if (passives.contains(CPassive.WITS_END_PASSIVE))          {this.magicResist += 12.5;} //Assume 2.5 hits.
         if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.attackSpeed += .4*YoumuusGhostblade.PERCENT_TIME_ON;}

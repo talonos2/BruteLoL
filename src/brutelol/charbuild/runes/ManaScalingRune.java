@@ -6,7 +6,7 @@
 
 package brutelol.charbuild.runes;
 
-import brutelol.characters.instances.BuildInfo;
+import brutelol.characters.lib.BuildInfo;
 
 /**
  *

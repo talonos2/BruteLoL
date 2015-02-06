@@ -10,8 +10,10 @@ import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MapEnum;
 import brutelol.characters.lib.AbstractLolCharacter;
+import brutelol.characters.lib.AshesToAshesMasteries;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
+import brutelol.characters.lib.Masteries;
 import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
@@ -35,6 +37,7 @@ import org.paukov.combinatorics.combination.multi.MultiCombinationGenerator;
 public class BuildOptimizer 
 {
     private static final RunePage blankPage = new RunePage();
+    private static Masteries sampleMasteries = new AshesToAshesMasteries();
 
     public static Build deriveOptimalBuild(AbstractLolCharacter selectedCharacter, Build enemy, HeuristicComponent h, Build suggested) 
     {
@@ -105,7 +108,7 @@ public class BuildOptimizer
             
             
             ItemSet items = new ItemSet(itemList);
-            Build build = new Build(items, selectedCharacter, 100000, 100000, 100000, blankPage);
+            Build build = new Build(items, selectedCharacter, 100000, 100000, 100000, blankPage, sampleMasteries);
             double utility = build.getComponent(h, enemy);
             
             //If the build is good enough to be considered viably better...
@@ -176,7 +179,7 @@ public class BuildOptimizer
         for (int x = 0; x < POPULATION_SIZE; x++)
         {
             RunePage r = RunePage.getRandomPage(dice);
-            double fitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, r).getComponent(h, enemy);
+            double fitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, r, sampleMasteries).getComponent(h, enemy);
             populationFitness.put(r, fitness);
             population.add(r);
         }
@@ -190,7 +193,7 @@ public class BuildOptimizer
             
             RunePage contender = getClosestRunePage(babyRunePage, population);
             
-            double babyFitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, babyRunePage).getComponent(h, enemy);
+            double babyFitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, babyRunePage, sampleMasteries).getComponent(h, enemy);
             double contenderFitness = populationFitness.get(contender);
             //Yes, I'm totally pitting babies against fully grown runepages in a
             //gladiatorial arena.
@@ -230,7 +233,7 @@ public class BuildOptimizer
                 utility = newUtility;
             }
         }
-        return new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, bestSoFar);
+        return new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, bestSoFar, sampleMasteries);
     }
 
     private static RunePage getClosestRunePage(RunePage toCompare, List<RunePage> population) 

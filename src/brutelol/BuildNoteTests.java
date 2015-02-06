@@ -9,6 +9,7 @@ package brutelol;
 import brutelol.characters.instances.Minions;
 import brutelol.characters.instances.Soraka;
 import brutelol.characters.instances.Udyr;
+import brutelol.characters.lib.AshesToAshesMasteries;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
@@ -51,8 +52,8 @@ public class BuildNoteTests
         eItems.add(new ZhonyasHourglass());
         eItems.add(new GuardianAngel());
         ItemSet ei = new ItemSet(eItems);
-        Build b = new Build(i, new Udyr(), 100000, 100000, 100000, new RunePage());
-        Build enemy = new Build(ei, new Soraka(), 100000, 100000, 100000, new RunePage());
+        Build b = new Build(i, new Udyr(), 100000, 100000, 100000, new RunePage(), new AshesToAshesMasteries());
+        Build enemy = new Build(ei, new Soraka(), 100000, 100000, 100000, new RunePage(), new AshesToAshesMasteries());
         
         b = BuildOptimizer.optimizeRunePage(b, enemy, HeuristicComponent.DAMAGE_PER_SECOND);
         
@@ -72,7 +73,7 @@ public class BuildNoteTests
         items2.add(new InfinityEdge());
         i = new ItemSet(items2);
         
-        b = new Build(i, new Udyr(), 100000, 100000, 100000, new RunePage());
+        b = new Build(i, new Udyr(), 100000, 100000, 100000, new RunePage(), new AshesToAshesMasteries());
         
         System.out.println(b.getComponentMathNotes(HeuristicComponent.DAMAGE_PER_SECOND, enemy));
         
