@@ -11,6 +11,7 @@ import brutelol.charbuild.runes.AttackSpeedRune;
 import brutelol.charbuild.runes.AbilityPowerRune;
 import brutelol.characters.lib.BuildInfo;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Random;
 
@@ -164,17 +165,17 @@ public class RunePage
         return toReturn;
     }
 
-    public void applyRunesPass1(BuildInfo bi) 
+    public void applyRunesPass1(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         for (int x = 0; x < 9; x++)
         {
-            marks[x].applyChangesAsMark(bi);
-            seals[x].applyChangesAsSeal(bi);
-            glyphs[x].applyChangesAsGlyph(bi);
+            marks[x].applyChangesAsMark(bi, logs);
+            seals[x].applyChangesAsSeal(bi, logs);
+            glyphs[x].applyChangesAsGlyph(bi, logs);
         }
         for (int x = 0; x < 3; x++)
         {
-            quints[x].applyChangesAsQuint(bi);
+            quints[x].applyChangesAsQuint(bi, logs);
         }
     }
     

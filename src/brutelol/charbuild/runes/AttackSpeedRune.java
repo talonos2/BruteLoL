@@ -7,6 +7,7 @@
 package brutelol.charbuild.runes;
 
 import brutelol.characters.lib.BuildInfo;
+import java.util.EnumMap;
 
 /**
  *
@@ -16,25 +17,25 @@ class AttackSpeedRune extends Rune
 {
 
     @Override
-    public void applyChangesAsMark(BuildInfo bi) 
+    public void applyChangesAsMark(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackSpeed += .017;
     }
 
     @Override
-    public void applyChangesAsSeal(BuildInfo bi) 
+    public void applyChangesAsSeal(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackSpeed += .0076;
     }
 
     @Override
-    public void applyChangesAsGlyph(BuildInfo bi) 
+    public void applyChangesAsGlyph(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackSpeed += .0064;
     }
 
     @Override
-    public void applyChangesAsQuint(BuildInfo bi) 
+    public void applyChangesAsQuint(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackSpeed += .045;
     }

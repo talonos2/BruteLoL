@@ -7,6 +7,7 @@
 package brutelol.charbuild.runes;
 
 import brutelol.characters.lib.BuildInfo;
+import java.util.EnumMap;
 
 /**
  *
@@ -14,8 +15,8 @@ import brutelol.characters.lib.BuildInfo;
  */
 public abstract class Rune 
 {
-    public abstract void applyChangesAsMark(BuildInfo bi);
-    public abstract void applyChangesAsSeal(BuildInfo bi);
-    public abstract void applyChangesAsGlyph(BuildInfo bi);
-    public abstract void applyChangesAsQuint(BuildInfo bi);
+    public abstract void applyChangesAsMark(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs);
+    public abstract void applyChangesAsSeal(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs);
+    public abstract void applyChangesAsGlyph(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs);
+    public abstract void applyChangesAsQuint(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs);
 }

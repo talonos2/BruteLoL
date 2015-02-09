@@ -7,6 +7,7 @@
 package brutelol.charbuild.runes;
 
 import brutelol.characters.lib.BuildInfo;
+import java.util.EnumMap;
 
 /**
  *
@@ -18,22 +19,22 @@ class ManaScalingRune extends Rune {
     }
 
     @Override
-    public void applyChangesAsMark(BuildInfo bi) {
+    public void applyChangesAsMark(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         bi.mana += 1.17*bi.level;
     }
 
     @Override
-    public void applyChangesAsSeal(BuildInfo bi) {
+    public void applyChangesAsSeal(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         bi.mana += 1.17*bi.level;
     }
 
     @Override
-    public void applyChangesAsGlyph(BuildInfo bi) {
+    public void applyChangesAsGlyph(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         bi.mana += 1.42*bi.level;
     }
 
     @Override
-    public void applyChangesAsQuint(BuildInfo bi) {
+    public void applyChangesAsQuint(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         bi.mana += 4.17*bi.level;
     }
     

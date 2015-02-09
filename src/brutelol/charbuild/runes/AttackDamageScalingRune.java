@@ -7,6 +7,7 @@
 package brutelol.charbuild.runes;
 
 import brutelol.characters.lib.BuildInfo;
+import java.util.EnumMap;
 
 /**
  *
@@ -18,25 +19,25 @@ class AttackDamageScalingRune extends Rune {
     }
 
     @Override
-    public void applyChangesAsMark(BuildInfo bi) 
+    public void applyChangesAsMark(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackDamage+= bi.level*.13;
     }
 
     @Override
-    public void applyChangesAsSeal(BuildInfo bi) 
+    public void applyChangesAsSeal(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackDamage+= bi.level*.06;
     }
 
     @Override
-    public void applyChangesAsGlyph(BuildInfo bi) 
+    public void applyChangesAsGlyph(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackDamage+= bi.level*.04;
     }
 
     @Override
-    public void applyChangesAsQuint(BuildInfo bi) 
+    public void applyChangesAsQuint(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackDamage+= bi.level*.25;
     }

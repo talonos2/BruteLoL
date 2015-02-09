@@ -102,6 +102,7 @@ public class Build
         //more than hundreds of math logs at a time.
         this.components.clear();
         this.turnOnNotes();
+        character.getBuildInfo(this);
         this.addLineToNotes("===================================================");
         this.addLineToNotes("Analysis of build "+this.items);
         this.addLineToNotes("===================================================");
@@ -109,6 +110,9 @@ public class Build
         this.addLineToNotes("===================================================");
         this.addLineToNotes("===================================================");
         
+        //Calculating the component also calculates the sub-components needed to
+        //calculate the component to begin with. Because we turned the notes on,
+        //all their math will also be added.
         this.getComponent(h, enemy);
         String toReturn = notes.toString();
         this.turnOffNotes();

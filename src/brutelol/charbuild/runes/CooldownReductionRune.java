@@ -7,6 +7,7 @@
 package brutelol.charbuild.runes;
 
 import brutelol.characters.lib.BuildInfo;
+import java.util.EnumMap;
 
 /**
  *
@@ -18,22 +19,22 @@ class CooldownReductionRune extends Rune {
     }
 
     @Override
-    public void applyChangesAsMark(BuildInfo bi) {
+    public void applyChangesAsMark(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void applyChangesAsSeal(BuildInfo bi) {
+    public void applyChangesAsSeal(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void applyChangesAsGlyph(BuildInfo bi) {
+    public void applyChangesAsGlyph(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void applyChangesAsQuint(BuildInfo bi) {
+    public void applyChangesAsQuint(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

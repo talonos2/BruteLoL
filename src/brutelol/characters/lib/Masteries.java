@@ -7,6 +7,7 @@
 package brutelol.characters.lib;
 
 import brutelol.characters.lib.BuildInfo;
+import java.util.EnumMap;
 
 /**
  *
@@ -14,7 +15,7 @@ import brutelol.characters.lib.BuildInfo;
  */
 public abstract class Masteries 
 {
-    public abstract void applyMasteries(BuildInfo bi);
+    public abstract void applyMasteries(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs);
     
     public abstract boolean hasMastery(Mastery m);
 }

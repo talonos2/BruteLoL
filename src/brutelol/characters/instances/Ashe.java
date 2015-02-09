@@ -26,8 +26,8 @@ public class Ashe extends AbstractLolCharacter
     {
         //Required items; lacking these will cause problems.
         this.requiredItems.add(BerserkersGreaves.class);
-        this.requiredItems.add(Bloodthirster.class);
-        this.requiredItems.add(LastWhisper.class);
+        //this.requiredItems.add(Bloodthirster.class);
+        //this.requiredItems.add(LastWhisper.class);
         //this.requiredItems.add(ArdentCenser.class);
         
         //Variables representing the starting state
@@ -124,7 +124,7 @@ public class Ashe extends AbstractLolCharacter
     @Override
     public BuildInfo getBuildInfo(Build b) 
     {
-        BuildInfo info = new BuildInfo(this, b);
+        BuildInfo info = new BuildInfo(this, b, null);
         return info;
     }
 }

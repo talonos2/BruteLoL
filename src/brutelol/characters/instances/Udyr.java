@@ -195,7 +195,7 @@ public class Udyr extends AbstractLolCharacter
     @Override
     public BuildInfo getBuildInfo(Build b) 
     {
-        BuildInfo info = new BuildInfo(this, b);
+        BuildInfo info = new BuildInfo(this, b, null);
         info.moveSpeed+= 15;
         info.attackSpeed += .30;
         

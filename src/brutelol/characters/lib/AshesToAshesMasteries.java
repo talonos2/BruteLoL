@@ -6,6 +6,8 @@
 
 package brutelol.characters.lib;
 
+import java.util.EnumMap;
+
 /**
  * Represents JhoiJhoi's Ashes to Ashes guide's masteries.
  * 
@@ -17,7 +19,7 @@ public class AshesToAshesMasteries extends Masteries
 {
 
     @Override
-    public void applyMasteries(BuildInfo bi) 
+    public void applyMasteries(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.attackSpeed += .0375;
         bi.attackDamage += .55*bi.level;

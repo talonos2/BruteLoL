@@ -7,6 +7,8 @@
 package brutelol.charbuild.runes;
 
 import brutelol.characters.lib.BuildInfo;
+import brutelol.characters.lib.BuildInfo.Ability;
+import java.util.EnumMap;
 
 /**
  *
@@ -16,25 +18,28 @@ class AbilityPowerRune extends Rune
 {
 
     @Override
-    public void applyChangesAsMark(BuildInfo bi) 
+    public void applyChangesAsMark(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.abilityPower += .59;
+        logs.get(Ability.ABILITY_POWER).append(" +.59 from AP mark\n");
     }
 
     @Override
-    public void applyChangesAsSeal(BuildInfo bi) 
+    public void applyChangesAsSeal(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.abilityPower += .59;
+        logs.get(Ability.ABILITY_POWER).append(" +.59 from AP seal\n");
     }
 
     @Override
-    public void applyChangesAsGlyph(BuildInfo bi) 
+    public void applyChangesAsGlyph(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.abilityPower += 1.19;
+        logs.get(Ability.ABILITY_POWER).append(" +.59 from AP glyph\n");
     }
 
     @Override
-    public void applyChangesAsQuint(BuildInfo bi) 
+    public void applyChangesAsQuint(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
         bi.abilityPower += 4.95;
     }

@@ -8,6 +8,7 @@ package brutelol.charbuild.runes;
 
 import brutelol.charbuild.runes.Rune;
 import brutelol.characters.lib.BuildInfo;
+import java.util.EnumMap;
 
 /**
  *
@@ -17,22 +18,22 @@ class BlankRune extends Rune
 {
 
     @Override
-    public void applyChangesAsMark(BuildInfo bi) 
+    public void applyChangesAsMark(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
     }
 
     @Override
-    public void applyChangesAsSeal(BuildInfo bi) 
+    public void applyChangesAsSeal(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
     }
 
     @Override
-    public void applyChangesAsGlyph(BuildInfo bi) 
+    public void applyChangesAsGlyph(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
     }
 
     @Override
-    public void applyChangesAsQuint(BuildInfo bi) 
+    public void applyChangesAsQuint(BuildInfo bi, EnumMap<BuildInfo.Ability, StringBuilder> logs) 
     {
     }
     
