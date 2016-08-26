@@ -27,7 +27,7 @@ public class StatikkShiv extends Item {
         
         this.makeAvailableOnAllMaps();
         
-        this.setComplicatedPassive(CPassive.BANSHEES_VEIL_PASSIVE);
+        this.setComplicatedPassive(CPassive.STATIKK_PASSIVE);
         
         this.pOptimal = true;
     }

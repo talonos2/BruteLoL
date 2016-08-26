@@ -101,7 +101,7 @@ public class Soraka extends AbstractLolCharacter
             case BONUS_PHYSICAL_DAMAGE_PER_ATTACK:
                 return this.getBonusPhysicalDamagePerAttack(b, enemy);
             case MAGIC_DAMAGE_PER_ATTACK:
-                return this.getMagicDamagePerAttack(b, enemy);
+                return this.getMagicDamagePerAttack(b, enemy, true);
             case ATTACKS_PER_SECOND:
                 return this.getAttacksPerSecond(b);
             case HEALING_PER_SECOND:
@@ -198,9 +198,9 @@ public class Soraka extends AbstractLolCharacter
     }
 
     @Override
-    public BuildInfo getBuildInfo(Build b) 
+    public BuildInfo getBuildInfo(Build b, StringBuilder mathNotes) 
     {
-        BuildInfo info = new BuildInfo(this, b, null);
+        BuildInfo info = new BuildInfo(this, b, mathNotes);
         return info;
     }
 }

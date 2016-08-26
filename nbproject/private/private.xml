@@ -3,41 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/BootsOfSpeed.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/ItemSet.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/MapEnum.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/MasterySet.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/AbstractLolCharacter.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/AshesToAshesMasteries.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/Build.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/BootsOfSwiftness.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/Masteries.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/NinjaTabi.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BruteLoL.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/Ashe.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/Udyr.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/ClothArmor.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/AttackDamageScalingRune.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/LongSword.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/Rune.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/Thornmail.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BuildNoteTests.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/Mastery.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/RejuvenationBead.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/Soraka.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/StatikkShiv.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/RunePage.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/YoumuusGhostblade.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/AncientCoin.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/FaerieCharm.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/BerserkersGreaves.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/CooldownReductionRune.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/AsheOld.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BuildEvaluater.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/ArmorPenRune.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BruteLoL.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/abstracts/CPassive.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/abstracts/BPassive.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/BlackfireTorch.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/LolCharacter.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/CritChanceRune.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/GuinsoosRageblade.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/BuildInfo.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/HeuristicComponent.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/abstracts/Item.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/AsheReworked.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BuildOptimizer.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/Items.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/AbilityPowerRune.java</file>
         </group>
     </open-files>
 </project-private>

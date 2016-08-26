@@ -210,9 +210,9 @@ public class BuildOptimizer
             }
             else
             {
+                //The baby was garbage, and will be collected as such when he falls out of scope.
                 //System.out.println (" }-{ Contender won: "+contender+" with "+contenderFitness);
                 //System.out.println ("     Against baby : "+babyRunePage+" with "+babyFitness);
-                //the baby was garbage, and will be collected as such when he falls out of scope.
                 pointlessIterations++;
             }
         }

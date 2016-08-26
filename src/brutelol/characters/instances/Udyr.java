@@ -83,7 +83,7 @@ public class Udyr extends AbstractLolCharacter
             case BONUS_PHYSICAL_DAMAGE_PER_ATTACK:
                 return this.getBonusPhysicalDamagePerAttack(b, enemy);
             case MAGIC_DAMAGE_PER_ATTACK:
-                return getMagicDamagePerAttack(b, enemy);
+                return getMagicDamagePerAttack(b, enemy, true);
             case ATTACKS_PER_SECOND:
                 return this.getAttacksPerSecond(b);
             case LIFE_STOLEN_PER_ATTACK:
@@ -104,9 +104,9 @@ public class Udyr extends AbstractLolCharacter
     }
     
     @Override
-    protected double getMagicDamagePerAttack(Build b, Build enemy) 
+    protected double getMagicDamagePerAttack(Build b, Build enemy, boolean crits) 
     {
-        double base = super.getMagicDamagePerAttack(b, enemy);
+        double base = super.getMagicDamagePerAttack(b, enemy, crits);
         double cooldown = b.getComponent(HeuristicComponent.STANCE_COOLDOWN, enemy);
         b.addLineToNotes("BECAUSE WE ARE UDYR, WE ADD TO THE EXTRA MAGIC DAMAGE AS FOLLOWS:");
         
@@ -193,9 +193,9 @@ public class Udyr extends AbstractLolCharacter
     }
 
     @Override
-    public BuildInfo getBuildInfo(Build b) 
+    public BuildInfo getBuildInfo(Build b, StringBuilder mathNotes) 
     {
-        BuildInfo info = new BuildInfo(this, b, null);
+        BuildInfo info = new BuildInfo(this, b, mathNotes);
         info.moveSpeed+= 15;
         info.attackSpeed += .30;
         

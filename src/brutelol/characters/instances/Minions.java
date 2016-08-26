@@ -67,9 +67,9 @@ public class Minions extends AbstractLolCharacter
     }
 
     @Override
-    public BuildInfo getBuildInfo(Build b) 
+    public BuildInfo getBuildInfo(Build b, StringBuilder mathNotes) 
     {
-        BuildInfo info = new BuildInfo(this, b, null);
+        BuildInfo info = new BuildInfo(this, b, mathNotes);
         return info;
     }
 }

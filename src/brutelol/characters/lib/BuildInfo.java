@@ -199,148 +199,16 @@ public class BuildInfo
         if (basicPassives.contains(BPassive.WARMOGS_PASSIVE))           {this.healthRegen += this.hp*.01;}
         if (basicPassives.contains(BPassive.LAST_WHISPER_PASIVE))       {this.armorPenetrationPercent += .35;}
         
-        
+        if (mathNotes != null)
+        {
+            for (Ability a : Ability.values())
+            {
+                mathNotes.append(logs.get(a));
+            }
+        }
+              
     }
 
-    public StringBuilder showWork(Build b) 
-    {   
-        StringBuilder mathNotes = new StringBuilder();
-        mathNotes.append("From items we get the following:\n");
-        
-        List<StringBuilder> attributes = new ArrayList<>();
-        
-        StringBuilder costString = new StringBuilder("  Cost: "); attributes.add(costString);
-        costString.append("0");
-        StringBuilder attackDamageString = new StringBuilder("  Attack Damage: "); attributes.add(attackDamageString);
-        attackDamageString.append(c.getAttackDamage(b));
-        StringBuilder critChanceString = new StringBuilder("  Crit Chance: "); attributes.add(critChanceString);
-        critChanceString.append("0");
-        StringBuilder attackSpeedString = new StringBuilder("  Attack Speed: "); attributes.add(attackSpeedString);
-        attackSpeedString.append(c.getAttackSpeed(b));
-        StringBuilder lifeStealString = new StringBuilder("  Lifesteal: "); attributes.add(lifeStealString);
-        lifeStealString.append("0");
-        StringBuilder abilityPowerString = new StringBuilder("  Ability Power: "); attributes.add(abilityPowerString);
-        abilityPowerString.append("0");
-        StringBuilder spellvampString = new StringBuilder("  Spellvamp: "); attributes.add(spellvampString);
-        spellvampString.append("0");
-        StringBuilder cooldownReductionString = new StringBuilder("  Cooldown Reduction: "); attributes.add(cooldownReductionString);
-        cooldownReductionString.append("0");
-        StringBuilder manaString = new StringBuilder("  Mana: 0"); attributes.add(manaString);
-        manaString.append(c.getMaxMana(b));
-        StringBuilder hpString = new StringBuilder("  HP: "); attributes.add(hpString); 
-        hpString.append(c.getMaxHP(b));
-        StringBuilder armorString = new StringBuilder("  Armor: "); attributes.add(armorString);
-        armorString.append(c.getArmor(b));
-        StringBuilder magicResistString = new StringBuilder("  Magic Resistance: "); attributes.add(magicResistString);
-        magicResistString.append(c.getMagicResist(b));
-        StringBuilder moveSpeedString = new StringBuilder("  Flat Move Speed: "); attributes.add(moveSpeedString);
-        moveSpeedString.append(c.getMoveSpeed(b));
-        StringBuilder moveSpeedPercentString = new StringBuilder("  Percent move speed: "); attributes.add(moveSpeedPercentString);
-        moveSpeedPercentString.append("0");
-        StringBuilder healthRegenString = new StringBuilder("  Health regeneration: "); attributes.add(healthRegenString);
-        healthRegenString.append(c.getHealthRegen(b));
-        StringBuilder manaRegenString = new StringBuilder("  Mana Regeneration: "); attributes.add(manaRegenString);
-        manaRegenString.append(c.getManaRegen(b));
-        StringBuilder tenacityString = new StringBuilder("  Tenacity: "); attributes.add(tenacityString);
-        tenacityString.append("0");
-        StringBuilder armorPenetrationFlatString = new StringBuilder("  Flat Armor Penetration: "); attributes.add(armorPenetrationFlatString);
-        armorPenetrationFlatString.append("0");
-        StringBuilder armorPenetrationPercentString = new StringBuilder("  Percent Armor Penetration: "); attributes.add(armorPenetrationPercentString);
-        armorPenetrationPercentString.append("0");
-        StringBuilder magicPenetrationFlatString = new StringBuilder("  Flat Magic Penetration: "); attributes.add(magicPenetrationFlatString);
-        magicPenetrationFlatString.append("0");
-        StringBuilder magicPenetrationPercentString = new StringBuilder("  Percent Magic Penetration: "); attributes.add(magicPenetrationPercentString);
-        magicPenetrationPercentString.append("0");
-        
-        for (Item i : items.itemsInList)
-        {   
-            //cost
-            if (i.getCost()!=0)
-            {
-                costString.append(" + "+i.getCost()+" ("+i+")");
-            }
-            //attack
-            if (i.getAttackDamage()!=0)
-            {
-                attackDamageString.append(" + "+i.getAttackDamage()+" ("+i+")");
-            }
-            if (i.getCritChance()!=0)
-            {
-                critChanceString.append(" + "+i.getCritChance()+" ("+i+")");
-            }
-            if (i.getAttackSpeed()!=0)
-            {
-                attackSpeedString.append(" + "+i.getAttackSpeed()+" ("+i+")");
-            }
-            if (i.getLifesteal()!=0)
-            {
-                lifeStealString.append(" + "+i.getLifesteal()+" ("+i+")");
-            }
-            
-            //Magic
-            if (i.getAbilityPower()!=0)
-            {
-                abilityPowerString.append(" + "+i.getAbilityPower()+" ("+i+")");
-            }
-            if (i.getSpellvamp()!=0)
-            {
-                spellvampString.append(" + "+i.getSpellvamp()+" ("+i+")");
-            }
-            if (i.getCooldownReduction()!=0)
-            {
-                cooldownReductionString.append(" + "+i.getCooldownReduction()+" ("+i+")");
-            }
-            if (i.getMana()!=0)
-            {
-                manaString.append(" + "+i.getMana()+" ("+i+")");
-            }
-            
-            //defense
-            if (i.getHP()!=0)
-            {
-                hpString.append(" + "+i.getHP()+" ("+i+")");
-            }
-            if (i.getArmor()!=0)
-            {
-                armorString.append(" + "+i.getArmor()+" ("+i+")");
-            }
-            if (i.getMagicResist()!=0)
-            {
-                magicResistString.append(" + "+i.getMagicResist()+" ("+i+")");
-            }
-            
-            //Regen and Speed
-            if (i.getMoveSpeedFlat()!=0)
-            {
-                moveSpeedString.append(" + "+i.getMoveSpeedFlat()+" ("+i+")");
-            }
-            if (i.getMoveSpeedPercent()!=0)
-            {
-                moveSpeedPercentString.append(" + "+i.getMoveSpeedPercent()+" ("+i+")");
-            }
-            if (i.getHealthRegen()!=0)
-            {
-                healthRegenString.append(" + "+i.getHealthRegen()+" ("+i+")");
-            }
-            if (i.getManaRegen()!=0)
-            {
-                manaRegenString.append(" + "+i.getManaRegen()+" ("+i+")");
-            }
-        }
-        
-        for (StringBuilder s : attributes)
-        {
-            if(s.toString().contains("+"))
-            {
-                s.append("\n");
-                mathNotes.append(s);
-            }
-        }
-        mathNotes.append("\n");
-        
-        return mathNotes;
-    }
-    
     private void addToNotes(double amount, Ability ability, Item i) 
     {
         //Stringbuilder concatenation is so ugly!

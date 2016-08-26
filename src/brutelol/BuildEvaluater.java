@@ -6,13 +6,16 @@
 
 package brutelol;
 
-import brutelol.characters.instances.Ashe;
+import brutelol.characters.instances.AsheOld;
+import brutelol.characters.instances.AsheReworked;
+import brutelol.characters.instances.MasterYi;
 import brutelol.items.instances.StatikkShiv;
 import brutelol.items.instances.Thornmail;
 import brutelol.items.instances.NinjaTabi;
 import brutelol.characters.instances.Udyr;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.AshesToAshesMasteries;
+import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.lib.Masteries;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
@@ -50,13 +53,14 @@ public class BuildEvaluater
             myItemList.add(new LastWhisper());
             myItemList.add(new BansheesVeil());
         }
-        AbstractLolCharacter me = new Ashe();
+        AbstractLolCharacter me = new MasterYi();
         
         Build toTest = new Build(new ItemSet(myItemList), me, 10000, 10000, 10000, new RunePage(), new AshesToAshesMasteries());
         
         List<Build> foes = new ArrayList<>();
         
         toTest.getBBCode(foes, 1, "JhoiJhoi's Ashes to Ashes");
+        System.out.println(toTest.getComponentMathNotes(HeuristicComponent.DAMAGE_PER_SECOND, enemyTank));
 }
 
     private static Build getEnemyTank() 

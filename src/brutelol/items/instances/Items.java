@@ -32,7 +32,6 @@ public class Items
         allItems.add(new FaerieCharm());
         allItems.add(new ClothArmor());
         allItems.add(new BootsOfSpeed());
-        allItems.add(new LongSword());
         allItems.add(new AncientCoin());
         
         allItems.add(new BootsOfSwiftness());
@@ -45,7 +44,8 @@ public class Items
         
         allItems.add(new WitsEnd());
         
-        
+        allItems.add(new NinjaTabi());
+        allItems.add(new Thornmail());
         allItems.add(new GuinsoosRageblade());
         allItems.add(new AthenesUnholyGrail());
         allItems.add(new FrozenHeart());
@@ -87,6 +87,7 @@ public class Items
         allItems.add(new InfinityEdge());
         allItems.add(new MercurialScimitar());
         allItems.add(new LordVanDammsPillager());
+        allItems.add(new StatikkShiv());
         
         allItems.add(new NoItem());
         

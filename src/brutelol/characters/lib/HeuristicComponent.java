@@ -28,7 +28,10 @@ public enum HeuristicComponent
     TIME_SURVIVING_AGAINST, 
     MAGIC_BURST_HP, 
     PHYSICAL_BURST_HP, 
-    COST;
+    COST, 
+    TOTAL_DAMAGE_PER_ATTACK,
+    POKE_DAMAGE,
+    TOTAL_DAMAGE_PER_W;
 
     public String getName() 
     {

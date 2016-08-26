@@ -264,7 +264,8 @@ public abstract class Item
         return Collections.unmodifiableSet(complicatedPassives);
     }
 
-    public Object getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object getName() 
+    {
+        return this.getClass().getName();
     }
 }

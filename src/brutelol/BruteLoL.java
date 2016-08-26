@@ -6,7 +6,9 @@
 
 package brutelol;
 
-import brutelol.characters.instances.Ashe;
+import brutelol.characters.instances.AsheOld;
+import brutelol.characters.instances.AsheReworked;
+import brutelol.characters.instances.MasterYi;
 import brutelol.charbuild.Build;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.instances.Soraka;
@@ -40,8 +42,7 @@ public class BruteLoL
     public static void main(String[] args) 
     {
         //TODO: Provide a way for the player to select a character.
-        AbstractLolCharacter selectedCharacter = new Ashe();
-        //TODO: Provide a way for the player to select a heuristic.
+        AbstractLolCharacter selectedCharacter = new MasterYi();       //TODO: Provide a way for the player to select a heuristic.
         HeuristicComponent h = HeuristicComponent.DAMAGE_PER_SECOND;
         Items.getAllItems();
         

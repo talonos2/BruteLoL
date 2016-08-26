@@ -224,9 +224,12 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return attacksPerSecond;
     }
     
-    protected double getMagicDamagePerAttack(Build b, Build enemy) 
+    protected double getMagicDamagePerAttack(Build b, Build enemy, boolean crits) 
     {
         double toReturn = 0;
+        double shivDamage = 0;
+        double cappedCritChance = 0;
+        double critDamage = 0;
         if (b.getBuildInfo().hasPassive(CPassive.NASHOR_PASSIVE))
         {
             toReturn += b.getBuildInfo().abilityPower*.15;
@@ -239,6 +242,16 @@ public abstract class AbstractLolCharacter implements LolCharacter
         if (b.getBuildInfo().hasPassive(CPassive.FERAL_FLARE_PASSIVE))
         {
             toReturn += 55;
+        }
+        if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
+        {
+            BuildInfo stats = b.getBuildInfo();
+            double critChance = stats.critChance;
+            cappedCritChance = Math.min(critChance,1.0);
+            critDamage = stats.addedCritDamage;
+            shivDamage = 100 * .1;
+            shivDamage=shivDamage+(shivDamage*cappedCritChance*(1+critDamage));
+            toReturn += shivDamage;
         }
         if (toReturn != 0)
         {
@@ -256,8 +269,14 @@ public abstract class AbstractLolCharacter implements LolCharacter
             {
                 b.addLineToNotes(" - Feral flare adds 55 damage (Because we assume super late game).");
             }
+            if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
+            {
+                b.addLineToNotes(" - Assume stattick shiv (100 extra damage) goes off 10% of the time:");
+                b.addLineToNotes("   - 10 damage with a "+cappedCritChance*100+"% chance of doing "+(1+critDamage)*100+"% normal damage:");
+                b.addLineToNotes("   - 10 + (10 × ("+cappedCritChance*100+" × "+(1+critDamage)*100+"%))");
+                b.addLineToNotes("   - "+shivDamage+" extra damage from Shiv");
+            }
             b.addLineToNotes(" - Subtotal bonus damage per attack: "+toReturn);
-            
             toReturn = this.applyEnemyMagicResist(toReturn, b, enemy);
             b.addLineToNotes(" - final bonus damage per attack: "+toReturn);
         }
@@ -277,21 +296,29 @@ public abstract class AbstractLolCharacter implements LolCharacter
     
     protected double getDamagePerSecond(Build b, Build enemy) 
     {
+        double totalDamage = b.getComponent(HeuristicComponent.TOTAL_DAMAGE_PER_ATTACK, enemy);
         double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND, enemy);
+        b.addLineToNotes("CALCULATION OF TOTAL DAMAGE PER SECOND: ");
+        b.addLineToNotes(" - As stated earlier, we have "+attacks+" attacks per second.");
+        b.addLineToNotes(" - Also stated earlier, we have "+totalDamage+" damage per attack.");
+        b.addLineToNotes(" - multiply that by "+attacks+" to give you a total of "+attacks*(totalDamage));
+        
+        return attacks*(totalDamage);
+    }
+
+    protected double getTotalDamagePerAttack(Build b, Build enemy) 
+    {
         double basePhysicalDamage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
         double bonusPhysicalDamage = b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
         double bonusMagicDamage = b.getComponent(HeuristicComponent.MAGIC_DAMAGE_PER_ATTACK, enemy);
         double totalDamage = basePhysicalDamage+bonusPhysicalDamage+bonusMagicDamage;
-        b.addLineToNotes("CALCULATION OF DAMAGE PER SECOND: ");
-        b.addLineToNotes(" - As stated earlier, we have "+attacks+" attacks per second.");
+        b.addLineToNotes("CALCULATION OF DAMAGE PER ATTACK: ");
         b.addLineToNotes(" - Also stated earlier, we have "+basePhysicalDamage+" base damage.");
-        b.addLineToNotes("                                "+bonusPhysicalDamage+" bonus damage.");
+        b.addLineToNotes("                              + "+bonusPhysicalDamage+" bonus damage.");
         b.addLineToNotes("                              + "+bonusMagicDamage+" magic damage.");
         b.addLineToNotes("                                -----------------------------------");
         b.addLineToNotes("                              = "+totalDamage+" total damage. ");
-        b.addLineToNotes(" - multiply that by "+attacks+" to give you a total of "+attacks*(totalDamage));
-        
-        return attacks*(totalDamage);
+        return totalDamage;
     }
 
     protected double getLifeStolenPerSecond(Build b, Build enemy) 
@@ -393,7 +420,45 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return newDamage;
     }
 
-    public Object getColorString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object getColorString() 
+    {
+        return "0";
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+     * Poke damage represents the damage dealt by a single "Quick combo." For a
+     * generic character, let's assume this is just an auto-attack.
+     * @param b the build doing the poking.
+     * @param enemy the enemy being poked.
+     * @return 
+     */
+    public double getPokeDamage(Build b, Build enemy) 
+    {
+        double totalDamage = b.getComponent(HeuristicComponent.TOTAL_DAMAGE_PER_ATTACK, enemy);
+        b.addLineToNotes("CALCULATION OF POKE DAMAGE:");
+        b.addLineToNotes(" - The character pokes with an auto attack, doing, as previously stated, "+totalDamage+"damage.");
+        if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
+        {
+            double critChance = b.getBuildInfo().critChance;
+            double critDamage = b.getBuildInfo().addedCritDamage;
+            double cappedCritChance = Math.min(critChance,1.0);
+            double shivDamage = 100 * .9;
+            shivDamage=shivDamage+(shivDamage*cappedCritChance*(1+critDamage));
+            b.addLineToNotes(" - Assuming this is a fully charged poke, stattick shiv deals more damage:");
+            b.addLineToNotes(" - Assume stattick shiv (100 extra damage) goes off an extra 90% of the time (total 100%):");
+            b.addLineToNotes("   - 90 damage with a "+cappedCritChance*100+"% chance of doing "+(1+critDamage)*100+"% normal damage:");
+            b.addLineToNotes("   - 90 + (90 × ("+cappedCritChance*100+" × "+(1+critDamage)*100+"%))");
+            b.addLineToNotes("   - "+shivDamage+" extra damage from Shiv");
+            shivDamage = this.applyEnemyMagicResist(shivDamage, b, enemy);
+            totalDamage += shivDamage;
+        }
+        b.addLineToNotes(" - Total of "+totalDamage+" poke damage.");
+        return totalDamage;
+    }
+    
+    public double getTotalDamagePerWDamage(Build b, Build enemy) 
+    {
+        throw new UnsupportedOperationException("Abstract characters have no W!");
     }
 }

@@ -42,7 +42,7 @@ public class Build
         this.gold=gold;
         this.xp=xp;
         this.runes = runes;
-        this.info = character.getBuildInfo(this);
+        this.info = character.getBuildInfo(this, null);
     }
 
     public double getComponent(HeuristicComponent h, Build enemy) 
@@ -102,13 +102,13 @@ public class Build
         //more than hundreds of math logs at a time.
         this.components.clear();
         this.turnOnNotes();
-        character.getBuildInfo(this);
         this.addLineToNotes("===================================================");
         this.addLineToNotes("Analysis of build "+this.items);
         this.addLineToNotes("===================================================");
         this.addLineToNotes("Runes: "+this.runes);
         this.addLineToNotes("===================================================");
         this.addLineToNotes("===================================================");
+        character.getBuildInfo(this, this.notes);
         
         //Calculating the component also calculates the sub-components needed to
         //calculate the component to begin with. Because we turned the notes on,
@@ -133,7 +133,7 @@ public class Build
     {
         if (info == null)
         {
-            info = character.getBuildInfo(this);
+            info = character.getBuildInfo(this, null);
         }
         return info;
     }
