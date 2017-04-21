@@ -20,74 +20,13 @@ import java.util.Map;
  */
 public class Items 
 {
-    private static List<Item> pOptimalItems;
+    private static Map<MapEnum, List<Item>> pOptimalItems;
     private static List<Item> allItems;
     private static Map<Item, Integer> itemIDs = new HashMap();
     
     private static void initItems()
     {
         allItems = new ArrayList<>();
-        
-        allItems.add(new RejuvenationBead());
-        allItems.add(new FaerieCharm());
-        allItems.add(new ClothArmor());
-        allItems.add(new BootsOfSpeed());
-        allItems.add(new AncientCoin());
-        
-        allItems.add(new BootsOfSwiftness());
-        allItems.add(new BerserkersGreaves());
-        
-        
-        allItems.add(new LastWhisper());
-        
-        allItems.add(new RunaansHurricane());
-        
-        allItems.add(new WitsEnd());
-        
-        allItems.add(new NinjaTabi());
-        allItems.add(new Thornmail());
-        allItems.add(new GuinsoosRageblade());
-        allItems.add(new AthenesUnholyGrail());
-        allItems.add(new FrozenHeart());
-        allItems.add(new MoonflairSpellblade());
-        allItems.add(new SunfireCape());
-        allItems.add(new BlackfireTorch());
-        allItems.add(new Entropy());
-        allItems.add(new YoumuusGhostblade());
-        allItems.add(new ArchangelsStaff());
-        allItems.add(new SeraphsEmbrace());
-        allItems.add(new GuardianAngel());
-        allItems.add(new BansheesVeil());
-        allItems.add(new SpiritVisage());
-        allItems.add(new LocketOfTheIronSolari());
-        allItems.add(new RodOfAges());
-        allItems.add(new PhantomDancer());
-        allItems.add(new WarmogsArmor());
-        allItems.add(new Zephyr());
-        allItems.add(new LiandrysTorment());
-        allItems.add(new IcebornGauntlet());
-        allItems.add(new RylaisCrystalSceptor());
-        allItems.add(new NashorsTooth());
-        allItems.add(new LichBane());
-        allItems.add(new RanduinsOmen());
-        allItems.add(new BlackCleaver());
-        allItems.add(new DervishBlade());
-        allItems.add(new DeathfireGrasp());
-        allItems.add(new EssenceReaver());
-        allItems.add(new BladeOfTheRuinedKing());
-        allItems.add(new MawOfMalmortius());
-        allItems.add(new ZhonyasHourglass());
-        allItems.add(new FrozenMallet());
-        allItems.add(new RabadonsDeathcap());
-        allItems.add(new RavenousHydra());
-        allItems.add(new HextechGunblade());
-        allItems.add(new WoogletsWitchcap());
-        allItems.add(new Bloodthirster());
-        allItems.add(new TrinityForce());
-        allItems.add(new InfinityEdge());
-        allItems.add(new MercurialScimitar());
-        allItems.add(new LordVanDammsPillager());
-        allItems.add(new StatikkShiv());
         
         allItems.add(new NoItem());
         
@@ -98,29 +37,37 @@ public class Items
         }
     }
 
-    public static List<Item> getAllPOptimalItems(MapEnum map) 
+    /**
+     * Gets all items that are pareto-optimal for a given map.
+     * @param map the map to get items for.
+     * @return a list of the pareto-optimal items for that map.
+     */
+    public static List<Item> generateOptimalItemsForMap(MapEnum map) 
     {
-        if (pOptimalItems == null)
+        if (allItems == null)
         {
-            pOptimalItems = generateOptimalItemsForMap(map);
+            getAllItems();
         }
-        return pOptimalItems;
-    }
-
-    private static List<Item> generateOptimalItemsForMap(MapEnum map) 
-    {
-        List<Item> toReturn = new ArrayList<>();
-        List<Item> allItems = getAllItems();
-        for (Item i : allItems)
+        if (!pOptimalItems.containsKey(map))
         {
-            if (i.isPOptimal()&&i.availableOnMap(map))
+            List<Item> pOptimalMapItems = new ArrayList<>();
+            for (Item i : allItems)
             {
-                toReturn.add(i);
+                if (i.isPOptimal()&&i.availableOnMap(map))
+                {
+                    pOptimalMapItems.add(i);
+                }
             }
+            return pOptimalItems.put(map,pOptimalMapItems);
         }
-        return toReturn;
+        return pOptimalItems.get(map);
     }
     
+    /**
+     * Gets all items registered in the system. If the item system hasn't been
+     * initialized, do so now.
+     * @return a list of all registered items.
+     */
     public static List<Item> getAllItems() 
     {
         if (allItems == null)

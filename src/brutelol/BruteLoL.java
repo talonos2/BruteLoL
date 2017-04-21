@@ -6,26 +6,15 @@
 
 package brutelol;
 
-import brutelol.characters.instances.AsheOld;
-import brutelol.characters.instances.AsheReworked;
-import brutelol.characters.instances.MasterYi;
+import brutelol.characters.instances.Xayah;
 import brutelol.charbuild.Build;
 import brutelol.characters.lib.HeuristicComponent;
-import brutelol.characters.instances.Soraka;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.AshesToAshesMasteries;
+import brutelol.characters.lib.BlankMasteries;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
-import brutelol.items.instances.BerserkersGreaves;
-import brutelol.items.instances.BladeOfTheRuinedKing;
-import brutelol.items.instances.Bloodthirster;
-import brutelol.items.instances.GuardianAngel;
-import brutelol.items.instances.InfinityEdge;
 import brutelol.items.instances.Items;
-import brutelol.items.instances.LastWhisper;
-import brutelol.items.instances.PhantomDancer;
-import brutelol.items.instances.ZhonyasHourglass;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,32 +26,32 @@ public class BruteLoL
 {
 
     /**
+     * The base method. Currently just runs using hard-coded options.
      * @param args the command line arguments
      */
     public static void main(String[] args) 
     {
+        //Who is the character, and what do we want him to be good at?
         //TODO: Provide a way for the player to select a character.
-        AbstractLolCharacter selectedCharacter = new MasterYi();       //TODO: Provide a way for the player to select a heuristic.
+        AbstractLolCharacter selectedCharacter = new Xayah();       
+        //TODO: Provide a way for the player to select a heuristic.
         HeuristicComponent h = HeuristicComponent.DAMAGE_PER_SECOND;
+        
+        //Initialize items:
         Items.getAllItems();
         
-        List<Item> items = new ArrayList<Item>();
-        items.add(new ZhonyasHourglass());
-        items.add(new GuardianAngel());
+        //We need an enemy to test damage against. We create one here:
+        List<Item> enemyItems = new ArrayList<Item>();
+        //enemyItems.add(new LastWhisper());
+        Build enemy = new Build(new ItemSet(enemyItems), new Xayah(), 100000, 10000, 10000, new RunePage(), new BlankMasteries());
         
-        Build enemy = new Build(new ItemSet(items), new Soraka(), 100000, 10000, 10000, new RunePage(), new AshesToAshesMasteries());
-        
+        //Having a list of proposed items lets us cut bad search avenues quickly.
+        //Enter a proposed item list here.
         List<Item> proposedItems = new ArrayList<Item>();
-        proposedItems.add(new PhantomDancer());
-        proposedItems.add(new LastWhisper());
-        proposedItems.add(new Bloodthirster());
-        proposedItems.add(new InfinityEdge());
-        proposedItems.add(new BerserkersGreaves());
-        proposedItems.add(new BladeOfTheRuinedKing());
+        Build proposedBuild = new Build(new ItemSet(proposedItems), selectedCharacter, 100000, 10000, 10000, new RunePage(), new BlankMasteries());
         
-        Build b = new Build(new ItemSet(proposedItems), selectedCharacter, 100000, 10000, 10000, new RunePage(), new AshesToAshesMasteries());
-        
-        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h, b);
+        //The work is done here.
+        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h, proposedBuild);
         
         System.out.println(bestBuild.getComponentMathNotes(h, enemy));
     }

@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package brutelol.characters.lib;
 
 /**
- *
+ * A heuristic component is an enum representing something that we might want to
+ * calculate regarding a character. Not all characters support all components, and
+ * some (Stance cooldown, for instance) are pretty much unique.
+ * 
  * @author Emily
  */
 public enum HeuristicComponent 

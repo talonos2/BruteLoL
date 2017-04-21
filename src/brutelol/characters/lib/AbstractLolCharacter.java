@@ -9,8 +9,6 @@ package brutelol.characters.lib;
 import brutelol.Funcs;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
-import brutelol.charbuild.MasterySet;
-import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
@@ -22,7 +20,10 @@ import java.util.List;
  */
 public abstract class AbstractLolCharacter implements LolCharacter
 {   
-    private StringBuilder notes = null;
+    /**
+     * A stringbuilder to hold math notes so we can show our work.
+     */
+    private final StringBuilder notes = null;
     
     //Variables representing the starting state
     protected double HP_AT_0 = 0;
@@ -33,7 +34,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
     protected double ARMOR_AT_0 = 0;
     protected double MAGIC_RES_AT_0 = 0;
     
-    //Attack speed is calculated different.
+    //Attack speed is calculated different, so it's "at one" instead of "at zero"
     protected double ATTACK_SPEED_AT_1 = 0;
 
     //Variables representing the growth per level.
@@ -42,17 +43,19 @@ public abstract class AbstractLolCharacter implements LolCharacter
     protected double MANA_PER_LEVEL = 0;
     protected double MANA_REGEN_PER_LEVEL = 0;
     protected double ATTACK_DAMAGE_PER_LEVEL = 0;
-    protected double ATTACK_SPEED_PER_LEVEL = 0;
     protected double ARMOR_PER_LEVEL = 0;
     protected double MAGIC_RES_PER_LEVEL = 0;
+    protected double ATTACK_SPEED_PER_LEVEL = 0;
     
     //Variables representing more constant attributes.
     protected double MOVE_SPEED = 0;
     protected double RANGE = 0;
     
-    //List of items required.
+    //List of items required for this character. Used to add items that we know
+    //are "core" but that the algorithm might not catch. (Like boots)
     protected List<Class<? extends Item>> requiredItems = new ArrayList<>();
     
+    //Other attributes of a champion that we might need to calculate its attributes.
     protected boolean isMelee = false;
     
     /**
@@ -89,11 +92,21 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return false;
     }
 
+    /**
+     * Gets the level of the build by examining its XP.
+     * @param b
+     * @return 
+     */
     public int getLevel(Build b) 
     {
         return Funcs.getLevelFromXP(b.getXP());
     }
 
+    //The following functions get different aspects of an unequipped champion.
+    //They can all be overwritten by subclasses. Please note that you should NEVER
+    //use these when calculating heuristic components: Use the "BuildInfo" data
+    //structure instead!
+    
     public double getManaRegen(Build b) 
     {
         return this.MANA_REGEN_AT_0+((getLevel(b)-1)*this.MANA_REGEN_PER_LEVEL);
@@ -141,6 +154,8 @@ public abstract class AbstractLolCharacter implements LolCharacter
     }
     
     //From this point forward, we have generic functions that calculate components.
+    //Most of these are good for most champions, but specific champion passives will
+    //require the author to overwrite these. (I'm looking at you, Ashe and Jhin!)
 
     protected double getBasePhysicalDamagePerAttack(Build b, Build enemy) 
     {
@@ -175,6 +190,13 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return damageAfterArmor;
     }
 
+    /**
+     * Gets the bonus physical damage on an auto-attack from (for instance) on-hit
+     * effects like a Blade of the Ruined King.
+     * @param b the build to get data from.
+     * @param enemy the enemy we are attacking with this hit.
+     * @return 
+     */
     protected double getBonusPhysicalDamagePerAttack(Build b, Build enemy) 
     {
         double bonusDamage = 0;
@@ -199,6 +221,11 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return bonusDamage;
     }
 
+    /**
+     * Gets the number of Auto-attacks per second of firing.
+     * @param b the build to evaluate.
+     * @return 
+     */
     protected double getAttacksPerSecond(Build b) 
     {
         BuildInfo stats = b.getBuildInfo();
@@ -213,8 +240,6 @@ public abstract class AbstractLolCharacter implements LolCharacter
         b.addLineToNotes(" - From items, levels, and powers, we get a "+(addedAttackSpeed*100)+"% bonus.");
         b.addLineToNotes(" - Thus, attacks per second is "+ATTACK_SPEED_AT_1+" × (1+"+addedAttackSpeed+") = "+attacksPerSecond);
         
-        
-        
         if (attacksPerSecond > 2.5)
         {
             attacksPerSecond = 2.5;
@@ -224,7 +249,13 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return attacksPerSecond;
     }
     
-    protected double getMagicDamagePerAttack(Build b, Build enemy, boolean crits) 
+    /**
+     * Gets the magic damage per auto-attack from, for instance, wits end.
+     * @param b the build to evaluate
+     * @param enemy the enemy we are striking
+     * @return the magic damage dealt per auto-attack.
+     */
+    protected double getMagicDamagePerAttack(Build b, Build enemy) 
     {
         double toReturn = 0;
         double shivDamage = 0;
@@ -239,7 +270,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
         {
             toReturn += 42;
         }
-        if (b.getBuildInfo().hasPassive(CPassive.FERAL_FLARE_PASSIVE))
+        if (b.getBuildInfo().hasPassive(CPassive.FERAL_FLARE_PASSIVE)) //TODO: Remove. RIP Feral Flare. :(
         {
             toReturn += 55;
         }
@@ -284,8 +315,18 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return toReturn;
     }
     
+    /**
+     * Returns the amount of life stolen per auto-attack.
+     * @param b the build to evaluate
+     * @param enemy the enemy we are attacking
+     * @return the life stolen per auto-attack.
+     */
     protected double getLifeStolenPerAttack(Build b, Build enemy) 
     {
+        //This is the first time we see this: One Heuristic Component might rely on another. We don't
+        //want to recalculate it if we already have it for other reasons, so we cache calculations
+        //we have already done in the build. We retrieve those (or perhaps calculate them for
+        //the first time) in Build.getComponent(component, foe)
         double damage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
         damage += b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
         
@@ -294,6 +335,12 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return damage*lifeStealPercent;
     }
     
+    /**
+     * Returns the damage per second dealt while auto-attacking.
+     * @param b the build to evaluate.
+     * @param enemy the enemy we are auto-attacking.
+     * @return the damage per second.
+     */
     protected double getDamagePerSecond(Build b, Build enemy) 
     {
         double totalDamage = b.getComponent(HeuristicComponent.TOTAL_DAMAGE_PER_ATTACK, enemy);
@@ -306,6 +353,12 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return attacks*(totalDamage);
     }
 
+    /**
+     * Returns the total damage per auto-attack.
+     * @param b the build to evaluate.
+     * @param enemy the enemy we are auto-attacking.
+     * @return the damage per auto-attack.
+     */
     protected double getTotalDamagePerAttack(Build b, Build enemy) 
     {
         double basePhysicalDamage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
@@ -321,6 +374,12 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return totalDamage;
     }
 
+    /**
+     * Get the total life stolen per second.
+     * @param b the build to evaluate
+     * @param enemy the enemy we are attacking
+     * @return 
+     */
     protected double getLifeStolenPerSecond(Build b, Build enemy) 
     {
         double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND, enemy);
@@ -427,11 +486,11 @@ public abstract class AbstractLolCharacter implements LolCharacter
     }
     
     /**
-     * Poke damage represents the damage dealt by a single "Quick combo." For a
-     * generic character, let's assume this is just an auto-attack.
+     * Poke damage represents the damage dealt by a single "Quick combo," like an ashe volley+AA
+     * or a Xayah Q-AA-E. For a generic character, let's assume this is just an auto-attack.
      * @param b the build doing the poking.
      * @param enemy the enemy being poked.
-     * @return 
+     * @return the poke damage.
      */
     public double getPokeDamage(Build b, Build enemy) 
     {

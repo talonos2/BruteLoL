@@ -4,17 +4,14 @@ import brutelol.charbuild.runes.RunePage;
 import brutelol.characters.lib.Masteries;
 import brutelol.characters.lib.BuildInfo;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.LolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
-import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * A build is a collection of itemset, runes, character, and masteries, ready to evaluate.
  * @author Talonos
  */
 public class Build 
@@ -45,6 +42,16 @@ public class Build
         this.info = character.getBuildInfo(this, null);
     }
 
+    /**
+     * Gets the value of a Heuristic, by either calculating it or using a cached
+     * value. We do so by passing off the heavy lifting to the character we contain.
+     * However, because the character needs to do things with the build (such as updating
+     * its math notes and getting the build's buildinfo) we pass in ourselves as well.
+     * 
+     * @param h the heuristic to get
+     * @param enemy the enemy with which to calculate the heuristic.
+     * @return the value of the heuristic component.
+     */
     public double getComponent(HeuristicComponent h, Build enemy) 
     {
         if (!components.containsKey(h))
@@ -74,16 +81,21 @@ public class Build
         return xp;
     }
     
-    //Has this build explain every heuristic stuff in excruciating detail, such 
-    //that you can put it in a spoiler to satisfy the mathematicians/unbelivers 
-    //on mobafire.
+    /**
+     * Have this build explain every heuristic stuff in excruciating detail, such 
+     * that you can put it in a spoiler to satisfy the mathematicians/unbelievers
+     * on mobafire.
+     * @return an wordy math analysis, in string form.
+     */
     public String getAllInfo()
     {
         return "";
     }
     
-    //Has this build explain its "End result". This is a description of it plus
-    //all the evaluations of its heuristics.
+    /**
+     * Has this build explain its "End result". This is a description of it plus
+     * all the evaluations of its heuristics.
+     */
     public String getInfo()
     {
         return "";

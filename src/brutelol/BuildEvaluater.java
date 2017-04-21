@@ -1,39 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package brutelol;
 
-import brutelol.characters.instances.AsheOld;
-import brutelol.characters.instances.AsheReworked;
-import brutelol.characters.instances.MasterYi;
-import brutelol.items.instances.StatikkShiv;
-import brutelol.items.instances.Thornmail;
-import brutelol.items.instances.NinjaTabi;
-import brutelol.characters.instances.Udyr;
+import brutelol.characters.instances.Xayah;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.AshesToAshesMasteries;
+import brutelol.characters.lib.BlankMasteries;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.lib.Masteries;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
-import brutelol.items.instances.BansheesVeil;
-import brutelol.items.instances.BerserkersGreaves;
-import brutelol.items.instances.Bloodthirster;
 import brutelol.items.instances.InfinityEdge;
 import brutelol.items.instances.Items;
-import brutelol.items.instances.LastWhisper;
-import brutelol.items.instances.RanduinsOmen;
-import brutelol.items.instances.WarmogsArmor;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * This main function is for testing. It evaluates a single hard-coded build.
  * @author Talonos
  */
 public class BuildEvaluater 
@@ -42,20 +24,15 @@ public class BuildEvaluater
     {
         Items.getAllItems();
 
-        Build enemyTank = getEnemyTank();
+        Build enemyTank = getEnemy();
         
         List<Item> myItemList = new ArrayList<>();
         {
             myItemList.add(new InfinityEdge());
-            myItemList.add(new StatikkShiv());
-            myItemList.add(new BerserkersGreaves());
-            myItemList.add(new Bloodthirster());
-            myItemList.add(new LastWhisper());
-            myItemList.add(new BansheesVeil());
         }
-        AbstractLolCharacter me = new MasterYi();
+        AbstractLolCharacter me = new Xayah();
         
-        Build toTest = new Build(new ItemSet(myItemList), me, 10000, 10000, 10000, new RunePage(), new AshesToAshesMasteries());
+        Build toTest = new Build(new ItemSet(myItemList), me, 10000, 10000, 10000, new RunePage(), new BlankMasteries());
         
         List<Build> foes = new ArrayList<>();
         
@@ -63,17 +40,14 @@ public class BuildEvaluater
         System.out.println(toTest.getComponentMathNotes(HeuristicComponent.DAMAGE_PER_SECOND, enemyTank));
 }
 
-    private static Build getEnemyTank() 
+    private static Build getEnemy() 
     {
-        List<Item> tankItemList = new ArrayList<>();
+        List<Item> itemList = new ArrayList<>();
         {
-            tankItemList.add(new RanduinsOmen());
-            tankItemList.add(new WarmogsArmor());
-            tankItemList.add(new Thornmail());
-            tankItemList.add(new NinjaTabi());
+            itemList.add(new InfinityEdge());
         }
-        AbstractLolCharacter tank = new Udyr();
-        return new Build(new ItemSet(tankItemList), tank, 10000, 10000, 10000, new RunePage(), new AshesToAshesMasteries());
+        AbstractLolCharacter tank = new Xayah();
+        return new Build(new ItemSet(itemList), tank, 10000, 10000, 10000, new RunePage(), new BlankMasteries());
     }
 }
     

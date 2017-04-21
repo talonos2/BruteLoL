@@ -236,7 +236,6 @@ public abstract class Item
         this.maps.add(MapEnum.SUMMONERS_RIFT);
         this.maps.add(MapEnum.TWISTED_TREELINE);
         this.maps.add(MapEnum.HOWLING_ABYSS);
-        this.maps.add(MapEnum.CRYSTAL_SCAR);
     }
     
     protected void makeAvailableOnMap(MapEnum mapEnum) 

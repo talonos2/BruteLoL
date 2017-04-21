@@ -4,23 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/ItemSet.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/MapEnum.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/MasterySet.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BuildNoteTests.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/LolCharacter.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/AbstractLolCharacter.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/Build.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/CooldownReductionRune.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/AsheOld.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BuildEvaluater.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/ArmorPenRune.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BruteLoL.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/abstracts/CPassive.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/abstracts/BPassive.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/lib/HeuristicComponent.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/abstracts/Item.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/AsheReworked.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BuildOptimizer.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/AsheOld.java</file>
             <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/items/instances/Items.java</file>
-            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/charbuild/runes/AbilityPowerRune.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BuildEvaluater.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/characters/instances/MasterYi.java</file>
+            <file>file:/C:/Users/Talonos/Documents/NetBeansProjects/BruteLoL/src/brutelol/BruteLoL.java</file>
         </group>
     </open-files>
 </project-private>

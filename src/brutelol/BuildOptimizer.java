@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package brutelol;
 
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MapEnum;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.AshesToAshesMasteries;
+import brutelol.characters.lib.BlankMasteries;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.lib.Masteries;
@@ -31,41 +25,78 @@ import org.paukov.combinatorics.ICombinatoricsVector;
 import org.paukov.combinatorics.combination.multi.MultiCombinationGenerator;
 
 /**
- *
+ * This class optimizes builds, and is where the bulk of the work is done.
+ * 
  * @author Talonos
  */
 public class BuildOptimizer 
 {
+    /**
+     * How much worse can a build be than the "suggested" build and still be considered
+     * as a candidate worthy of testing rune pages?
+     * Expressed as a ratio, 1 = 100% = test any build with rune pages.
+     */
+    private static final double WIGGLE_AMOUNT = .2;
+    
+    /**
+     * How many builds do we save when we prune?
+     */
+    private static final int NUM_TOP_BUILDS = 10;
+    
+    /**
+     * How large of a population do we keep in the genetic rune-page optimization
+     * algorithm?
+     */
+    private static final int POPULATION_SIZE = 16;
+    
+    /**
+     * How many "pointless" iterations do we allow the genetic algorithm to
+     * undergo before deciding we're as good as we're going to get?
+     */
+    private static final int MAX_POINTLESS_ITERATIONS = 500;    
+    
     private static final RunePage blankPage = new RunePage();
-    private static Masteries sampleMasteries = new AshesToAshesMasteries();
+    private static final Masteries sampleMasteries = new BlankMasteries();
+    private static Random dice = new Random(0);
+    
+    
 
+    /**
+     * Find an optimal build for the given heuristic component against the given enemy for the given character.
+     * @param selectedCharacter The character to test on. This character's getHeuristicComponent's method will
+     * be called to evaluate the utility of any given build.
+     * @param enemy The enemy to test against.
+     * @param h The heuristic component to optimize.
+     * @param suggested This is a proposed build that is used as a "fail fast". Any build that is not at least
+     * this good will not have a rune page evaluated, to save on computation time.
+     * @return the optimal build found.
+     */
     public static Build deriveOptimalBuild(AbstractLolCharacter selectedCharacter, Build enemy, HeuristicComponent h, Build suggested) 
     {
         //Get a fail-fast amount. Any builds that to not meet this minimum build will not have their
         //runes evaluated, to save on computation time.
         double amountToBeat = suggested.getComponent(h, enemy);
-        amountToBeat *= .8; //Leave a little wiggle room.
+        amountToBeat *= (1-WIGGLE_AMOUNT); //Leave a little wiggle room.
         
         // create array of initial items
         List<Item> array = new ArrayList<>();
-        array.addAll(Items.getAllPOptimalItems(MapEnum.SUMMONERS_RIFT));
+        array.addAll(Items.generateOptimalItemsForMap(MapEnum.SUMMONERS_RIFT));
 
         // create combinatorics vector. This holds the items we're going to make a multicombination from.
-        CombinatoricsVector<Item> initialVector = new CombinatoricsVector<Item>(array);
+        CombinatoricsVector<Item> initialVector = new CombinatoricsVector<>(array);
 
         // create multi-combination generator.
-        Generator<Item> gen = new MultiCombinationGenerator<Item>(initialVector , 6);
+        Generator<Item> gen = new MultiCombinationGenerator<>(initialVector, 6);
         //Generator<Item> gen = new SimpleCombinationGenerator<Item>(initialVector , 6);
     
         // create an iterator to pull combinations from.
         Iterator<ICombinatoricsVector<Item>> itr = gen.iterator();
     
-        //Find the best combination:
+        //Find the best combination as follows:
         
         //Get all possible itemsets.
         List<List<Item>> allItemsets = new ArrayList<>();
         Item noItem = new NoItem();
-        
         while (itr.hasNext())
         {
             ICombinatoricsVector<Item> combination = itr.next();
@@ -81,14 +112,12 @@ public class BuildOptimizer
             allItemsets.add(itemList);
         }
         
-        //Set up some base objects:
+        //Set up a data structure to store builds:
         double bestSoFar = suggested.getComponent(h, enemy);
         Map<Double, Build> bestBuilds = new TreeMap<>();
         bestBuilds.put(bestSoFar, suggested);
 
-        
-        
-        //Check each one to see how good it is.
+        //Check each itemset to evaluate its utility:
         int numberOfItemsets = allItemsets.size();
         System.out.println("Total number of Itemsets to check: "+numberOfItemsets);
         
@@ -97,15 +126,14 @@ public class BuildOptimizer
         
         for (List<Item> itemList : allItemsets)
         {
-            //Progress report so we don't die of boredom.
             numberOfTrials++;
+            //Progress report so we don't die of boredom.
+            //Also, clear out old builds so we don't run out of memory.
             if (numberOfTrials % 10000 == 0)
             {
-                //Also, clear out old builds so we don't run out of memory.
-                pruneBestBuilds(bestBuilds, enemy, h);
+                pruneBestBuilds(bestBuilds);
                 System.out.println("Progress: "+numberOfTrials+"/"+numberOfItemsets);
             }
-            
             
             ItemSet items = new ItemSet(itemList);
             Build build = new Build(items, selectedCharacter, 100000, 100000, 100000, blankPage, sampleMasteries);
@@ -123,14 +151,16 @@ public class BuildOptimizer
             if (utility > bestSoFar)
             {
                 System.out.println("Build: "+items);
-                System.out.println("Utility1: "+build);
+                System.out.println("Utility: "+utility);
                 bestSoFar = utility;
             }
             
             bestBuilds.put(1.0-utility, build);
         }
+        
+        //All done. Print results
         System.out.println("=-=-=-=Results:=-=-=-=-=");
-        pruneBestBuilds(bestBuilds, enemy, h);
+        pruneBestBuilds(bestBuilds);
         for (Build b : bestBuilds.values())
         {
             System.out.println(b.getItems());
@@ -142,10 +172,14 @@ public class BuildOptimizer
         return bestBuilds.values().iterator().next();
     }
 
-    private static void pruneBestBuilds(Map<Double, Build> bestBuilds, Build enemy, HeuristicComponent h) 
+    /**
+     * Prunes the list of builds to keep only a certain amount, as defined by
+     * NUM_TOP_BUILDS.
+     * @param bestBuilds the list of builds to modify.
+     */
+    private static void pruneBestBuilds(Map<Double, Build> bestBuilds) 
     {
-        //System.out.println("Current top 10 builds:");
-        int top = 10;
+        int top = NUM_TOP_BUILDS;
         Map<Double, Build> newMap = new TreeMap<>();
         for (Map.Entry<Double, Build> d : bestBuilds.entrySet())
         {
@@ -166,10 +200,14 @@ public class BuildOptimizer
             bestBuilds.put(d, newMap.get(d));
         }
     }
-    
-    private static Random dice = new Random(0);
-    private static final int POPULATION_SIZE = 16;
 
+    /**
+     * Attempts to optimize a rune page using a genetic algorithm.
+     * @param pb the proposed build we will try to optimize.
+     * @param enemy the enemy we are trying to optimize against.
+     * @param h the component we are trying to optimize.
+     * @return 
+     */
     public static Build optimizeRunePage(Build pb, Build enemy, HeuristicComponent h) 
     {
         //create an initial population of runePages, in a map.
@@ -184,18 +222,23 @@ public class BuildOptimizer
             population.add(r);
         }
         
+        //Every time we iterate over runepages, but it does not change, we mark it as
+        //a "pointless" iteration. Once the number of pointless iterations goes past
+        //MAX_POINTLESS_ITERATIONS, we decide it's as good as it will get.
         int pointlessIterations = 0;
-        while (pointlessIterations < 500)
+        while (pointlessIterations < MAX_POINTLESS_ITERATIONS)
         {
             RunePage r1 = population.get(dice.nextInt(POPULATION_SIZE));
             RunePage r2 = population.get(dice.nextInt(POPULATION_SIZE));
             RunePage babyRunePage = r1.mergeWith(r2, dice);
             
+            //Test the runepage against it's closest competitor to preserve genetic
+            //diversity.
             RunePage contender = getClosestRunePage(babyRunePage, population);
             
             double babyFitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, babyRunePage, sampleMasteries).getComponent(h, enemy);
             double contenderFitness = populationFitness.get(contender);
-            //Yes, I'm totally pitting babies against fully grown runepages in a
+            //Yes, I'm totally pitting baby runepages against fully grown ones in a
             //gladiatorial arena.
             if (babyFitness > contenderFitness)
             {
@@ -206,17 +249,15 @@ public class BuildOptimizer
                 populationFitness.remove(contender);
                 populationFitness.put(babyRunePage, babyFitness);
                 pointlessIterations = 0;
-                //System.out.println (" }-{ Got a new Runepage: "+babyRunePage);
             }
             else
             {
                 //The baby was garbage, and will be collected as such when he falls out of scope.
-                //System.out.println (" }-{ Contender won: "+contender+" with "+contenderFitness);
-                //System.out.println ("     Against baby : "+babyRunePage+" with "+babyFitness);
                 pointlessIterations++;
             }
         }
         
+        //Get the best runepage from our population.
         return getBestRunepage(populationFitness, pb, enemy, h);
     }
 

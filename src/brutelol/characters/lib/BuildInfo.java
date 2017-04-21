@@ -3,20 +3,17 @@ package brutelol.characters.lib;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.runes.RunePage;
-import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.LolCharacter;
 import brutelol.items.abstracts.BPassive;
 import brutelol.items.abstracts.CPassive;
 import brutelol.items.abstracts.Item;
-import brutelol.items.instances.YoumuusGhostblade;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 /**
- *
+ * A "Build info" is a data structure that holds data regarding an item, rune, and
+ * mastery build.
+ * 
  * @author Talonos
  */
 public class BuildInfo 
@@ -178,8 +175,8 @@ public class BuildInfo
         
         
         if (passives.contains(CPassive.WITS_END_PASSIVE))          {this.magicResist += 12.5;} //Assume 2.5 hits.
-        if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.attackSpeed += .4*YoumuusGhostblade.PERCENT_TIME_ON;}
-        if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.moveSpeedPercent += .2*YoumuusGhostblade.PERCENT_TIME_ON;}
+        //if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.attackSpeed += .4*YoumuusGhostblade.PERCENT_TIME_ON;}
+        //if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.moveSpeedPercent += .2*YoumuusGhostblade.PERCENT_TIME_ON;}
         
         //Add benefits from basic passives:
         if (basicPassives.contains(BPassive.INFINITY_EDGE_PASSIVE))     {this.addedCritDamage += .5;}
@@ -213,7 +210,7 @@ public class BuildInfo
     {
         //Stringbuilder concatenation is so ugly!
         //If we want to use the "+" operator to concatenate strings in an
-        //inner loop, shouldn't java be smart enough to switch it to a stringbuilder?
+        //inner loop, shouldn't java compilation be smart enough to switch it to a stringbuilder?
         logs.get(ability).append(" - +").append(amount).append(" from ").append(i.getName()).append("\n");
     }
 
@@ -221,6 +218,10 @@ public class BuildInfo
     {
         return passives.contains(cPassive);
     }
+    
+    //And all that above was the constructor, basically. When we are done,
+    //we get this list of attributes, then used to calculate heuristic components
+    //in an abstract LoL character.
 
         //cost
         public double cost = 0;
