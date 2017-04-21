@@ -32,8 +32,8 @@ public class BuildNoteTests
         Build b = new Build(i, new Xayah(), 100000, 100000, 100000, new RunePage(), new BlankMasteries());
         Build enemy = new Build(ei, new Xayah(), 100000, 100000, 100000, new RunePage(), new BlankMasteries());
         
-        b = BuildOptimizer.optimizeRunePage(b, enemy, HeuristicComponent.POKE_DAMAGE);
+        b = BuildOptimizer.optimizeRunePage(b, enemy, HeuristicComponent.RAW_POKE_DAMAGE);
         
-        System.out.println(b.getComponentMathNotes(HeuristicComponent.POKE_DAMAGE, enemy));
+        System.out.println(b.getComponentMathNotes(HeuristicComponent.RAW_POKE_DAMAGE));
     }
 }

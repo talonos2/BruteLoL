@@ -35,7 +35,7 @@ public class BruteLoL
         //TODO: Provide a way for the player to select a character.
         AbstractLolCharacter selectedCharacter = new Xayah();       
         //TODO: Provide a way for the player to select a heuristic.
-        HeuristicComponent h = HeuristicComponent.DAMAGE_PER_SECOND;
+        HeuristicComponent h = HeuristicComponent.RAW_DAMAGE_PER_SECOND;
         
         //Initialize items:
         Items.getAllItems();
@@ -53,7 +53,7 @@ public class BruteLoL
         //The work is done here.
         Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h, proposedBuild);
         
-        System.out.println(bestBuild.getComponentMathNotes(h, enemy));
+        System.out.println(bestBuild.getComponentMathNotes(h));
     }
     
 }

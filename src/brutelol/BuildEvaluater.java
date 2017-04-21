@@ -37,7 +37,7 @@ public class BuildEvaluater
         List<Build> foes = new ArrayList<>();
         
         toTest.getBBCode(foes, 1, "JhoiJhoi's Ashes to Ashes");
-        System.out.println(toTest.getComponentMathNotes(HeuristicComponent.DAMAGE_PER_SECOND, enemyTank));
+        System.out.println(toTest.getComponentMathNotes(HeuristicComponent.RAW_DAMAGE_PER_SECOND));
 }
 
     private static Build getEnemy() 

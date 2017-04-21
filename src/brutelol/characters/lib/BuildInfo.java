@@ -173,29 +173,6 @@ public class BuildInfo
         healthRegen+=c.getHealthRegen(b);
         manaRegen += c.getManaRegen(b);
         
-        
-        if (passives.contains(CPassive.WITS_END_PASSIVE))          {this.magicResist += 12.5;} //Assume 2.5 hits.
-        //if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.attackSpeed += .4*YoumuusGhostblade.PERCENT_TIME_ON;}
-        //if (passives.contains(CPassive.YOUMUUS_GHOSTBLADE_ACTIVE)) {this.moveSpeedPercent += .2*YoumuusGhostblade.PERCENT_TIME_ON;}
-        
-        //Add benefits from basic passives:
-        if (basicPassives.contains(BPassive.INFINITY_EDGE_PASSIVE))     {this.addedCritDamage += .5;}
-        if (basicPassives.contains(BPassive.BLOODTHIRSTER_PASSIVE))     {this.lifeSteal += .2;}
-        if (basicPassives.contains(BPassive.HEXTECH_GUNBLADE_PASSIVE))  {this.spellvamp += .2;}
-        if (basicPassives.contains(BPassive.BLACK_CLEAVER_PASSIVE))     {this.armorPenetrationFlat += 10;}
-        if (basicPassives.contains(BPassive.NASHOR_PASSIVE))            {this.cooldownReduction += .2;}
-        if (basicPassives.contains(BPassive.EYES_OF_PAIN_PASSIVE))      {this.magicPenetrationFlat += 15;}
-        if (basicPassives.contains(BPassive.LOCKET_PASSIVE))            {this.healthRegen += 10;this.magicResist += 20;}
-        if (basicPassives.contains(BPassive.INSIGHT_PASSIVE))           {this.abilityPower += this.mana*.03;}
-        if (basicPassives.contains(BPassive.WOOGLETS_PASSIVE))          {this.abilityPower *= 1.25;}
-        if (basicPassives.contains(BPassive.DEATHCAP_PASSIVE))          {this.abilityPower *= 1.3;}
-        if (basicPassives.contains(BPassive.WARMOGS_PASSIVE))           {this.healthRegen += this.hp*.01;}
-        if (basicPassives.contains(BPassive.SPIRIT_VISAGE_PASSIVE))     {this.healthRegen *= 1.2; this.lifeSteal *= 1.2; this.spellvamp *= 1.2;}
-        if (basicPassives.contains(BPassive.YOUMUUS_GHOSTBLADE_PASSIVE)){this.armorPenetrationFlat += 20;}
-        if (basicPassives.contains(BPassive.MANA_FONT_PASSIVE))         {this.manaRegen *= 1.5;}
-        if (basicPassives.contains(BPassive.WARMOGS_PASSIVE))           {this.healthRegen += this.hp*.01;}
-        if (basicPassives.contains(BPassive.LAST_WHISPER_PASIVE))       {this.armorPenetrationPercent += .35;}
-        
         if (mathNotes != null)
         {
             for (Ability a : Ability.values())

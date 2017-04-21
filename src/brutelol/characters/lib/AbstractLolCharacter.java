@@ -157,7 +157,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
     //Most of these are good for most champions, but specific champion passives will
     //require the author to overwrite these. (I'm looking at you, Ashe and Jhin!)
 
-    protected double getBasePhysicalDamagePerAttack(Build b, Build enemy) 
+    protected double getBasePhysicalDamagePerAttack(Build b) 
     {
         BuildInfo stats = b.getBuildInfo();
         
@@ -179,46 +179,20 @@ public abstract class AbstractLolCharacter implements LolCharacter
         }
         b.addLineToNotes(" - Base attack damage is "+damagePerAttack+".");
         b.addLineToNotes(" - We add average crit damage: "+damagePerAttack+"×"+cappedCritChance+"×(1 + "+stats.addedCritDamage+").");
-        b.addLineToNotes(" - Total damage so far is "+damageIncludingCrits+".");
-        b.addLineToNotes(" - We then apply enemy armor: ");
+        b.addLineToNotes(" - Total basic damage is "+damageIncludingCrits+".");
         
-        //Apply Armor
-        double damageAfterArmor = applyEnemyArmor(damageIncludingCrits, b, enemy);
-        
-        b.addLineToNotes(" - Final base physical damage per attack: "+damageAfterArmor);
-        
-        return damageAfterArmor;
+        return damageIncludingCrits;
     }
 
     /**
-     * Gets the bonus physical damage on an auto-attack from (for instance) on-hit
-     * effects like a Blade of the Ruined King.
+     * Gets the bonus physical damage on an auto-attack that are independent of
+     * target. (I think there are none for now, but I'll see later.)
      * @param b the build to get data from.
-     * @param enemy the enemy we are attacking with this hit.
      * @return 
      */
-    protected double getBonusPhysicalDamagePerAttack(Build b, Build enemy) 
+    protected double getBonusPhysicalDamagePerAttack(Build b) 
     {
-        double bonusDamage = 0;
-        if (b.getBuildInfo().hasPassive(CPassive.RUINED_KING_PASSIVE))
-        {
-            bonusDamage += enemy.getBuildInfo().hp * .08;
-        }
-        
-        if (bonusDamage != 0)
-        {
-            b.addLineToNotes("CALCULATION OF BONUS PHYSICAL DAMAGE PER ATTACK: ");
-            if (b.getBuildInfo().hasPassive(CPassive.RUINED_KING_PASSIVE))
-            {
-                b.addLineToNotes(" - The Ruin passive adds (Enemy max HP × 8% to the attack, or "+enemy.getBuildInfo().hp +" × .08 = "+(enemy.getBuildInfo().hp * .08));
-            }
-            b.addLineToNotes(" - Subtotal bonus damage per attack: "+bonusDamage);
-            
-            bonusDamage = this.applyEnemyArmor(bonusDamage, b, enemy);
-            b.addLineToNotes(" - final bonus damage per attack: "+bonusDamage);
-        }
-        
-        return bonusDamage;
+        return 0;
     }
 
     /**
@@ -252,10 +226,9 @@ public abstract class AbstractLolCharacter implements LolCharacter
     /**
      * Gets the magic damage per auto-attack from, for instance, wits end.
      * @param b the build to evaluate
-     * @param enemy the enemy we are striking
      * @return the magic damage dealt per auto-attack.
      */
-    protected double getMagicDamagePerAttack(Build b, Build enemy) 
+    protected double getMagicDamagePerAttack(Build b) 
     {
         double toReturn = 0;
         double shivDamage = 0;
@@ -269,10 +242,6 @@ public abstract class AbstractLolCharacter implements LolCharacter
         if (b.getBuildInfo().hasPassive(CPassive.WITS_END_PASSIVE))
         {
             toReturn += 42;
-        }
-        if (b.getBuildInfo().hasPassive(CPassive.FERAL_FLARE_PASSIVE)) //TODO: Remove. RIP Feral Flare. :(
-        {
-            toReturn += 55;
         }
         if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
         {
@@ -296,10 +265,6 @@ public abstract class AbstractLolCharacter implements LolCharacter
             {
                 b.addLineToNotes(" - Wits End adds 42 damage.");
             }
-            if (b.getBuildInfo().hasPassive(CPassive.FERAL_FLARE_PASSIVE))
-            {
-                b.addLineToNotes(" - Feral flare adds 55 damage (Because we assume super late game).");
-            }
             if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
             {
                 b.addLineToNotes(" - Assume stattick shiv (100 extra damage) goes off 10% of the time:");
@@ -307,9 +272,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
                 b.addLineToNotes("   - 10 + (10 × ("+cappedCritChance*100+" × "+(1+critDamage)*100+"%))");
                 b.addLineToNotes("   - "+shivDamage+" extra damage from Shiv");
             }
-            b.addLineToNotes(" - Subtotal bonus damage per attack: "+toReturn);
-            toReturn = this.applyEnemyMagicResist(toReturn, b, enemy);
-            b.addLineToNotes(" - final bonus damage per attack: "+toReturn);
+            b.addLineToNotes(" - Bonus magic damage per attack: "+toReturn);
         }
         
         return toReturn;
@@ -318,17 +281,16 @@ public abstract class AbstractLolCharacter implements LolCharacter
     /**
      * Returns the amount of life stolen per auto-attack.
      * @param b the build to evaluate
-     * @param enemy the enemy we are attacking
      * @return the life stolen per auto-attack.
      */
-    protected double getLifeStolenPerAttack(Build b, Build enemy) 
+    protected double getRawLifeStolenPerAttack(Build b) 
     {
         //This is the first time we see this: One Heuristic Component might rely on another. We don't
         //want to recalculate it if we already have it for other reasons, so we cache calculations
         //we have already done in the build. We retrieve those (or perhaps calculate them for
         //the first time) in Build.getComponent(component, foe)
-        double damage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
-        damage += b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
+        double damage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK);
+        damage += b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
         
         double lifeStealPercent = b.getBuildInfo().lifeSteal;
         
@@ -338,14 +300,13 @@ public abstract class AbstractLolCharacter implements LolCharacter
     /**
      * Returns the damage per second dealt while auto-attacking.
      * @param b the build to evaluate.
-     * @param enemy the enemy we are auto-attacking.
      * @return the damage per second.
      */
-    protected double getDamagePerSecond(Build b, Build enemy) 
+    protected double getRawDamagePerSecond(Build b) 
     {
-        double totalDamage = b.getComponent(HeuristicComponent.TOTAL_DAMAGE_PER_ATTACK, enemy);
-        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND, enemy);
-        b.addLineToNotes("CALCULATION OF TOTAL DAMAGE PER SECOND: ");
+        double totalDamage = b.getComponent(HeuristicComponent.RAW_TOTAL_DAMAGE_PER_ATTACK);
+        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
+        b.addLineToNotes("CALCULATION OF TOTAL RAW DAMAGE PER SECOND: ");
         b.addLineToNotes(" - As stated earlier, we have "+attacks+" attacks per second.");
         b.addLineToNotes(" - Also stated earlier, we have "+totalDamage+" damage per attack.");
         b.addLineToNotes(" - multiply that by "+attacks+" to give you a total of "+attacks*(totalDamage));
@@ -361,9 +322,9 @@ public abstract class AbstractLolCharacter implements LolCharacter
      */
     protected double getTotalDamagePerAttack(Build b, Build enemy) 
     {
-        double basePhysicalDamage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
-        double bonusPhysicalDamage = b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK, enemy);
-        double bonusMagicDamage = b.getComponent(HeuristicComponent.MAGIC_DAMAGE_PER_ATTACK, enemy);
+        double basePhysicalDamage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK);
+        double bonusPhysicalDamage = b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
+        double bonusMagicDamage = b.getComponent(HeuristicComponent.MAGIC_DAMAGE_PER_ATTACK);
         double totalDamage = basePhysicalDamage+bonusPhysicalDamage+bonusMagicDamage;
         b.addLineToNotes("CALCULATION OF DAMAGE PER ATTACK: ");
         b.addLineToNotes(" - Also stated earlier, we have "+basePhysicalDamage+" base damage.");
@@ -377,17 +338,16 @@ public abstract class AbstractLolCharacter implements LolCharacter
     /**
      * Get the total life stolen per second.
      * @param b the build to evaluate
-     * @param enemy the enemy we are attacking
      * @return 
      */
-    protected double getLifeStolenPerSecond(Build b, Build enemy) 
+    protected double getLifeStolenPerSecond(Build b) 
     {
-        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND, enemy);
-        double lifesteal = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_ATTACK, enemy);
+        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
+        double lifesteal = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_ATTACK);
         return attacks*lifesteal;
     }
     
-    protected double getEnemyArmorDamageMultiplier(Build b, Build enemy) 
+    protected double getArmorRatio(Build b, Build enemy) 
     {
         double armor = enemy.getBuildInfo().armor;
         b.addLineToNotes("CALCULATION OF DAMAGE MULTIPLIER DUE TO ENEMY ARMOR:");
@@ -420,7 +380,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return ratio;
     }
     
-    protected double getEnemyMagicResistDamageMultiplier(Build b, Build enemy) 
+    protected double getMagicResistRatio(Build b, Build enemy) 
     {
         double mr = enemy.getBuildInfo().magicResist;
         b.addLineToNotes("CALCULATION OF DAMAGE MULTIPLIER DUE TO ENEMY MAGIC RESIST:");
@@ -461,7 +421,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
 
     protected double applyEnemyArmor(double damage, Build b, Build enemy) 
     {
-        double ratio = b.getComponent(HeuristicComponent.ENEMY_ARMOR_DAMAGE_MULTIPLIER, enemy);
+        double ratio = enemy.getComponent(HeuristicComponent.ARMOR_DAMAGE_MULTIPLIER);
         double newDamage = damage * ratio;
         
         b.addLineToNotes("   - The damage of "+damage+" is multiplied by the armor ratio: "+ratio+", leaving us with "+newDamage+".");
@@ -471,7 +431,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
     
     protected double applyEnemyMagicResist(double damage, Build b, Build enemy) 
     {
-        double ratio = b.getComponent(HeuristicComponent.ENEMY_MAGIC_RESIST_DAMAGE_MULTIPLIER, enemy);
+        double ratio = enemy.getComponent(HeuristicComponent.RESIST_DAMAGE_MULTIPLIER);
         double newDamage = damage * ratio;
         
         b.addLineToNotes("   - The damage of "+damage+" is multiplied by the magic resist ratio: "+ratio+", leaving us with "+newDamage+".");
@@ -489,12 +449,11 @@ public abstract class AbstractLolCharacter implements LolCharacter
      * Poke damage represents the damage dealt by a single "Quick combo," like an ashe volley+AA
      * or a Xayah Q-AA-E. For a generic character, let's assume this is just an auto-attack.
      * @param b the build doing the poking.
-     * @param enemy the enemy being poked.
      * @return the poke damage.
      */
-    public double getPokeDamage(Build b, Build enemy) 
+    public double getRawPokeDamage(Build b) 
     {
-        double totalDamage = b.getComponent(HeuristicComponent.TOTAL_DAMAGE_PER_ATTACK, enemy);
+        double totalDamage = b.getComponent(HeuristicComponent.RAW_TOTAL_DAMAGE_PER_ATTACK);
         b.addLineToNotes("CALCULATION OF POKE DAMAGE:");
         b.addLineToNotes(" - The character pokes with an auto attack, doing, as previously stated, "+totalDamage+"damage.");
         if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
@@ -509,15 +468,9 @@ public abstract class AbstractLolCharacter implements LolCharacter
             b.addLineToNotes("   - 90 damage with a "+cappedCritChance*100+"% chance of doing "+(1+critDamage)*100+"% normal damage:");
             b.addLineToNotes("   - 90 + (90 × ("+cappedCritChance*100+" × "+(1+critDamage)*100+"%))");
             b.addLineToNotes("   - "+shivDamage+" extra damage from Shiv");
-            shivDamage = this.applyEnemyMagicResist(shivDamage, b, enemy);
             totalDamage += shivDamage;
         }
         b.addLineToNotes(" - Total of "+totalDamage+" poke damage.");
         return totalDamage;
-    }
-    
-    public double getTotalDamagePerWDamage(Build b, Build enemy) 
-    {
-        throw new UnsupportedOperationException("Abstract characters have no W!");
     }
 }

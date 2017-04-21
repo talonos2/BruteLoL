@@ -41,25 +41,6 @@ public class Build
         this.runes = runes;
         this.info = character.getBuildInfo(this, null);
     }
-
-    /**
-     * Gets the value of a Heuristic, by either calculating it or using a cached
-     * value. We do so by passing off the heavy lifting to the character we contain.
-     * However, because the character needs to do things with the build (such as updating
-     * its math notes and getting the build's buildinfo) we pass in ourselves as well.
-     * 
-     * @param h the heuristic to get
-     * @param enemy the enemy with which to calculate the heuristic.
-     * @return the value of the heuristic component.
-     */
-    public double getComponent(HeuristicComponent h, Build enemy) 
-    {
-        if (!components.containsKey(h))
-        {
-            components.put(h, character.getComponentUtility(this, enemy, h));
-        }
-        return components.get(h);
-    }
     
     public ItemSet getItems()
     {
@@ -107,7 +88,7 @@ public class Build
      * @param enemy
      * @return 
      */
-    public String getComponentMathNotes(HeuristicComponent h, Build enemy)
+    public String getComponentMathNotes(HeuristicComponent h)
     {
         //We might have already calculated the component, so clear our component
         //cache. This shouldn't be a problem, because we should never be printing
@@ -125,7 +106,7 @@ public class Build
         //Calculating the component also calculates the sub-components needed to
         //calculate the component to begin with. Because we turned the notes on,
         //all their math will also be added.
-        this.getComponent(h, enemy);
+        this.getComponent(h);
         String toReturn = notes.toString();
         this.turnOffNotes();
         return toReturn;
@@ -236,7 +217,7 @@ public class Build
             total.append(h.getName());
             total.append(": ");
             total.append(BB_BOLD);
-            this.getComponent(h, null); //We put null here because if anything requires multiple
+            this.getComponent(h); //We put null here because if anything requires multiple
             total.append(h.getBoldPostfix());
             total.append(BB_UNBOLD);
             total.append(h.getNotBoldPostfix());
@@ -314,6 +295,39 @@ public class Build
         
         */
         
+    }
+
+    /**
+     * Gets the value of a Heuristic, by either calculating it or using a cached
+     * value. We do so by passing off the heavy lifting to the character we contain.
+     * However, because the character needs to do things with the build (such as updating
+     * its math notes and getting the build's buildinfo) we pass in ourselves as well.
+     * 
+     * @param h the heuristic to get.
+     * @return the value of the heuristic component.
+     */
+    
+    public double getComponent(HeuristicComponent h) 
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+     * Gets the value of a targeted Heuristic, by either calculating it or using 
+     * a cached value. A "Targeted" Heuristic is one that requires a target. (Such
+     * as an ally you are healing or an enemy you are attacking.
+     * 
+     * @param h the heuristic to get.
+     * @param target the target you are calculating against.
+     * @return the value of the heuristic component.
+     */
+    public double getTargetedComponent(HeuristicComponent h, Build target) 
+    {
+        if (!components.containsKey(h))
+        {
+            components.put(h, character.getComponentUtility(this, target, h));
+        }
+        return components.get(h);
     }
     
 }

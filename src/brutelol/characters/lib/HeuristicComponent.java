@@ -9,27 +9,26 @@ package brutelol.characters.lib;
  */
 public enum HeuristicComponent 
 {
-    BASE_PHYSICAL_DAMAGE_PER_ATTACK,
-    BONUS_PHYSICAL_DAMAGE_PER_ATTACK,
-    MAGIC_DAMAGE_PER_ATTACK,
-    ATTACKS_PER_SECOND,
-    LIFE_STOLEN_PER_ATTACK,
-    LIFE_STOLEN_PER_SECOND,
-    HEALING_PER_SECOND, 
-    DAMAGE_PER_SECOND,
-    ENEMY_ARMOR_DAMAGE_MULTIPLIER,
-    ENEMY_MAGIC_RESIST_DAMAGE_MULTIPLIER,
-    STANCE_COOLDOWN, 
-    BURST_DAMAGE, 
-    DAMAGE_PER_ATTACK, 
-    KITING_DAMAGE_PER_SECOND, 
-    TIME_SURVIVING_AGAINST, 
-    MAGIC_BURST_HP, 
-    PHYSICAL_BURST_HP, 
-    COST, 
-    TOTAL_DAMAGE_PER_ATTACK,
-    POKE_DAMAGE,
-    TOTAL_DAMAGE_PER_W;
+    BONUS_ATTACK_DAMAGE_STAT,              //Bonus (not base) AD. Used on some ability calculations
+    BASE_PHYSICAL_DAMAGE_PER_ATTACK,       //Raw physical damage per AA
+    BONUS_PHYSICAL_DAMAGE_PER_ATTACK,      //Extra raw physical damage from effects.
+    MAGIC_DAMAGE_PER_ATTACK,               //Extra raw magic damage from effects
+    RAW_TOTAL_DAMAGE_PER_ATTACK,           //Total damage dealt to unarmored target/AA
+    ATTACKS_PER_SECOND,                    //Attacks per second.
+    RAW_DAMAGE_PER_SECOND,                 //Raw damage per second
+    RAW_KITING_DAMAGE_PER_SECOND,          //I'm chasing you down... without stutter stepping
+    LIFE_STOLEN_PER_ATTACK,                //Raw Life Stolen Per Second
+    HEALING_PER_SECOND,                    //Heal/sec, definition of "heal" varies.
+    RAW_PHYSICAL_BURST_DAMAGE,             //Physical damage dealt in a "long" combo
+    RAW_MAGICAL_BURST_DAMAGE,              //Magical damage dealt in a "long" combo
+    RAW_BURST_DAMAGE,                      //Total raw damage dealt in a "long" combo
+    RAW_PHYSICAL_POKE_DAMAGE,              //Physical damage dealt in a "short" combo
+    RAW_MAGICAL_POKE_DAMAGE,               //Magical damage dealt in a "short" combo
+    RAW_POKE_DAMAGE,                       //Total raw damage dealt in a "short" combo
+    COST,                                  //Cost of the Build
+    
+    ARMOR_DAMAGE_MULTIPLIER,
+    RESIST_DAMAGE_MULTIPLIER;
 
     public String getName() 
     {

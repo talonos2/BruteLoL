@@ -75,7 +75,7 @@ public class BuildOptimizer
     {
         //Get a fail-fast amount. Any builds that to not meet this minimum build will not have their
         //runes evaluated, to save on computation time.
-        double amountToBeat = suggested.getComponent(h, enemy);
+        double amountToBeat = suggested.getComponent(h);
         amountToBeat *= (1-WIGGLE_AMOUNT); //Leave a little wiggle room.
         
         // create array of initial items
@@ -113,7 +113,7 @@ public class BuildOptimizer
         }
         
         //Set up a data structure to store builds:
-        double bestSoFar = suggested.getComponent(h, enemy);
+        double bestSoFar = suggested.getComponent(h);
         Map<Double, Build> bestBuilds = new TreeMap<>();
         bestBuilds.put(bestSoFar, suggested);
 
@@ -137,7 +137,7 @@ public class BuildOptimizer
             
             ItemSet items = new ItemSet(itemList);
             Build build = new Build(items, selectedCharacter, 100000, 100000, 100000, blankPage, sampleMasteries);
-            double utility = build.getComponent(h, enemy);
+            double utility = build.getComponent(h);
             
             //If the build is good enough to be considered viably better...
             if (utility > amountToBeat)
@@ -145,7 +145,7 @@ public class BuildOptimizer
                 viablePossibilities++;
                 //Optimize its runepage.
                 build = optimizeRunePage(build, enemy, h);
-                utility = build.getComponent(h, enemy);
+                utility = build.getComponent(h);
             }
             
             if (utility > bestSoFar)
@@ -164,7 +164,7 @@ public class BuildOptimizer
         for (Build b : bestBuilds.values())
         {
             System.out.println(b.getItems());
-            System.out.println(b.getComponent(h, enemy));
+            System.out.println(b.getComponent(h));
             //selectedCharacter.showWork(b);
         }
         
@@ -217,7 +217,7 @@ public class BuildOptimizer
         for (int x = 0; x < POPULATION_SIZE; x++)
         {
             RunePage r = RunePage.getRandomPage(dice);
-            double fitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, r, sampleMasteries).getComponent(h, enemy);
+            double fitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, r, sampleMasteries).getComponent(h);
             populationFitness.put(r, fitness);
             population.add(r);
         }
@@ -236,7 +236,7 @@ public class BuildOptimizer
             //diversity.
             RunePage contender = getClosestRunePage(babyRunePage, population);
             
-            double babyFitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, babyRunePage, sampleMasteries).getComponent(h, enemy);
+            double babyFitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, babyRunePage, sampleMasteries).getComponent(h);
             double contenderFitness = populationFitness.get(contender);
             //Yes, I'm totally pitting baby runepages against fully grown ones in a
             //gladiatorial arena.
