@@ -10,6 +10,7 @@ import brutelol.charbuild.MapEnum;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 public class Items 
 {
-    private static Map<MapEnum, List<Item>> pOptimalItems;
+    private static Map<MapEnum, List<Item>> pOptimalItems = new EnumMap<>(MapEnum.class);
     private static List<Item> allItems;
     private static Map<Item, Integer> itemIDs = new HashMap();
     
@@ -29,6 +30,7 @@ public class Items
         allItems = new ArrayList<>();
         
         allItems.add(new NoItem());
+        allItems.add(new InfinityEdge());
         
         int id = 0;
         for (Item i : allItems)
@@ -58,7 +60,7 @@ public class Items
                     pOptimalMapItems.add(i);
                 }
             }
-            return pOptimalItems.put(map,pOptimalMapItems);
+            pOptimalItems.put(map,pOptimalMapItems);
         }
         return pOptimalItems.get(map);
     }

@@ -320,11 +320,11 @@ public abstract class AbstractLolCharacter implements LolCharacter
      * @param enemy the enemy we are auto-attacking.
      * @return the damage per auto-attack.
      */
-    protected double getTotalDamagePerAttack(Build b, Build enemy) 
+    protected double getRawTotalDamagePerAttack(Build b) 
     {
         double basePhysicalDamage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK);
         double bonusPhysicalDamage = b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
-        double bonusMagicDamage = b.getComponent(HeuristicComponent.MAGIC_DAMAGE_PER_ATTACK);
+        double bonusMagicDamage = b.getComponent(HeuristicComponent.BONUS_MAGIC_DAMAGE_PER_ATTACK);
         double totalDamage = basePhysicalDamage+bonusPhysicalDamage+bonusMagicDamage;
         b.addLineToNotes("CALCULATION OF DAMAGE PER ATTACK: ");
         b.addLineToNotes(" - Also stated earlier, we have "+basePhysicalDamage+" base damage.");

@@ -9,7 +9,9 @@ package brutelol.characters.instances;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.BuildInfo;
 import brutelol.characters.lib.HeuristicComponent;
+import brutelol.characters.lib.TargetedHeuristicComponent;
 import brutelol.charbuild.Build;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,15 +53,44 @@ public class Xayah extends AbstractLolCharacter
     }
 
     @Override
-    public double getComponentUtility(Build b, Build enemy, HeuristicComponent selectedHeuristic) 
+    public double getComponentUtility(Build b, HeuristicComponent h) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.missingItems(b.getItems()))
+        {
+            b.addLineToNotes("Failed because required items are not included!");
+            return -0.5;
+        }
+        //System.out.println("Here at "+h);
+        switch(h)
+        {
+            case BASE_PHYSICAL_DAMAGE_PER_ATTACK:
+                return this.getBasePhysicalDamagePerAttack(b);
+            case BONUS_PHYSICAL_DAMAGE_PER_ATTACK:
+                return this.getBonusPhysicalDamagePerAttack(b);
+            case BONUS_MAGIC_DAMAGE_PER_ATTACK:
+                return this.getMagicDamagePerAttack(b);
+            case ATTACKS_PER_SECOND:
+                return this.getAttacksPerSecond(b);
+            case RAW_DAMAGE_PER_SECOND:
+                return getRawDamagePerSecond(b);
+            case RAW_TOTAL_DAMAGE_PER_ATTACK:
+                return getRawTotalDamagePerAttack(b);
+            default:
+                throw new IllegalArgumentException("Bad HeuristicComponent: "+h);
+        }
     }
 
     @Override
     public List<HeuristicComponent> supportedComponents() 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<HeuristicComponent> toReturn = new ArrayList<>();
+        toReturn.add(HeuristicComponent.RAW_DAMAGE_PER_SECOND);
+        toReturn.add(HeuristicComponent.RAW_TOTAL_DAMAGE_PER_ATTACK);
+        toReturn.add(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
+        toReturn.add(HeuristicComponent.BONUS_MAGIC_DAMAGE_PER_ATTACK);
+        toReturn.add(HeuristicComponent.ATTACKS_PER_SECOND);
+        toReturn.add(HeuristicComponent.COST);
+        return toReturn;
     }
 
     @Override
@@ -69,8 +100,14 @@ public class Xayah extends AbstractLolCharacter
     }
 
     @Override
-    public BuildInfo getBuildInfo(Build aThis, StringBuilder mathNotes) 
+    public BuildInfo getBuildInfo(Build b, StringBuilder mathNotes) 
     {
+        BuildInfo info = new BuildInfo(this, b, mathNotes);
+        return info;
+    }
+
+    @Override
+    public double getTargetedComponentUtility(Build b, Build target, TargetedHeuristicComponent selectedHeuristic) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

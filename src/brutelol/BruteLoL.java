@@ -15,6 +15,7 @@ import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
+import brutelol.items.instances.NoItem;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,12 @@ public class BruteLoL
         //Having a list of proposed items lets us cut bad search avenues quickly.
         //Enter a proposed item list here.
         List<Item> proposedItems = new ArrayList<Item>();
+        proposedItems.add(new NoItem());
+        proposedItems.add(new NoItem());
+        proposedItems.add(new NoItem());
+        proposedItems.add(new NoItem());
+        proposedItems.add(new NoItem());
+        proposedItems.add(new NoItem());
         Build proposedBuild = new Build(new ItemSet(proposedItems), selectedCharacter, 100000, 10000, 10000, new RunePage(), new BlankMasteries());
         
         //The work is done here.

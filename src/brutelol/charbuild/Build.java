@@ -5,10 +5,13 @@ import brutelol.characters.lib.Masteries;
 import brutelol.characters.lib.BuildInfo;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
+import brutelol.characters.lib.TargetedHeuristicComponent;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A build is a collection of itemset, runes, character, and masteries, ready to evaluate.
@@ -23,6 +26,7 @@ public class Build
     private BuildInfo info;
     private Masteries masteries;
     private Map<HeuristicComponent, Double> components = new EnumMap<>(HeuristicComponent.class);
+    private final Map<TargetHeuristicWrapper, Double> tComponents = new HashMap<>();
     
     private int gold;
     private int time;
@@ -309,7 +313,11 @@ public class Build
     
     public double getComponent(HeuristicComponent h) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!components.containsKey(h))
+        {
+            components.put(h, character.getComponentUtility(this, h));
+        }
+        return components.get(h);
     }
     
     /**
@@ -321,13 +329,59 @@ public class Build
      * @param target the target you are calculating against.
      * @return the value of the heuristic component.
      */
-    public double getTargetedComponent(HeuristicComponent h, Build target) 
+    public double getTargetedComponent(TargetedHeuristicComponent h, Build target) 
     {
-        if (!components.containsKey(h))
+        TargetHeuristicWrapper thw = new TargetHeuristicWrapper(target, h);
+        if (!tComponents.containsKey(thw))
         {
-            components.put(h, character.getComponentUtility(this, target, h));
+            tComponents.put(thw, character.getTargetedComponentUtility(this, target, h));
         }
-        return components.get(h);
+        return tComponents.get(thw);
+    }
+    
+    private class TargetHeuristicWrapper
+    {
+        private Build target;
+        private TargetedHeuristicComponent thc;
+        TargetHeuristicWrapper(Build target, TargetedHeuristicComponent thc)
+        {
+            this.target = target;
+            this.thc = thc;
+        }
+
+        @Override
+        public int hashCode() 
+        {
+            int hash = 7;
+            hash = 61 * hash + Objects.hashCode(this.target);
+            hash = 61 * hash + Objects.hashCode(this.thc);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) 
+        {
+            if (obj == null) 
+            {
+                return false;
+            }
+            if (getClass() != obj.getClass()) 
+            {
+                return false;
+            }
+            final TargetHeuristicWrapper other = (TargetHeuristicWrapper) obj;
+            if (!Objects.equals(this.target, other.target)) 
+            {
+                return false;
+            }
+            if (this.thc != other.thc) 
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        
     }
     
 }

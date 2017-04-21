@@ -12,7 +12,7 @@ public enum HeuristicComponent
     BONUS_ATTACK_DAMAGE_STAT,              //Bonus (not base) AD. Used on some ability calculations
     BASE_PHYSICAL_DAMAGE_PER_ATTACK,       //Raw physical damage per AA
     BONUS_PHYSICAL_DAMAGE_PER_ATTACK,      //Extra raw physical damage from effects.
-    MAGIC_DAMAGE_PER_ATTACK,               //Extra raw magic damage from effects
+    BONUS_MAGIC_DAMAGE_PER_ATTACK,         //Extra raw magic damage from effects
     RAW_TOTAL_DAMAGE_PER_ATTACK,           //Total damage dealt to unarmored target/AA
     ATTACKS_PER_SECOND,                    //Attacks per second.
     RAW_DAMAGE_PER_SECOND,                 //Raw damage per second
