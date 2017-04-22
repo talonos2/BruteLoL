@@ -3,8 +3,8 @@ package brutelol.characters.lib;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.runes.RunePage;
-import brutelol.items.abstracts.BPassive;
-import brutelol.items.abstracts.CPassive;
+import brutelol.items.abstracts.BUnique;
+import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -64,8 +64,8 @@ public class BuildInfo
     private RunePage runes = null;
     private Masteries masteries = null;
     
-    private Set<BPassive> basicPassives = EnumSet.noneOf(BPassive.class);
-    private Set<CPassive> passives = EnumSet.noneOf(CPassive.class);
+    private Set<BUnique> basicUniques = EnumSet.noneOf(BUnique.class);
+    private Set<CUnique> compUniques = EnumSet.noneOf(CUnique.class);
     
     //TODO: This will probably need to change as we work on build paths. For now, it's hardcoded.
     public double level = 18;
@@ -79,7 +79,7 @@ public class BuildInfo
             {
                 logs.put(a, new StringBuilder());
                 logs.get(a).append("Calculation of "+a.getName()+":\n"
-                                 + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+                                 + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n"
                                  + "From Items:\n");
             }
         }
@@ -122,8 +122,8 @@ public class BuildInfo
             healthRegen+=i.getHealthRegen();
             manaRegen += i.getManaRegen();
             
-            basicPassives.addAll(i.getAllBasicPassives());
-            passives.addAll(i.getAllComplicatedPassives());
+            basicUniques.addAll(i.getAllBasicUniques());
+            compUniques.addAll(i.getAllComplicatedUniques());
             
             //Group all notes under one if statement to improve performance.
             if (mathNotes != null) 
@@ -146,16 +146,8 @@ public class BuildInfo
             }
         }
         
-        //Because of the warlord mastery, we must do masteries after all other sources
-        //of attack damage, but before adding character stuff. Luckily, there seems to
-        //be no passives that affect AD, so we can still apply item passives last...
+        //Add character attributes:
         
-        runes.applyRunesPass1(this, logs);
-        masteries.applyMasteries(this, logs);
-        
-        //Note: Warlord won't account for character-based steroids! We'll have to factor
-        //them in later. Ugly... :(
-            
         //attack
         attackDamage += c.getAttackDamage(b);
         attackSpeed+=c.getAttackSpeed(b);
@@ -173,11 +165,25 @@ public class BuildInfo
         healthRegen+=c.getHealthRegen(b);
         manaRegen += c.getManaRegen(b);
         
+        //Here, we add unique effects from items. Any effects that 
+        //are target-independant and affects basic statistics can go here.
+        //Also, "Basic" Uniques are ones that characters cannot access.
+        
+        //Complicated Uniques:
+        
+        //Basic Uniques
+        if (basicUniques.contains(BUnique.INFINITY_EDGE))     {this.addedCritDamage += .5;}
+        
         if (mathNotes != null)
         {
             for (Ability a : Ability.values())
             {
-                mathNotes.append(logs.get(a));
+                //Todo: Avoid copy/paste with final strings and replacements
+                if (!logs.get(a).toString().equals("Calculation of "+a.getName()+":\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\nFrom Items:\n"))
+                {
+                    //System.err.println(logs.get(a));
+                    mathNotes.append(logs.get(a));
+                }
             }
         }
               
@@ -188,12 +194,15 @@ public class BuildInfo
         //Stringbuilder concatenation is so ugly!
         //If we want to use the "+" operator to concatenate strings in an
         //inner loop, shouldn't java compilation be smart enough to switch it to a stringbuilder?
-        logs.get(ability).append(" - +").append(amount).append(" from ").append(i.getName()).append("\n");
+        if (amount != 0)
+        {
+            logs.get(ability).append(" - +").append(amount).append(" from ").append(i.getName()).append("\n");
+        }
     }
 
-    public boolean hasPassive(CPassive cPassive) 
+    public boolean hasUnique(CUnique unique) 
     {
-        return passives.contains(cPassive);
+        return compUniques.contains(unique);
     }
     
     //And all that above was the constructor, basically. When we are done,

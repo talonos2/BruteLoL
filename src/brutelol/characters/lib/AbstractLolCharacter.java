@@ -9,7 +9,7 @@ package brutelol.characters.lib;
 import brutelol.Funcs;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
-import brutelol.items.abstracts.CPassive;
+import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -234,7 +234,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
         double shivDamage = 0;
         double cappedCritChance = 0;
         double critDamage = 0;
-        if (b.getBuildInfo().hasPassive(CPassive.NASHOR_PASSIVE))
+        /*if (b.getBuildInfo().hasPassive(CPassive.NASHOR_PASSIVE))
         {
             toReturn += b.getBuildInfo().abilityPower*.15;
             toReturn += 15;
@@ -252,11 +252,11 @@ public abstract class AbstractLolCharacter implements LolCharacter
             shivDamage = 100 * .1;
             shivDamage=shivDamage+(shivDamage*cappedCritChance*(1+critDamage));
             toReturn += shivDamage;
-        }
+        }*/
         if (toReturn != 0)
         {
             b.addLineToNotes("CALCULATION OF BONUS MAGICAL DAMAGE PER ATTACK: ");
-            if (b.getBuildInfo().hasPassive(CPassive.NASHOR_PASSIVE))
+            /*if (b.getBuildInfo().hasPassive(CPassive.NASHOR_PASSIVE))
             {
                 b.addLineToNotes(" - Nashors Tooth adds (AP × 15% to the attack, or "+b.getBuildInfo().abilityPower +" × .15 = "+(b.getBuildInfo().abilityPower * .15));
                 b.addLineToNotes(" - It also adds another flat 15 damage.");
@@ -271,7 +271,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
                 b.addLineToNotes("   - 10 damage with a "+cappedCritChance*100+"% chance of doing "+(1+critDamage)*100+"% normal damage:");
                 b.addLineToNotes("   - 10 + (10 × ("+cappedCritChance*100+" × "+(1+critDamage)*100+"%))");
                 b.addLineToNotes("   - "+shivDamage+" extra damage from Shiv");
-            }
+            }*/
             b.addLineToNotes(" - Bonus magic damage per attack: "+toReturn);
         }
         
@@ -386,11 +386,11 @@ public abstract class AbstractLolCharacter implements LolCharacter
         b.addLineToNotes("CALCULATION OF DAMAGE MULTIPLIER DUE TO ENEMY MAGIC RESIST:");
         b.addLineToNotes(" - Enemy magic resist is "+mr);
         
-        if (b.getBuildInfo().hasPassive(CPassive.WITS_END_PASSIVE))
+        /*if (b.getBuildInfo().hasPassive(CPassive.WITS_END_PASSIVE))
         {
             mr-=12.5;
             b.addLineToNotes(" - We assume your opponent has an average of 2.5 stacks of wits end on him. That's -12.5 Magic resist, for "+mr+" resist. ");
-        }
+        }*/
         
         if (b.getBuildInfo().magicPenetrationPercent > 0)
         {
@@ -456,7 +456,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
         double totalDamage = b.getComponent(HeuristicComponent.RAW_TOTAL_DAMAGE_PER_ATTACK);
         b.addLineToNotes("CALCULATION OF POKE DAMAGE:");
         b.addLineToNotes(" - The character pokes with an auto attack, doing, as previously stated, "+totalDamage+"damage.");
-        if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
+        /*if (b.getBuildInfo().hasPassive(CPassive.STATIKK_PASSIVE))
         {
             double critChance = b.getBuildInfo().critChance;
             double critDamage = b.getBuildInfo().addedCritDamage;
@@ -469,7 +469,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
             b.addLineToNotes("   - 90 + (90 × ("+cappedCritChance*100+" × "+(1+critDamage)*100+"%))");
             b.addLineToNotes("   - "+shivDamage+" extra damage from Shiv");
             totalDamage += shivDamage;
-        }
+        }*/
         b.addLineToNotes(" - Total of "+totalDamage+" poke damage.");
         return totalDamage;
     }

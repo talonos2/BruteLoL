@@ -7,26 +7,29 @@
 package brutelol.items.instances;
 
 import brutelol.items.abstracts.BUnique;
-import brutelol.charbuild.MapEnum;
+import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
 
 /**
  *
  * @author Talonos
  */
-public class InfinityEdge extends Item
+public class PhantomDancer extends Item
 {
-    public InfinityEdge()
+    public PhantomDancer()
     {
         //Since patch 6.14;
         super();
-        this.critChance = .20;
-        this.attackDamage = 70;
-        this.cost = 3600;
+        this.critChance = .30;
+        this.moveSpeedPercent = .05;
+        this.attackSpeed = .45;
+        
+        this.cost = 2550;
         
         this.makeAvailableOnAllMaps();
         
-        this.setBasicUnique(BUnique.INFINITY_EDGE);
+        this.setComplicatedUnique(CUnique.SPECTRAL_WALTZ);
+        this.setComplicatedUnique(CUnique.LAMENT);
         
         this.pOptimal = true;
     }

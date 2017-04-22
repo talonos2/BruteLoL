@@ -21,6 +21,8 @@ import java.util.Set;
  */
 public abstract class Item 
 {
+    protected String name;
+    
     //Item base stats
     protected double attackSpeed = 0;
     protected double attackDamage = 0;
@@ -55,14 +57,14 @@ public abstract class Item
     protected boolean sellsForLittle = false;
     
     //What are this items prerequisites?
-    private List<Item> prerequisites = new ArrayList<>();
+    private final List<Item> prerequisites = new ArrayList<>();
     
     //Where is this available?
     Set<MapEnum> maps;
     
     //What passive flags are on?
-    Set<BPassive> basicPassives;
-    Set<CPassive> complicatedPassives;
+    Set<BUnique> basicUniques;
+    Set<CUnique> complicatedUniques;
     
     //Some unique effects are too complicated to be simple boolean flags. Those
     //are listed here.
@@ -74,8 +76,8 @@ public abstract class Item
     public Item() 
     {
         this.maps = EnumSet.noneOf(MapEnum.class);
-        this.basicPassives = EnumSet.noneOf(BPassive.class);
-        this.complicatedPassives = EnumSet.noneOf(CPassive.class);
+        this.basicUniques = EnumSet.noneOf(BUnique.class);
+        this.complicatedUniques = EnumSet.noneOf(CUnique.class);
     }
     
     public double getAttackSpeed()
@@ -243,28 +245,33 @@ public abstract class Item
         this.maps.add(mapEnum);
     }
     
-    protected void setBasicPassive(BPassive passive) 
+    protected void setBasicUnique(BUnique unique) 
     {
-        this.basicPassives.add(passive);
+        this.basicUniques.add(unique);
     }
     
-    protected void setComplicatedPassive(CPassive passive) 
+    protected void setComplicatedUnique(CUnique unique) 
     {
-        this.complicatedPassives.add(passive);
+        this.complicatedUniques.add(unique);
     }
     
-    public Collection<BPassive> getAllBasicPassives()
+    public Collection<BUnique> getAllBasicUniques()
     {
-        return Collections.unmodifiableSet(basicPassives);
+        return Collections.unmodifiableSet(basicUniques);
     }
     
-    public Collection<CPassive> getAllComplicatedPassives()
+    public Collection<CUnique> getAllComplicatedUniques()
     {
-        return Collections.unmodifiableSet(complicatedPassives);
+        return Collections.unmodifiableSet(complicatedUniques);
     }
 
     public Object getName() 
     {
-        return this.getClass().getName();
+        if (this.name == null)
+        {
+            String fullName = this.getClass().getName();
+            name = fullName.substring(fullName.lastIndexOf(".")+1);
+        }
+        return name;
     }
 }
