@@ -31,6 +31,7 @@ public class Items
         
         allItems.add(new NoItem());
         allItems.add(new InfinityEdge());
+        allItems.add(new PhantomDancer());
         
         int id = 0;
         for (Item i : allItems)

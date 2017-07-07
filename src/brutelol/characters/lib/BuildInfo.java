@@ -170,6 +170,7 @@ public class BuildInfo
         //Also, "Basic" Uniques are ones that characters cannot access.
         
         //Complicated Uniques:
+        if (compUniques.contains(CUnique.BLOODTHIRSTER))     {this.lifeSteal += .2;}
         
         //Basic Uniques
         if (basicUniques.contains(BUnique.INFINITY_EDGE))     {this.addedCritDamage += .5;}

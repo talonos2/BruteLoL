@@ -8,6 +8,6 @@ public enum MapEnum
 {
     SUMMONERS_RIFT,
     TWISTED_TREELINE,
-    HOWLING_ABYSS,
+    HOWLING_ABYSS;
     //CRYSTAL_SCAR (RIP Crystal Scar!)
 }
