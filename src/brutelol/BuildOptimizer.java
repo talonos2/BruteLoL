@@ -4,7 +4,7 @@ import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MapEnum;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.LolCharacter;
+import brutelol.characters.lib.ILolCharacter;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
 import brutelol.items.instances.NoItem;

@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Talonos
  */
-public abstract class AbstractLolCharacter implements LolCharacter
+public abstract class AbstractLolCharacter implements ILolCharacter
 {   
     /**
      * A stringbuilder to hold math notes so we can show our work.
