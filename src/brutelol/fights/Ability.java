@@ -38,7 +38,7 @@ public abstract class Ability
         return ratio*damage;
     }
 
-    double getCooldown(Combatant user) 
+    public double getCooldown(Combatant user) 
     {
         return 10;
     }

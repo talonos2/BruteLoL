@@ -18,15 +18,25 @@ public class AblAutoAttack extends Ability
     public void resolve(Combatant user, List<Combatant> targets) 
     {
         //For now, just target whoever has the least health, I guess.  
-        System.out.println(targets);
+        if (targets.isEmpty())
+        {
+            System.out.println(user+" has nothing left to attack!");
+            return;
+        }
         Combatant target = Collections.min(targets, new HpComparator());
         
         double damage = getBasePhysicalDamagePerAttack(user);
         damage = this.applyArmor(damage, target);
-        System.out.println(user+" deals "+damage+" damage to "+target);
+        target.dealDamage(damage);
+        System.out.println(user+" deals "+(int)damage+" damage to "+target);
+        if (target.isDead())
+        {
+            targets.remove(target);
+        }
     }
     
-    double getCooldown(Combatant user) 
+    @Override
+    public double getCooldown(Combatant user) 
     {
         return getAACooldown(user);
     }

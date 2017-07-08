@@ -10,9 +10,7 @@ public class Build
     private double utility = 0;
     private ItemSet items;
     private int time;
-    private int level;
-    
-    private StringBuilder notes;
+    private int level = 18;
     
     public Build(ItemSet items)
     {

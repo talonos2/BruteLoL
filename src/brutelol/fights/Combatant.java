@@ -7,7 +7,6 @@
 package brutelol.fights;
 
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.charbuild.Build;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +79,26 @@ public class Combatant
     double getRemainingCooldownOn(Ability ability) 
     {
         return cooldownMap.get(ability);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return wrappedChar.getName()+" ("+(int)getCurrentHP()+"/"+(int)wrappedChar.getStats().hp+")";
+    }
+
+    /**
+     * Deals "Raw" damage; assumed to already be reduced, etc.
+     * @param damage damage dealt.
+     */
+    public void dealDamage(double damage) 
+    {
+        this.damageTaken += damage;
+    }
+
+    public boolean isDead() 
+    {
+        return getCurrentHP()<=0;
     }
     
 }

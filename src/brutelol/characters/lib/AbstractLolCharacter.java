@@ -54,7 +54,7 @@ public abstract class AbstractLolCharacter implements ILolCharacter
     protected double RANGE = 0;
     
     //Info about our build and where we are in the build:
-    BuildStats stats;
+    protected BuildStats stats;
     Build b;
     
     //List of items required for this character. Used to add items that we know
@@ -68,7 +68,6 @@ public abstract class AbstractLolCharacter implements ILolCharacter
     public AbstractLolCharacter(Build b)
     {
         this.b=b;
-        this.stats = new BuildStats(this, b, null);
     }
     
     /**
@@ -256,5 +255,10 @@ public abstract class AbstractLolCharacter implements ILolCharacter
         List<Ability>toReturn = new ArrayList<>();
         toReturn.add(Ability.AUTO_ATTACK);
         return toReturn;
+    }
+
+    public String getName() 
+    {
+        return "???";
     }
 }

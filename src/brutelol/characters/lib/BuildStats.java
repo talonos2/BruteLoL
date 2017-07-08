@@ -236,4 +236,11 @@ public class BuildStats
         public double armorPenetrationPercent = 0;
         public double magicPenetrationFlat = 0;
         public double magicPenetrationPercent = 0;
+        
+        public String toString()
+        {
+            return "HP: "+hp+", (+"+healthRegen+"/sec)\n"+
+                   "MP: "+mana+", (+"+manaRegen+"/sec)\n"+
+                   "AD: "+attackDamage+", AP:"+abilityPower+"";
+        }
 }

@@ -42,6 +42,13 @@ public class GenericChar extends AbstractLolCharacter
         
         this.MOVE_SPEED = 335;
         this.RANGE = 175;
+        
+        this.stats = new BuildStats(this, b, null);
 
+    }
+    
+    public String getName() 
+    {
+        return "Generic";
     }
 }

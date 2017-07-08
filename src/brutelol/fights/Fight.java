@@ -37,10 +37,30 @@ public class Fight
             }
         }
         
-        while (d.hasAnotherEvent())
+        double timeLeft = time;
+        while (d.hasAnotherEvent()&&timeLeft>0)
         {
-            d.getNextEvent().resolve();
+            timeLeft -= d.getTimeUntilNextEvent();
+            wait(d.getTimeUntilNextEvent());
+            AbilityUse aUse = d.getNextEvent();
+            //System.out.println("Time: "+timeLeft);
+            if (aUse.getUser().isDead())
+            {
+                System.out.println(aUse.getUser()+" is dead!");
+                continue;
+            }
+            aUse.resolve();
+            d.insertDeltaClock(aUse, aUse.getAbility().getCooldown(aUse.getUser()));
         }
+    }
+
+    private void wait(double d) {
+        try
+        {
+            Thread.sleep((int)(d*4000));
+        }
+        catch (Exception e)
+        {}
     }
     
     public void setTime(int time)

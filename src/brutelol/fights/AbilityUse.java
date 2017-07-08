@@ -34,5 +34,10 @@ public class AbilityUse
     {
         return ability;
     }
+
+    Combatant getUser() 
+    {
+        return user;
+    }
     
 }
