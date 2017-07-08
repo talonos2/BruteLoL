@@ -15,7 +15,7 @@ import java.util.Set;
  * 
  * @author Talonos
  */
-public class BuildInfo 
+public class BuildStats 
 {
 
     public enum ChampStat
@@ -59,7 +59,6 @@ public class BuildInfo
     private EnumMap<ChampStat, StringBuilder> logs;
     
     private ItemSet items = null;
-    private AbstractLolCharacter c = null;
 
     private Set<BUnique> basicUniques = EnumSet.noneOf(BUnique.class);
     private Set<CUnique> compUniques = EnumSet.noneOf(CUnique.class);
@@ -67,7 +66,7 @@ public class BuildInfo
     //TODO: This will probably need to change as we work on build paths. For now, it's hardcoded.
     public double level = 18;
     
-    public BuildInfo(AbstractLolCharacter c, Build b, StringBuilder mathNotes)
+    public BuildStats(AbstractLolCharacter c, Build b, StringBuilder mathNotes)
     {
         if (mathNotes != null)
         {
@@ -82,7 +81,6 @@ public class BuildInfo
         }
         
         this.items = b.getItems();
-        this.c=b.getCharacter();
         
         for (Item i : items.itemsInList)
         {   
@@ -143,21 +141,21 @@ public class BuildInfo
         //Add character attributes:
         
         //attack
-        attackDamage += c.getAttackDamage(b);
-        attackSpeed+=c.getAttackSpeed(b);
+        attackDamage += c.getBaseAttackDamage();
+        attackSpeed+=c.getBaseAttackSpeedBonus();
             
         //Magic
-        mana += c.getMaxMana(b);
+        mana += c.getBaseMaxMana();
             
         //defense
-        hp+=c.getMaxHP(b);
-        armor+=c.getArmor(b);
-        magicResist+=c.getMagicResist(b);
+        hp+=c.getBaseMaxHP();
+        armor+=c.getBaseArmor();
+        magicResist+=c.getBaseMagicResist();
         
         //Regen and Speed
-        moveSpeed += c.getMoveSpeed(b);
-        healthRegen+=c.getHealthRegen(b);
-        manaRegen += c.getManaRegen(b);
+        moveSpeed += c.getBaseMoveSpeed();
+        healthRegen+=c.getBaseHealthRegen();
+        manaRegen += c.getBaseManaRegen();
         
         //Here, we add unique effects from items. Any effects that 
         //are target-independant and affects basic statistics can go here.

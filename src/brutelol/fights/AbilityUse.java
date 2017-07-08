@@ -30,4 +30,9 @@ public class AbilityUse
         ability.resolve(user, targets);
     }
     
+    public Ability getAbility()
+    {
+        return ability;
+    }
+    
 }

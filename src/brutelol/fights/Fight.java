@@ -1,5 +1,6 @@
 package brutelol.fights;
 
+import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.charbuild.Build;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +26,14 @@ public class Fight
         {
             for (AbilityUse aUse : ally.getAbilitiesAgainst(enemies))
             {
-                d.insertDeltaClock(aUse, time);
+                d.insertDeltaClock(aUse, ally.getRemainingCooldownOn(aUse.getAbility()));
             }
         }
         for (Combatant enemy : enemies)
         {
             for (AbilityUse aUse : enemy.getAbilitiesAgainst(allies))
             {
-                d.insertDeltaClock(aUse, time);
+                d.insertDeltaClock(aUse, enemy.getRemainingCooldownOn(aUse.getAbility()));
             }
         }
         
@@ -54,12 +55,21 @@ public class Fight
      * this % available.)
      * @param sustain How much of a resource bar does this combatant have?
      */
-    public void addAlly(Build b, double prep, double sustain)
+    public void addAlly(AbstractLolCharacter c, double prep, double sustain)
     {
         if (prep > 1 || prep < 0 || sustain > 1 || sustain < 0)
         {
             throw new IllegalArgumentException ("Must be between 0 and 1");
         }
-        allies.add(new Combatant(b, prep, sustain));
+        allies.add(new Combatant(c, prep, sustain));
+    }
+
+    public void addEnemy(AbstractLolCharacter c, double prep, double sustain)
+    {
+        if (prep > 1 || prep < 0 || sustain > 1 || sustain < 0)
+        {
+            throw new IllegalArgumentException ("Must be between 0 and 1");
+        }
+        enemies.add(new Combatant(c, prep, sustain));
     }
 }

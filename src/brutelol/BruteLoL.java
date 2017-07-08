@@ -8,8 +8,8 @@ package brutelol;
 
 import brutelol.characters.instances.Xayah;
 import brutelol.charbuild.Build;
-import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.lib.AbstractLolCharacter;
+import brutelol.characters.lib.LolCharacter;
 import brutelol.charbuild.ItemSet;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
@@ -31,10 +31,8 @@ public class BruteLoL
     public static void main(String[] args) 
     {
         //Who is the character, and what do we want him to be good at?
-        //TODO: Provide a way for the player to select a character.
-        AbstractLolCharacter selectedCharacter = new Xayah();       
+        //TODO: Provide a way for the player to select a character.      
         //TODO: Provide a way for the player to select a heuristic.
-        HeuristicComponent h = HeuristicComponent.RAW_DAMAGE_PER_SECOND;
         
         //Initialize items:
         Items.getAllItems();
@@ -42,7 +40,7 @@ public class BruteLoL
         //We need an enemy to test damage against. We create one here:
         List<Item> enemyItems = new ArrayList<Item>();
         //enemyItems.add(new LastWhisper());
-        Build enemy = new Build(new ItemSet(enemyItems), new Xayah(), 18, 2400);
+        new ItemSet(enemyItems);
         
         //Having a list of proposed items lets us cut bad search avenues quickly.
         //Enter a proposed item list here.
@@ -53,10 +51,10 @@ public class BruteLoL
         proposedItems.add(new NoItem());
         proposedItems.add(new NoItem());
         proposedItems.add(new NoItem());
-        Build proposedBuild = new Build(new ItemSet(proposedItems), selectedCharacter, 18, 2400);
+        Build proposedBuild = new Build(new ItemSet(proposedItems));
         
         //The work is done here.
-        Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h, proposedBuild);
+        Build bestBuild = BuildOptimizer.deriveOptimalBuild(proposedBuild, proposedBuild);
     }
     
 }

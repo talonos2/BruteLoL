@@ -1,7 +1,6 @@
 package brutelol;
 
 import brutelol.characters.instances.Xayah;
-import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.items.abstracts.Item;
@@ -27,7 +26,7 @@ public class BuildNoteTests
         List<Item> eItems = new ArrayList<>();
         eItems.add(new InfinityEdge());
         ItemSet ei = new ItemSet(eItems);
-        Build b = new Build(i, new Xayah(), 18, 2400);
-        Build enemy = new Build(ei, new Xayah(), 18, 2400);
+        Build b = new Build(i);
+        Build enemy = new Build(ei);
     }
 }

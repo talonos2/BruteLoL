@@ -6,8 +6,12 @@
 
 package brutelol.fights;
 
+import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.charbuild.Build;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A combatant is a wrapper around a build, giving it a "State", etc.
@@ -15,34 +19,67 @@ import java.util.List;
  */
 public class Combatant 
 {
-    private Build wrappedBuild;
+    private AbstractLolCharacter wrappedChar;
     
-    public Combatant(Build b)
-    {
-        this(b,1,1);
-    }
+    private Map<Ability,Double> cooldownMap = new HashMap<>();
     
-    Combatant(Build b, double prep) 
+    private double damageTaken;
+    private double manaUsed;
+    
+    public Combatant(AbstractLolCharacter c)
     {
-        this(b,prep,1);
-    }
-
-    Combatant(Build b, double prep, double sustain) 
-    {
-        this.wrappedBuild = b;
+        this(c,1,1);
     }
     
-    public Build getBuild()
+    Combatant(AbstractLolCharacter c, double prep) 
     {
-        return this.wrappedBuild;
+        this(c,prep,1);
     }
 
-    Iterable<AbilityUse> getAbilitiesAgainst(List<Combatant> enemies) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Combatant(AbstractLolCharacter c, double prep, double sustain) 
+    {
+        this.wrappedChar = c;
+        manaUsed = c.getStats().mana*(1.0-sustain);
+        for (Ability a : this.wrappedChar.getAbilities())
+        {
+            cooldownMap.put(a, a.getCooldown(this)*(1-(prep*.95)));
+        }
+        
+    }
+    
+    public AbstractLolCharacter getChar()
+    {
+        return this.wrappedChar;
     }
 
-    public int getCurrentHP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    List<AbilityUse> getAbilitiesAgainst(List<Combatant> enemies) 
+    {
+        List<AbilityUse> toReturn = new ArrayList<>();
+        for (Ability a : this.wrappedChar.getAbilities())
+        {
+            toReturn.add(new AbilityUse(this,enemies,a));
+        }
+        return toReturn;
+    }
+
+    public double getCurrentHP() 
+    {
+        return wrappedChar.getStats().hp-damageTaken;
+    }
+
+    public double getArmor() 
+    {
+        return wrappedChar.getStats().armor;
+    }
+
+    public double getMagicResist() 
+    {
+        return wrappedChar.getStats().magicResist;
+    }
+
+    double getRemainingCooldownOn(Ability ability) 
+    {
+        return cooldownMap.get(ability);
     }
     
 }

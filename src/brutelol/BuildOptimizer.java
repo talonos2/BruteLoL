@@ -5,7 +5,6 @@ import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MapEnum;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.LolCharacter;
-import brutelol.characters.lib.HeuristicComponent;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
 import brutelol.items.instances.NoItem;
@@ -38,19 +37,7 @@ public class BuildOptimizer
     /**
      * How many builds do we save when we prune?
      */
-    private static final int NUM_TOP_BUILDS = 10;
-    
-    /**
-     * How large of a population do we keep in the genetic rune-page optimization
-     * algorithm?
-     */
-    private static final int POPULATION_SIZE = 16;
-    
-    /**
-     * How many "pointless" iterations do we allow the genetic algorithm to
-     * undergo before deciding we're as good as we're going to get?
-     */
-    private static final int MAX_POINTLESS_ITERATIONS = 500;    
+    private static final int NUM_TOP_BUILDS = 10; 
     
     private static Random dice = new Random(0);
     
@@ -66,11 +53,11 @@ public class BuildOptimizer
      * this good will not have a rune page evaluated, to save on computation time.
      * @return the optimal build found.
      */
-    public static Build deriveOptimalBuild(AbstractLolCharacter selectedCharacter, Build enemy, HeuristicComponent h, Build suggested) 
+    public static Build deriveOptimalBuild(Build enemy, Build suggested) 
     {
         //Get a fail-fast amount. Any builds that to not meet this minimum build will not have their
         //runes evaluated, to save on computation time.
-        double amountToBeat = suggested.getComponent(h);
+        double amountToBeat = getUtility(suggested);
         amountToBeat *= (1-WIGGLE_AMOUNT); //Leave a little wiggle room.
         
         // create array of initial items
@@ -108,7 +95,7 @@ public class BuildOptimizer
         }
         
         //Set up a data structure to store builds:
-        double bestSoFar = suggested.getComponent(h);
+        double bestSoFar = getUtility(suggested);
         Map<Double, Build> bestBuilds = new TreeMap<>();
         bestBuilds.put(bestSoFar, suggested);
 
@@ -131,14 +118,14 @@ public class BuildOptimizer
             }
             
             ItemSet items = new ItemSet(itemList);
-            Build build = new Build(items, selectedCharacter, 18, 2400);
-            double utility = build.getComponent(h);
+            Build build = new Build(items);
+            double utility = getUtility(build);
             
             //If the build is good enough to be considered viably better...
             if (utility > amountToBeat)
             {
                 viablePossibilities++;
-                utility = build.getComponent(h);
+                utility = getUtility(build);
             }
             
             if (utility > bestSoFar)
@@ -157,7 +144,7 @@ public class BuildOptimizer
         for (Build b : bestBuilds.values())
         {
             System.out.println(b.getItems());
-            System.out.println(b.getComponent(h));
+            System.out.println(getUtility(b));
             //selectedCharacter.showWork(b);
         }
         
@@ -192,5 +179,10 @@ public class BuildOptimizer
         {
             bestBuilds.put(d, newMap.get(d));
         }
+    }
+
+    private static double getUtility(Build suggested) 
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

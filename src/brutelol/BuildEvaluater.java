@@ -2,7 +2,6 @@ package brutelol;
 
 import brutelol.characters.instances.Xayah;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.items.abstracts.Item;
@@ -27,9 +26,8 @@ public class BuildEvaluater
         {
             myItemList.add(new InfinityEdge());
         }
-        AbstractLolCharacter me = new Xayah();
         
-        Build toTest = new Build(new ItemSet(myItemList), me, 18, 2400);
+        Build toTest = new Build(new ItemSet(myItemList));
         
         List<Build> foes = new ArrayList<>();
 }
@@ -40,8 +38,7 @@ public class BuildEvaluater
         {
             itemList.add(new InfinityEdge());
         }
-        AbstractLolCharacter tank = new Xayah();
-        return new Build(new ItemSet(itemList), tank, 18, 2400);
+        return new Build(new ItemSet(itemList));
     }
 }
     

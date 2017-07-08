@@ -9,6 +9,8 @@ package brutelol.characters.lib;
 import brutelol.Funcs;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
+import brutelol.fights.Ability;
+import brutelol.fights.Combatant;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
     protected double MAGIC_RES_AT_0 = 0;
     
     //Attack speed is calculated different, so it's "at one" instead of "at zero"
-    protected double ATTACK_SPEED_AT_1 = 0;
+    public double ATTACK_SPEED_AT_1 = 0;
 
     //Variables representing the growth per level.
     protected double HP_PER_LEVEL = 0;
@@ -51,12 +53,23 @@ public abstract class AbstractLolCharacter implements LolCharacter
     protected double MOVE_SPEED = 0;
     protected double RANGE = 0;
     
+    //Info about our build and where we are in the build:
+    BuildStats stats;
+    Build b;
+    
     //List of items required for this character. Used to add items that we know
     //are "core" but that the algorithm might not catch. (Like boots)
     protected List<Class<? extends Item>> requiredItems = new ArrayList<>();
     
     //Other attributes of a champion that we might need to calculate its attributes.
     protected boolean isMelee = false;
+    
+    
+    public AbstractLolCharacter(Build b)
+    {
+        this.b=b;
+        this.stats = new BuildStats(this, b, null);
+    }
     
     /**
      * Returns whether or not any items are missing.
@@ -97,48 +110,48 @@ public abstract class AbstractLolCharacter implements LolCharacter
     //use these when calculating heuristic components: Use the "BuildInfo" data
     //structure instead!
     
-    public double getManaRegen(Build b) 
+    public double getBaseManaRegen() 
     {
         return this.MANA_REGEN_AT_0+((b.getLevel()-1)*this.MANA_REGEN_PER_LEVEL);
     }
 
-    public double getHealthRegen(Build b) 
+    public double getBaseHealthRegen() 
     {
         return this.HP_REGEN_AT_0+((b.getLevel()-1)*this.HP_REGEN_PER_LEVEL);
     }
 
-    public double getMoveSpeed(Build b) 
+    public double getBaseMoveSpeed() 
     {
         return this.MOVE_SPEED;
     }
 
-    public double getMagicResist(Build b) 
+    public double getBaseMagicResist() 
     {
         return this.MAGIC_RES_AT_0+((b.getLevel()-1)*this.MAGIC_RES_PER_LEVEL);
     }
 
-    public double getArmor(Build b) 
+    public double getBaseArmor() 
     {
         return this.ARMOR_AT_0+((b.getLevel()-1)*this.ARMOR_PER_LEVEL);
     }
 
-    public double getMaxHP(Build b) 
+    public double getBaseMaxHP() 
     {
         return this.HP_AT_0+((b.getLevel()-1)*this.HP_PER_LEVEL);
     }
 
-    public double getMaxMana(Build b) 
+    public double getBaseMaxMana() 
     {
         return this.MANA_AT_0+((b.getLevel()-1)*this.MANA_PER_LEVEL);
     }
 
-    public double getAttackSpeed(Build b) 
+    public double getBaseAttackSpeedBonus() 
     {
         //Works differently!
         return ((b.getLevel()-1)*this.ATTACK_SPEED_PER_LEVEL);
     }
 
-    public double getAttackDamage(Build b) 
+    public double getBaseAttackDamage() 
     {
         return this.ATTACK_DAMAGE_AT_0+((b.getLevel()-1)*this.ATTACK_DAMAGE_PER_LEVEL);
     }
@@ -147,22 +160,7 @@ public abstract class AbstractLolCharacter implements LolCharacter
     //Most of these are good for most champions, but specific champion passives will
     //require the author to overwrite these. (I'm looking at you, Ashe and Jhin!)
 
-    protected double getBasePhysicalDamagePerAttack(Build b) 
-    {
-        BuildInfo stats = b.getBuildInfo();
-        
-        double critChance = stats.critChance;
-        double cappedCritChance = Math.min(critChance,1.0);
-        
-        //Calculate basic damage.
-        double damagePerAttack = 0;
-        damagePerAttack+=stats.attackDamage;
-        
-        //Add crit modifiers.
-        double damageIncludingCrits = damagePerAttack+(damagePerAttack*cappedCritChance*(1+stats.addedCritDamage));
-        
-        return damageIncludingCrits;
-    }
+
 
     /**
      * Gets the bonus physical damage on an auto-attack that are independent of
@@ -170,39 +168,19 @@ public abstract class AbstractLolCharacter implements LolCharacter
      * @param b the build to get data from.
      * @return 
      */
-    protected double getBonusPhysicalDamagePerAttack(Build b) 
+    public double getBonusPhysicalDamagePerAttack() 
     {
         return 0;
     }
 
-    /**
-     * Gets the number of Auto-attacks per second of firing.
-     * @param b the build to evaluate.
-     * @return 
-     */
-    protected double getAttacksPerSecond(Build b) 
-    {
-        BuildInfo stats = b.getBuildInfo();
-        double attacksPerSecond = ATTACK_SPEED_AT_1;
-        double addedAttackSpeed = stats.attackSpeed;
-        
-        //Calculate final atacks per second.
-        attacksPerSecond *= (1+addedAttackSpeed);
-        
-        if (attacksPerSecond > 2.5)
-        {
-            attacksPerSecond = 2.5;
-        }
-        
-        return attacksPerSecond;
-    }
+
     
     /**
      * Gets the magic damage per auto-attack from, for instance, wits end.
      * @param b the build to evaluate
      * @return the magic damage dealt per auto-attack.
      */
-    protected double getMagicDamagePerAttack(Build b) 
+    public double getMagicDamagePerAttack() 
     {
         double toReturn = 0;
         
@@ -214,16 +192,16 @@ public abstract class AbstractLolCharacter implements LolCharacter
      * @param b the build to evaluate
      * @return the life stolen per auto-attack.
      */
-    protected double getRawLifeStolenPerAttack(Build b) 
+    public double getRawLifeStolenPerAttack() 
     {
         //This is the first time we see this: One Heuristic Component might rely on another. We don't
         //want to recalculate it if we already have it for other reasons, so we cache calculations
         //we have already done in the build. We retrieve those (or perhaps calculate them for
         //the first time) in Build.getComponent(component, foe)
-        double damage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK);
-        damage += b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
+        double damage = 0;//getBasePhysicalDamagePerAttack();
+        damage += getBonusPhysicalDamagePerAttack();
         
-        double lifeStealPercent = b.getBuildInfo().lifeSteal;
+        double lifeStealPercent = stats.lifeSteal;
         
         return damage*lifeStealPercent;
     }
@@ -233,10 +211,10 @@ public abstract class AbstractLolCharacter implements LolCharacter
      * @param b the build to evaluate.
      * @return the damage per second.
      */
-    protected double getRawDamagePerSecond(Build b) 
+    public double getRawDamagePerSecond() 
     {
-        double totalDamage = b.getComponent(HeuristicComponent.RAW_TOTAL_DAMAGE_PER_ATTACK);
-        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
+        double totalDamage = getRawTotalDamagePerAttack();
+        double attacks = 0;//getAttacksPerSecond();
         
         return attacks*(totalDamage);
     }
@@ -247,11 +225,11 @@ public abstract class AbstractLolCharacter implements LolCharacter
      * @param enemy the enemy we are auto-attacking.
      * @return the damage per auto-attack.
      */
-    protected double getRawTotalDamagePerAttack(Build b) 
+    public double getRawTotalDamagePerAttack() 
     {
-        double basePhysicalDamage = b.getComponent(HeuristicComponent.BASE_PHYSICAL_DAMAGE_PER_ATTACK);
-        double bonusPhysicalDamage = b.getComponent(HeuristicComponent.BONUS_PHYSICAL_DAMAGE_PER_ATTACK);
-        double bonusMagicDamage = b.getComponent(HeuristicComponent.BONUS_MAGIC_DAMAGE_PER_ATTACK);
+        double basePhysicalDamage = 0;//getBasePhysicalDamagePerAttack();
+        double bonusPhysicalDamage = getBonusPhysicalDamagePerAttack();
+        double bonusMagicDamage = getMagicDamagePerAttack();
         double totalDamage = basePhysicalDamage+bonusPhysicalDamage+bonusMagicDamage;
         return totalDamage;
     }
@@ -261,102 +239,22 @@ public abstract class AbstractLolCharacter implements LolCharacter
      * @param b the build to evaluate
      * @return 
      */
-    protected double getLifeStolenPerSecond(Build b) 
+    public double getLifeStolenPerSecond() 
     {
-        double attacks = b.getComponent(HeuristicComponent.ATTACKS_PER_SECOND);
-        double lifesteal = b.getComponent(HeuristicComponent.LIFE_STOLEN_PER_ATTACK);
+        double attacks = 0;//getAttacksPerSecond();
+        double lifesteal = getRawLifeStolenPerAttack();
         return attacks*lifesteal;
     }
-    
-    protected double getArmorRatio(Build b, Build enemy) 
-    {
-        double armor = enemy.getBuildInfo().armor;
-        
-        if (b.getBuildInfo().armorPenetrationPercent > 0)
-        {
-            double apenpercent = b.getBuildInfo().armorPenetrationPercent;
-            armor*=(1.0-apenpercent);
-        }
 
-        if (b.getBuildInfo().armorPenetrationFlat > 0)
-        {
-            double apenflat = b.getBuildInfo().armorPenetrationFlat;
-            armor-=apenflat;
-        }
-        
-        if (armor < 0)
-        {
-            armor = 0;
-        }
-        
-        double ratio = (100.0/(100.0+armor));
-        
-        return ratio;
-    }
-    
-    protected double getMagicResistRatio(Build b, Build enemy) 
+    public BuildStats getStats() 
     {
-        double mr = enemy.getBuildInfo().magicResist;
-        
-        /*if (b.getBuildInfo().hasPassive(CPassive.WITS_END_PASSIVE))
-        {
-            mr-=12.5;
-            b.addLineToNotes(" - We assume your opponent has an average of 2.5 stacks of wits end on him. That's -12.5 Magic resist, for "+mr+" resist. ");
-        }*/
-        
-        if (b.getBuildInfo().magicPenetrationPercent > 0)
-        {
-            double mpenpercent = b.getBuildInfo().magicPenetrationPercent;
-            mr*=(1.0-mpenpercent);
-        }
-
-        if (b.getBuildInfo().magicPenetrationFlat > 0)
-        {
-            double mpenflat = b.getBuildInfo().magicPenetrationFlat;
-            mr-=mpenflat;
-        }
-        
-        if (mr < 0)
-        {
-            mr = 0;
-        }
-        
-        double ratio = (100.0/(100.0+mr));
-        
-        return ratio;
+        return stats;
     }
 
-    protected double applyEnemyArmor(double damage, Build b, Build enemy) 
+    public List<Ability> getAbilities() 
     {
-        double ratio = enemy.getComponent(HeuristicComponent.ARMOR_DAMAGE_MULTIPLIER);
-        double newDamage = damage * ratio;
-        
-        return newDamage;
-    }
-    
-    protected double applyEnemyMagicResist(double damage, Build b, Build enemy) 
-    {
-        double ratio = enemy.getComponent(HeuristicComponent.RESIST_DAMAGE_MULTIPLIER);
-        double newDamage = damage * ratio;
-        
-        return newDamage;
-    }
-
-    public Object getColorString() 
-    {
-        return "0";
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    /**
-     * Poke damage represents the damage dealt by a single "Quick combo," like an ashe volley+AA
-     * or a Xayah Q-AA-E. For a generic character, let's assume this is just an auto-attack.
-     * @param b the build doing the poking.
-     * @return the poke damage.
-     */
-    public double getRawPokeDamage(Build b) 
-    {
-        double totalDamage = b.getComponent(HeuristicComponent.RAW_TOTAL_DAMAGE_PER_ATTACK);
-        return totalDamage;
+        List<Ability>toReturn = new ArrayList<>();
+        toReturn.add(Ability.AUTO_ATTACK);
+        return toReturn;
     }
 }
