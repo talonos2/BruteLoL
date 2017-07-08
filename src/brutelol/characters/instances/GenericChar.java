@@ -51,7 +51,6 @@ public class GenericChar extends AbstractLolCharacter
     {
         if (this.missingItems(b.getItems()))
         {
-            b.addLineToNotes("Failed because required items are not included!");
             return -0.5;
         }
         //System.out.println("Here at "+h);

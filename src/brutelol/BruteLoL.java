@@ -57,8 +57,6 @@ public class BruteLoL
         
         //The work is done here.
         Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h, proposedBuild);
-        
-        System.out.println(bestBuild.getComponentMathNotes(h));
     }
     
 }

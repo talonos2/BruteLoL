@@ -20,7 +20,7 @@ public class AblAutoAttack extends Ability
         //For now, just target whoever has the least health, I guess.            
         Combatant target = Collections.max(targets, new HpComparator());
         
-        //TODO
+        user.getBuild().getBuildInfo().attackSpeed;
     }
     
     private class HpComparator implements Comparator<Combatant> 
