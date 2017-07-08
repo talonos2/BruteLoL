@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A build is a collection of itemset, runes, character, and masteries, ready to evaluate.
+ * A build is a collection of items and character, ready to evaluate. We'll later
+ * create a "BuildPath" that represents how to get to a build.
  * @author Talonos
  */
 public class Build 
@@ -24,19 +25,17 @@ public class Build
     private Map<HeuristicComponent, Double> components = new EnumMap<>(HeuristicComponent.class);
     private final Map<TargetHeuristicWrapper, Double> tComponents = new HashMap<>();
     
-    private int gold;
     private int time;
-    private int xp;
+    private int level;
     
     private StringBuilder notes;
     
-    public Build(ItemSet items, AbstractLolCharacter character, int gold, int xp, int time)
+    public Build(ItemSet items, AbstractLolCharacter character, int level, int time)
     {
         this.items = items;
         this.character = character;
         this.time = time;
-        this.gold=gold;
-        this.xp=xp;
+        this.level = level;
         this.info = character.getBuildInfo(this, null);
     }
     
@@ -45,19 +44,9 @@ public class Build
         return items;
     }
     
-    public int getGold()
-    {
-        return gold;
-    }
-    
     public int getTime()
     {
         return time;
-    }
-    
-    public int getXP()
-    {
-        return xp;
     }
     
     /**
@@ -318,6 +307,11 @@ public class Build
             tComponents.put(thw, character.getTargetedComponentUtility(this, target, h));
         }
         return tComponents.get(thw);
+    }
+
+    public int getLevel() 
+    {
+        return level;
     }
     
     private class TargetHeuristicWrapper

@@ -92,16 +92,6 @@ public abstract class AbstractLolCharacter implements LolCharacter
         return false;
     }
 
-    /**
-     * Gets the level of the build by examining its XP.
-     * @param b
-     * @return 
-     */
-    public int getLevel(Build b) 
-    {
-        return Funcs.getLevelFromXP(b.getXP());
-    }
-
     //The following functions get different aspects of an unequipped champion.
     //They can all be overwritten by subclasses. Please note that you should NEVER
     //use these when calculating heuristic components: Use the "BuildInfo" data
@@ -109,12 +99,12 @@ public abstract class AbstractLolCharacter implements LolCharacter
     
     public double getManaRegen(Build b) 
     {
-        return this.MANA_REGEN_AT_0+((getLevel(b)-1)*this.MANA_REGEN_PER_LEVEL);
+        return this.MANA_REGEN_AT_0+((b.getLevel()-1)*this.MANA_REGEN_PER_LEVEL);
     }
 
     public double getHealthRegen(Build b) 
     {
-        return this.HP_REGEN_AT_0+((getLevel(b)-1)*this.HP_REGEN_PER_LEVEL);
+        return this.HP_REGEN_AT_0+((b.getLevel()-1)*this.HP_REGEN_PER_LEVEL);
     }
 
     public double getMoveSpeed(Build b) 
@@ -124,33 +114,33 @@ public abstract class AbstractLolCharacter implements LolCharacter
 
     public double getMagicResist(Build b) 
     {
-        return this.MAGIC_RES_AT_0+((getLevel(b)-1)*this.MAGIC_RES_PER_LEVEL);
+        return this.MAGIC_RES_AT_0+((b.getLevel()-1)*this.MAGIC_RES_PER_LEVEL);
     }
 
     public double getArmor(Build b) 
     {
-        return this.ARMOR_AT_0+((getLevel(b)-1)*this.ARMOR_PER_LEVEL);
+        return this.ARMOR_AT_0+((b.getLevel()-1)*this.ARMOR_PER_LEVEL);
     }
 
     public double getMaxHP(Build b) 
     {
-        return this.HP_AT_0+((getLevel(b)-1)*this.HP_PER_LEVEL);
+        return this.HP_AT_0+((b.getLevel()-1)*this.HP_PER_LEVEL);
     }
 
     public double getMaxMana(Build b) 
     {
-        return this.MANA_AT_0+((getLevel(b)-1)*this.MANA_PER_LEVEL);
+        return this.MANA_AT_0+((b.getLevel()-1)*this.MANA_PER_LEVEL);
     }
 
     public double getAttackSpeed(Build b) 
     {
         //Works differently!
-        return ((getLevel(b)-1)*this.ATTACK_SPEED_PER_LEVEL);
+        return ((b.getLevel()-1)*this.ATTACK_SPEED_PER_LEVEL);
     }
 
     public double getAttackDamage(Build b) 
     {
-        return this.ATTACK_DAMAGE_AT_0+((getLevel(b)-1)*this.ATTACK_DAMAGE_PER_LEVEL);
+        return this.ATTACK_DAMAGE_AT_0+((b.getLevel()-1)*this.ATTACK_DAMAGE_PER_LEVEL);
     }
     
     //From this point forward, we have generic functions that calculate components.

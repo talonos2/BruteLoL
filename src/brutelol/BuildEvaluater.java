@@ -29,7 +29,7 @@ public class BuildEvaluater
         }
         AbstractLolCharacter me = new Xayah();
         
-        Build toTest = new Build(new ItemSet(myItemList), me, 10000, 10000, 10000);
+        Build toTest = new Build(new ItemSet(myItemList), me, 18, 2400);
         
         List<Build> foes = new ArrayList<>();
         
@@ -44,7 +44,7 @@ public class BuildEvaluater
             itemList.add(new InfinityEdge());
         }
         AbstractLolCharacter tank = new Xayah();
-        return new Build(new ItemSet(itemList), tank, 10000, 10000, 10000);
+        return new Build(new ItemSet(itemList), tank, 18, 2400);
     }
 }
     

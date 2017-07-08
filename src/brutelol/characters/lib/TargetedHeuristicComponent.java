@@ -3,8 +3,6 @@ package brutelol.characters.lib;
 /**
  * A targeted heuristic component is like a heuristic component, but represents
  * something we do to a target.
- * 
- * @author Emily
  */
 public enum TargetedHeuristicComponent 
 {

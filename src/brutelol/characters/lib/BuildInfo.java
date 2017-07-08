@@ -18,7 +18,7 @@ import java.util.Set;
 public class BuildInfo 
 {
 
-    public enum Ability
+    public enum ChampStat
     {
         COST("Cost"), 
         ATTACK_SPEED("Attack Speed"), 
@@ -45,7 +45,7 @@ public class BuildInfo
         
         private String name;
         
-        Ability(String name)
+        ChampStat(String name)
         {
             this.name = name;
         }
@@ -56,7 +56,7 @@ public class BuildInfo
         }
     }
     
-    private EnumMap<Ability, StringBuilder> logs;
+    private EnumMap<ChampStat, StringBuilder> logs;
     
     private ItemSet items = null;
     private AbstractLolCharacter c = null;
@@ -71,8 +71,8 @@ public class BuildInfo
     {
         if (mathNotes != null)
         {
-            logs = new EnumMap<>(Ability.class);
-            for (Ability a : Ability.values())
+            logs = new EnumMap<>(ChampStat.class);
+            for (ChampStat a : ChampStat.values())
             {
                 logs.put(a, new StringBuilder());
                 logs.get(a).append("Calculation of "+a.getName()+":\n"
@@ -122,21 +122,21 @@ public class BuildInfo
             //Group all notes under one if statement to improve performance.
             if (mathNotes != null) 
             {
-                addToNotes(i.getCost(), Ability.COST, i);
-                addToNotes(i.getAttackDamage(), Ability.ATTACK_DAMAGE, i);
-                addToNotes(i.getCritChance(), Ability.CRIT_CHANCE, i);
-                addToNotes(i.getAttackSpeed(), Ability.ATTACK_SPEED, i);
-                addToNotes(i.getLifesteal(), Ability.LIFE_STEAL, i);
-                addToNotes(i.getAbilityPower(), Ability.ABILITY_POWER, i);
-                addToNotes(i.getSpellvamp(), Ability.SPELLVAMP, i);
-                addToNotes(i.getCooldownReduction(), Ability.COOLDOWN_REDUCTION, i);
-                addToNotes(i.getHP(), Ability.HP, i);
-                addToNotes(i.getArmor(), Ability.ARMOR, i);
-                addToNotes(i.getMagicResist(), Ability.MAGIC_RESIST, i);
-                addToNotes(i.getMoveSpeedFlat(), Ability.MOVE_SPEED, i);
-                addToNotes(i.getMoveSpeedPercent(), Ability.MOVE_SPEED_PERCENT, i);
-                addToNotes(i.getHealthRegen(), Ability.HEALTH_REGEN, i);
-                addToNotes(i.getManaRegen(), Ability.MANA_REGEN, i);
+                addToNotes(i.getCost(), ChampStat.COST, i);
+                addToNotes(i.getAttackDamage(), ChampStat.ATTACK_DAMAGE, i);
+                addToNotes(i.getCritChance(), ChampStat.CRIT_CHANCE, i);
+                addToNotes(i.getAttackSpeed(), ChampStat.ATTACK_SPEED, i);
+                addToNotes(i.getLifesteal(), ChampStat.LIFE_STEAL, i);
+                addToNotes(i.getAbilityPower(), ChampStat.ABILITY_POWER, i);
+                addToNotes(i.getSpellvamp(), ChampStat.SPELLVAMP, i);
+                addToNotes(i.getCooldownReduction(), ChampStat.COOLDOWN_REDUCTION, i);
+                addToNotes(i.getHP(), ChampStat.HP, i);
+                addToNotes(i.getArmor(), ChampStat.ARMOR, i);
+                addToNotes(i.getMagicResist(), ChampStat.MAGIC_RESIST, i);
+                addToNotes(i.getMoveSpeedFlat(), ChampStat.MOVE_SPEED, i);
+                addToNotes(i.getMoveSpeedPercent(), ChampStat.MOVE_SPEED_PERCENT, i);
+                addToNotes(i.getHealthRegen(), ChampStat.HEALTH_REGEN, i);
+                addToNotes(i.getManaRegen(), ChampStat.MANA_REGEN, i);
             }
         }
         
@@ -171,7 +171,7 @@ public class BuildInfo
         
         if (mathNotes != null)
         {
-            for (Ability a : Ability.values())
+            for (ChampStat a : ChampStat.values())
             {
                 //Todo: Avoid copy/paste with final strings and replacements
                 if (!logs.get(a).toString().equals("Calculation of "+a.getName()+":\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\nFrom Items:\n"))
@@ -184,7 +184,7 @@ public class BuildInfo
               
     }
 
-    private void addToNotes(double amount, Ability ability, Item i) 
+    private void addToNotes(double amount, ChampStat ability, Item i) 
     {
         //Stringbuilder concatenation is so ugly!
         //If we want to use the "+" operator to concatenate strings in an

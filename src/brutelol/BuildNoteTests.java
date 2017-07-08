@@ -27,8 +27,8 @@ public class BuildNoteTests
         List<Item> eItems = new ArrayList<>();
         eItems.add(new InfinityEdge());
         ItemSet ei = new ItemSet(eItems);
-        Build b = new Build(i, new Xayah(), 100000, 100000, 100000);
-        Build enemy = new Build(ei, new Xayah(), 100000, 100000, 100000);
+        Build b = new Build(i, new Xayah(), 18, 2400);
+        Build enemy = new Build(ei, new Xayah(), 18, 2400);
         
         System.out.println(b.getComponentMathNotes(HeuristicComponent.RAW_POKE_DAMAGE));
     }

@@ -131,7 +131,7 @@ public class BuildOptimizer
             }
             
             ItemSet items = new ItemSet(itemList);
-            Build build = new Build(items, selectedCharacter, 100000, 100000, 100000);
+            Build build = new Build(items, selectedCharacter, 18, 2400);
             double utility = build.getComponent(h);
             
             //If the build is good enough to be considered viably better...

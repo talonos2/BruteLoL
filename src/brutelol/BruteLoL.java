@@ -42,7 +42,7 @@ public class BruteLoL
         //We need an enemy to test damage against. We create one here:
         List<Item> enemyItems = new ArrayList<Item>();
         //enemyItems.add(new LastWhisper());
-        Build enemy = new Build(new ItemSet(enemyItems), new Xayah(), 100000, 10000, 10000);
+        Build enemy = new Build(new ItemSet(enemyItems), new Xayah(), 18, 2400);
         
         //Having a list of proposed items lets us cut bad search avenues quickly.
         //Enter a proposed item list here.
@@ -53,7 +53,7 @@ public class BruteLoL
         proposedItems.add(new NoItem());
         proposedItems.add(new NoItem());
         proposedItems.add(new NoItem());
-        Build proposedBuild = new Build(new ItemSet(proposedItems), selectedCharacter, 100000, 10000, 10000);
+        Build proposedBuild = new Build(new ItemSet(proposedItems), selectedCharacter, 18, 2400);
         
         //The work is done here.
         Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h, proposedBuild);
