@@ -10,9 +10,7 @@ import brutelol.characters.instances.Xayah;
 import brutelol.charbuild.Build;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.BlankMasteries;
 import brutelol.charbuild.ItemSet;
-import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
 import brutelol.items.instances.NoItem;
@@ -44,7 +42,7 @@ public class BruteLoL
         //We need an enemy to test damage against. We create one here:
         List<Item> enemyItems = new ArrayList<Item>();
         //enemyItems.add(new LastWhisper());
-        Build enemy = new Build(new ItemSet(enemyItems), new Xayah(), 100000, 10000, 10000, new RunePage(), new BlankMasteries());
+        Build enemy = new Build(new ItemSet(enemyItems), new Xayah(), 100000, 10000, 10000);
         
         //Having a list of proposed items lets us cut bad search avenues quickly.
         //Enter a proposed item list here.
@@ -55,7 +53,7 @@ public class BruteLoL
         proposedItems.add(new NoItem());
         proposedItems.add(new NoItem());
         proposedItems.add(new NoItem());
-        Build proposedBuild = new Build(new ItemSet(proposedItems), selectedCharacter, 100000, 10000, 10000, new RunePage(), new BlankMasteries());
+        Build proposedBuild = new Build(new ItemSet(proposedItems), selectedCharacter, 100000, 10000, 10000);
         
         //The work is done here.
         Build bestBuild = BuildOptimizer.deriveOptimalBuild(selectedCharacter, enemy, h, proposedBuild);

@@ -1,11 +1,9 @@
 package brutelol;
 
 import brutelol.characters.instances.Xayah;
-import brutelol.characters.lib.BlankMasteries;
 import brutelol.characters.lib.HeuristicComponent;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
-import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.InfinityEdge;
 import brutelol.items.instances.Items;
@@ -29,10 +27,8 @@ public class BuildNoteTests
         List<Item> eItems = new ArrayList<>();
         eItems.add(new InfinityEdge());
         ItemSet ei = new ItemSet(eItems);
-        Build b = new Build(i, new Xayah(), 100000, 100000, 100000, new RunePage(), new BlankMasteries());
-        Build enemy = new Build(ei, new Xayah(), 100000, 100000, 100000, new RunePage(), new BlankMasteries());
-        
-        b = BuildOptimizer.optimizeRunePage(b, enemy, HeuristicComponent.RAW_POKE_DAMAGE);
+        Build b = new Build(i, new Xayah(), 100000, 100000, 100000);
+        Build enemy = new Build(ei, new Xayah(), 100000, 100000, 100000);
         
         System.out.println(b.getComponentMathNotes(HeuristicComponent.RAW_POKE_DAMAGE));
     }

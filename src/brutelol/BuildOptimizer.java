@@ -4,11 +4,8 @@ import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.charbuild.MapEnum;
 import brutelol.characters.lib.AbstractLolCharacter;
-import brutelol.characters.lib.BlankMasteries;
 import brutelol.characters.lib.LolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
-import brutelol.characters.lib.Masteries;
-import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.Item;
 import brutelol.items.instances.Items;
 import brutelol.items.instances.NoItem;
@@ -55,8 +52,6 @@ public class BuildOptimizer
      */
     private static final int MAX_POINTLESS_ITERATIONS = 500;    
     
-    private static final RunePage blankPage = new RunePage();
-    private static final Masteries sampleMasteries = new BlankMasteries();
     private static Random dice = new Random(0);
     
     
@@ -136,15 +131,13 @@ public class BuildOptimizer
             }
             
             ItemSet items = new ItemSet(itemList);
-            Build build = new Build(items, selectedCharacter, 100000, 100000, 100000, blankPage, sampleMasteries);
+            Build build = new Build(items, selectedCharacter, 100000, 100000, 100000);
             double utility = build.getComponent(h);
             
             //If the build is good enough to be considered viably better...
             if (utility > amountToBeat)
             {
                 viablePossibilities++;
-                //Optimize its runepage.
-                build = optimizeRunePage(build, enemy, h);
                 utility = build.getComponent(h);
             }
             
@@ -200,97 +193,4 @@ public class BuildOptimizer
             bestBuilds.put(d, newMap.get(d));
         }
     }
-
-    /**
-     * Attempts to optimize a rune page using a genetic algorithm.
-     * @param pb the proposed build we will try to optimize.
-     * @param enemy the enemy we are trying to optimize against.
-     * @param h the component we are trying to optimize.
-     * @return 
-     */
-    public static Build optimizeRunePage(Build pb, Build enemy, HeuristicComponent h) 
-    {
-        //create an initial population of runePages, in a map.
-        Map<RunePage, Double> populationFitness = new HashMap<>();
-        List<RunePage> population = new ArrayList<>();
-        
-        for (int x = 0; x < POPULATION_SIZE; x++)
-        {
-            RunePage r = RunePage.getRandomPage(dice);
-            double fitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, r, sampleMasteries).getComponent(h);
-            populationFitness.put(r, fitness);
-            population.add(r);
-        }
-        
-        //Every time we iterate over runepages, but it does not change, we mark it as
-        //a "pointless" iteration. Once the number of pointless iterations goes past
-        //MAX_POINTLESS_ITERATIONS, we decide it's as good as it will get.
-        int pointlessIterations = 0;
-        while (pointlessIterations < MAX_POINTLESS_ITERATIONS)
-        {
-            RunePage r1 = population.get(dice.nextInt(POPULATION_SIZE));
-            RunePage r2 = population.get(dice.nextInt(POPULATION_SIZE));
-            RunePage babyRunePage = r1.mergeWith(r2, dice);
-            
-            //Test the runepage against it's closest competitor to preserve genetic
-            //diversity.
-            RunePage contender = getClosestRunePage(babyRunePage, population);
-            
-            double babyFitness = new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, babyRunePage, sampleMasteries).getComponent(h);
-            double contenderFitness = populationFitness.get(contender);
-            //Yes, I'm totally pitting baby runepages against fully grown ones in a
-            //gladiatorial arena.
-            if (babyFitness > contenderFitness)
-            {
-                //See? My faith in the baby was justified.
-                //He grows up and is part of the population.
-                population.remove(contender);
-                population.add(babyRunePage);
-                populationFitness.remove(contender);
-                populationFitness.put(babyRunePage, babyFitness);
-                pointlessIterations = 0;
-            }
-            else
-            {
-                //The baby was garbage, and will be collected as such when he falls out of scope.
-                pointlessIterations++;
-            }
-        }
-        
-        //Get the best runepage from our population.
-        return getBestRunepage(populationFitness, pb, enemy, h);
-    }
-
-    private static Build getBestRunepage(Map<RunePage, Double> population, Build pb, Build enemy, HeuristicComponent h) 
-    {
-        RunePage bestSoFar = null;
-        double utility = -1;
-        for (RunePage p : population.keySet())
-        {
-            double newUtility = population.get(p);
-            if (newUtility > utility)
-            {
-                bestSoFar = p;
-                utility = newUtility;
-            }
-        }
-        return new Build(pb.getItems(), pb.getCharacter(), 100000, 100000, 100000, bestSoFar, sampleMasteries);
-    }
-
-    private static RunePage getClosestRunePage(RunePage toCompare, List<RunePage> population) 
-    {
-        RunePage bestSoFar = null;
-        double similarity = -1;
-        for (RunePage p : population)
-        {
-            double newSim = p.getSimilarity(toCompare);
-            if (newSim > similarity)
-            {
-                bestSoFar = p;
-                similarity = newSim;
-            }
-        }
-        return bestSoFar;
-    }
-    
 }

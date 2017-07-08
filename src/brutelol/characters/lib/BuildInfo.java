@@ -2,7 +2,6 @@ package brutelol.characters.lib;
 
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
-import brutelol.charbuild.runes.RunePage;
 import brutelol.items.abstracts.BUnique;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
@@ -61,9 +60,7 @@ public class BuildInfo
     
     private ItemSet items = null;
     private AbstractLolCharacter c = null;
-    private RunePage runes = null;
-    private Masteries masteries = null;
-    
+
     private Set<BUnique> basicUniques = EnumSet.noneOf(BUnique.class);
     private Set<CUnique> compUniques = EnumSet.noneOf(CUnique.class);
     
@@ -86,9 +83,6 @@ public class BuildInfo
         
         this.items = b.getItems();
         this.c=b.getCharacter();
-        this.runes=b.getRunes();
-        this.masteries=b.getMasteries();
-        
         
         for (Item i : items.itemsInList)
         {   

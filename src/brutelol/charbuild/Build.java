@@ -1,7 +1,5 @@
 package brutelol.charbuild;
 
-import brutelol.charbuild.runes.RunePage;
-import brutelol.characters.lib.Masteries;
 import brutelol.characters.lib.BuildInfo;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.HeuristicComponent;
@@ -21,10 +19,8 @@ public class Build
 {
     private double utility = 0;
     private ItemSet items;
-    private RunePage runes;
     private AbstractLolCharacter character;
     private BuildInfo info;
-    private Masteries masteries;
     private Map<HeuristicComponent, Double> components = new EnumMap<>(HeuristicComponent.class);
     private final Map<TargetHeuristicWrapper, Double> tComponents = new HashMap<>();
     
@@ -34,15 +30,13 @@ public class Build
     
     private StringBuilder notes;
     
-    public Build(ItemSet items, AbstractLolCharacter character, int gold, int xp, int time, RunePage runes, Masteries masteries)
+    public Build(ItemSet items, AbstractLolCharacter character, int gold, int xp, int time)
     {
-        this.masteries = masteries;
         this.items = items;
         this.character = character;
         this.time = time;
         this.gold=gold;
         this.xp=xp;
-        this.runes = runes;
         this.info = character.getBuildInfo(this, null);
     }
     
@@ -102,9 +96,6 @@ public class Build
         this.addLineToNotes("===================================================");
         this.addLineToNotes("Analysis of build "+this.items);
         this.addLineToNotes("===================================================");
-        this.addLineToNotes("Runes: "+this.runes);
-        this.addLineToNotes("===================================================");
-        this.addLineToNotes("===================================================");
         character.getBuildInfo(this, this.notes);
         
         //Calculating the component also calculates the sub-components needed to
@@ -114,11 +105,6 @@ public class Build
         String toReturn = notes.toString();
         this.turnOffNotes();
         return toReturn;
-    }
-
-    public RunePage getRunes() 
-    {
-        return runes;
     }
 
     /**
@@ -138,11 +124,6 @@ public class Build
     public AbstractLolCharacter getCharacter() 
     {
         return character;
-    }
-
-    public Masteries getMasteries() 
-    {
-        return masteries;
     }
     
     public void addLineToNotes(String s)
