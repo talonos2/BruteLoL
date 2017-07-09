@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Talonos
  */
-public class AbilityUse 
+public class AbilityUse extends TimedFightEvent
 {
     private Combatant user;
     private List<Combatant> targets;
@@ -25,9 +25,10 @@ public class AbilityUse
         this.ability = ability;
     }
 
-    public void resolve() 
+    @Override
+    public List<TimedFightEvent> resolve() 
     {
-        ability.resolve(user, targets);
+        return ability.resolve(user, targets);
     }
     
     public Ability getAbility()
@@ -35,9 +36,15 @@ public class AbilityUse
         return ability;
     }
 
-    Combatant getUser() 
+    @Override
+    public Combatant getSource() {
+                return user;
+    }
+
+    @Override
+    public double getTime() 
     {
-        return user;
+        return ability.getCooldown(user);
     }
     
 }

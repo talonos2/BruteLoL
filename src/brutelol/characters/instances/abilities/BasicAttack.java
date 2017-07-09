@@ -2,7 +2,10 @@ package brutelol.characters.instances.abilities;
 
 import brutelol.characters.lib.BuildStats;
 import brutelol.fights.Ability;
+import brutelol.fights.AbilityUse;
 import brutelol.fights.Combatant;
+import brutelol.fights.TimedFightEvent;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -11,17 +14,17 @@ import java.util.List;
  *
  * @author Talonos
  */
-public class AblAutoAttack extends Ability
+public class BasicAttack extends Ability
 {
 
     @Override
-    public void resolve(Combatant user, List<Combatant> targets) 
+    public List<TimedFightEvent> resolve(Combatant user, List<Combatant> targets) 
     {
         //For now, just target whoever has the least health, I guess.  
         if (targets.isEmpty())
         {
             System.out.println(user+" has nothing left to attack!");
-            return;
+            return new ArrayList<>();
         }
         Combatant target = Collections.min(targets, new HpComparator());
         
@@ -33,6 +36,9 @@ public class AblAutoAttack extends Ability
         {
             targets.remove(target);
         }
+        List<TimedFightEvent> toReturn = new ArrayList<>();
+        toReturn.add(new AbilityUse(user, targets, this));
+        return toReturn;
     }
     
     @Override

@@ -261,4 +261,9 @@ public abstract class AbstractLolCharacter implements ILolCharacter
     {
         return "???";
     }
+
+    public Build getBuild() 
+    {
+        return b;
+    }
 }

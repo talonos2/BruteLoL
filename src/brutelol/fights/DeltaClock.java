@@ -14,17 +14,17 @@ public class DeltaClock
 {
     private final List<DeltaClockEvent> clock = new LinkedList();
     
-    public AbilityUse getNextEvent()
+    public TimedFightEvent getNextEvent()
     {
         if (clock.isEmpty())
         {
             return null;
         }
-        AbilityUse toReturn = clock.remove(0).aUse;
+        TimedFightEvent toReturn = clock.remove(0).aUse;
         return toReturn;
     }
     
-    public void insertDeltaClock(AbilityUse aUse, double t)
+    public void insertDeltaClock(TimedFightEvent aUse, double t)
     {
         if (t == 0)
         {
@@ -70,9 +70,9 @@ public class DeltaClock
         }
     }
 
-    public AbilityUse[] getOrder() 
+    public TimedFightEvent[] getOrder() 
     {
-        AbilityUse[] toReturn = new AbilityUse[clock.size()];
+        TimedFightEvent[] toReturn = new TimedFightEvent[clock.size()];
         for (int x = 0; x < clock.size(); x++)
         {
             toReturn[x] = clock.get(x).aUse;
@@ -80,7 +80,7 @@ public class DeltaClock
         return toReturn;
     }
     
-    public void deleteClockEvent(AbilityUse aUse)
+    public void deleteClockEvent(TimedFightEvent aUse)
     {
         int count = 0;
         for (int i = clock.size()-1; i > -1; i--)
@@ -111,9 +111,9 @@ public class DeltaClock
     
     private class DeltaClockEvent
     {
-        public AbilityUse aUse;
+        public TimedFightEvent aUse;
         public double time;
-        public DeltaClockEvent(AbilityUse aUse, double t)
+        public DeltaClockEvent(TimedFightEvent aUse, double t)
         {
             this.aUse = aUse;
             time = t;

@@ -179,6 +179,12 @@ public class BuildStats
                 }
             }
         }
+        
+        //Cap CDR
+        if (cooldownReduction > .4)
+        {
+            cooldownReduction = .4;
+        }
               
     }
 

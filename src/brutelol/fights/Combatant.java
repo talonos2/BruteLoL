@@ -100,5 +100,15 @@ public class Combatant
     {
         return getCurrentHP()<=0;
     }
+
+    public double getAP() 
+    {
+        return wrappedChar.getStats().abilityPower;
+    }
+
+    public double getCDR() 
+    {
+        return wrappedChar.getStats().cooldownReduction;
+    }
     
 }

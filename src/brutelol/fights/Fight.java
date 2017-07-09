@@ -42,15 +42,17 @@ public class Fight
         {
             timeLeft -= d.getTimeUntilNextEvent();
             wait(d.getTimeUntilNextEvent());
-            AbilityUse aUse = d.getNextEvent();
+            TimedFightEvent aUse = d.getNextEvent();
             //System.out.println("Time: "+timeLeft);
-            if (aUse.getUser().isDead())
+            if (aUse.getSource().isDead())
             {
-                System.out.println(aUse.getUser()+" is dead!");
+                System.out.println(aUse.getSource()+" is dead!");
                 continue;
             }
-            aUse.resolve();
-            d.insertDeltaClock(aUse, aUse.getAbility().getCooldown(aUse.getUser()));
+            for (TimedFightEvent tbe : aUse.resolve())
+            {
+                d.insertDeltaClock(tbe, tbe.getTime());
+            }
         }
     }
 

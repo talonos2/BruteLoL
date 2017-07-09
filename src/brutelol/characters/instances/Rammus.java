@@ -9,6 +9,9 @@ package brutelol.characters.instances;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.BuildStats;
 import brutelol.charbuild.Build;
+import brutelol.fights.Ability;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -54,5 +57,14 @@ public class Rammus extends AbstractLolCharacter
     public String getName() 
     {
         return "Rammus";
+    }
+    
+        public List<Ability> getAbilities() 
+    {
+        List<Ability>toReturn = new ArrayList<>();
+        toReturn.add(Ability.AUTO_ATTACK);
+        //toReturn.add(Ability.DEFENSIVE_BALL_CURL);
+        toReturn.add(Ability.TREMORS);
+        return toReturn;
     }
 }

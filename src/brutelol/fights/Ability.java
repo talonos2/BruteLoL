@@ -6,7 +6,9 @@
 
 package brutelol.fights;
 
-import brutelol.characters.instances.abilities.AblAutoAttack;
+import brutelol.characters.instances.abilities.RamDefensiveBallCurl;
+import brutelol.characters.instances.abilities.RamTremors;
+import brutelol.characters.instances.abilities.BasicAttack;
 import java.util.List;
 
 /**
@@ -15,32 +17,30 @@ import java.util.List;
  */
 public abstract class Ability 
 {
-    public static Ability AUTO_ATTACK = new AblAutoAttack();
+    public static Ability AUTO_ATTACK = new BasicAttack();
+    public static Ability DEFENSIVE_BALL_CURL = new RamDefensiveBallCurl();
+    public static Ability TREMORS = new RamTremors();
 
     /**
      * Resolves an ability. Target selection is done HERE, "Targets" is an array of possible targets.
      * @param user the person using the ability.
      * @param targets The targets of the ability.
      */
-    public abstract void resolve(Combatant user, List<Combatant> targets);
+    public abstract List<TimedFightEvent> resolve(Combatant user, List<Combatant> targets);
     
-    protected double applyArmor(double damage, Combatant enemy) 
+    public static double applyArmor(double damage, Combatant enemy) 
     {
         double armor = enemy.getArmor();
         double ratio = (100.0/(100.0+armor));
         return ratio*damage;
     }
     
-    protected double applyMagicResist(double damage, Combatant enemy) 
+    public static double applyMagicResist(double damage, Combatant enemy) 
     {
         double resist = enemy.getMagicResist();
         double ratio = (100.0/(100.0+resist));
         return ratio*damage;
     }
 
-    public double getCooldown(Combatant user) 
-    {
-        return 10;
-    }
-    
+    public abstract double getCooldown(Combatant user);    
 }
