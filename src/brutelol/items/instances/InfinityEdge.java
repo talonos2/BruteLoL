@@ -18,7 +18,7 @@ public class InfinityEdge extends Item
 {
     public InfinityEdge()
     {
-        //Since patch 6.14;
+        //Since patch 7.13;
         super();
         this.critChance = .20;
         this.attackDamage = 70;

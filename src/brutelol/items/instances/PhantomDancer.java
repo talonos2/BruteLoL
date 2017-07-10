@@ -6,6 +6,7 @@
 
 package brutelol.items.instances;
 
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.items.abstracts.BUnique;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
@@ -28,8 +29,8 @@ public class PhantomDancer extends Item
         
         this.makeAvailableOnAllMaps();
         
-        this.setComplicatedUnique(CUnique.SPECTRAL_WALTZ);
-        this.setComplicatedUnique(CUnique.LAMENT);
+        this.statusEffects.add(StatusEffect.ITEM_SPECTRAL_WALTZ);
+        this.statusEffects.add(StatusEffect.ITEM_LAMENT);
         
         this.pOptimal = true;
     }

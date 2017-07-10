@@ -6,6 +6,7 @@
 
 package brutelol.items.abstracts;
 
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.charbuild.MapEnum;
 import brutelol.items.instances.Items;
 import java.util.ArrayList;
@@ -64,7 +65,6 @@ public abstract class Item
     
     //What passive flags are on?
     Set<BUnique> basicUniques;
-    Set<CUnique> complicatedUniques;
     
     //Some unique effects are too complicated to be simple boolean flags. Those
     //are listed here.
@@ -72,12 +72,12 @@ public abstract class Item
     protected double enhancedMovement = 0;
     protected int favorLevel = 0;
     protected int spellBladeLevel = 0;
+    public List<StatusEffect> statusEffects = new ArrayList<>();
 
     public Item() 
     {
         this.maps = EnumSet.noneOf(MapEnum.class);
         this.basicUniques = EnumSet.noneOf(BUnique.class);
-        this.complicatedUniques = EnumSet.noneOf(CUnique.class);
     }
     
     public double getAttackSpeed()
@@ -250,19 +250,9 @@ public abstract class Item
         this.basicUniques.add(unique);
     }
     
-    protected void setComplicatedUnique(CUnique unique) 
-    {
-        this.complicatedUniques.add(unique);
-    }
-    
     public Collection<BUnique> getAllBasicUniques()
     {
         return Collections.unmodifiableSet(basicUniques);
-    }
-    
-    public Collection<CUnique> getAllComplicatedUniques()
-    {
-        return Collections.unmodifiableSet(complicatedUniques);
     }
 
     public Object getName() 
@@ -273,5 +263,10 @@ public abstract class Item
             name = fullName.substring(fullName.lastIndexOf(".")+1);
         }
         return name;
+    }
+
+    public List<StatusEffect> getAllStatusEffects() 
+    {
+        return statusEffects;
     }
 }

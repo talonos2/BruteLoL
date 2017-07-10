@@ -12,8 +12,12 @@ package brutelol.items.abstracts;
  */
 public enum CUnique 
 {
-    SPECTRAL_WALTZ, //Unimplemented
-    LAMENT,         //Unimplemented
-    BLOODTHIRSTER,  //Shield Unimplemented
-    QUICKSILVER,    //Unimplemented
+    SPECTRAL_WALTZ,  //Unimplemented
+    LAMENT,          //Unimplemented
+    BLOODTHIRSTER,   //Shield Unimplemented
+    QUICKSILVER,     //Unimplemented
+    BIG_GIANT_SLAYER,//Unimplemented
+    GIANT_SLAYER,    //Unimplemented
+    FIRECANNON,      //Unimplemented
+    SHIV_LIGHTNING,  //Unimplemented
 }

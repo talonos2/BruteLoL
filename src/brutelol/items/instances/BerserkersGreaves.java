@@ -14,20 +14,17 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class BloodThirster extends Item
+public class BerserkersGreaves extends Item
 {
-    public BloodThirster()
+    public BerserkersGreaves()
     {
         //Since patch 7.13;
         super();
-        this.attackDamage = 80;
         
-        this.cost = 3700;
+        this.cost = 1100;
+        this.attackSpeed = .35;
         
         this.makeAvailableOnAllMaps();
-        
-        this.setBasicUnique(BUnique.BLOODTHIRSTER);
-        
         this.pOptimal = true;
     }
 }

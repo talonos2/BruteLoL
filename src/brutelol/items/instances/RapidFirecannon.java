@@ -6,6 +6,7 @@
 
 package brutelol.items.instances;
 
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.items.abstracts.BUnique;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
@@ -14,19 +15,21 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class BloodThirster extends Item
+public class RapidFirecannon extends Item
 {
-    public BloodThirster()
+    public RapidFirecannon()
     {
         //Since patch 7.13;
         super();
-        this.attackDamage = 80;
+        this.attackSpeed = .30;
+        this.critChance = .30;
+        this.moveSpeedPercent = .05;
         
-        this.cost = 3700;
+        this.cost = 2600;
         
         this.makeAvailableOnAllMaps();
         
-        this.setBasicUnique(BUnique.BLOODTHIRSTER);
+        this.statusEffects.add(StatusEffect.ITEM_FIRECANNON);
         
         this.pOptimal = true;
     }

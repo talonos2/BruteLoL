@@ -6,6 +6,7 @@
 
 package brutelol.items.instances;
 
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.items.abstracts.BUnique;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
@@ -14,19 +15,20 @@ import brutelol.items.abstracts.Item;
  *
  * @author Talonos
  */
-public class BloodThirster extends Item
+public class LordDominiksRegards extends Item
 {
-    public BloodThirster()
+    public LordDominiksRegards()
     {
-        //Since patch 7.13;
+        //Since patch 6.14;
         super();
-        this.attackDamage = 80;
+        this.attackDamage = 50;
         
-        this.cost = 3700;
+        this.cost = 2600;
         
         this.makeAvailableOnAllMaps();
         
-        this.setBasicUnique(BUnique.BLOODTHIRSTER);
+        this.statusEffects.add(StatusEffect.ITEM_BIG_GIANT_SLAYER);
+        this.setBasicUnique(BUnique.LAST_WHISPER);
         
         this.pOptimal = true;
     }

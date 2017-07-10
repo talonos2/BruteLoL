@@ -42,7 +42,7 @@ public class BasicAttack extends Ability
         double magicDamage = 0;
         for (StatusEffect s : user.getStatusEffects())
         {
-            magicDamage += s.onHitMagicAddition(target, target);
+            magicDamage += s.onHitMagicAddition(user, target);
         }
         
         //Apply resists and sum damage

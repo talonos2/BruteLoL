@@ -274,8 +274,8 @@ public abstract class AbstractLolCharacter implements ILolCharacter
         return b.getLevel();
     }
 
-    public Collection<? extends StatusEffect> getPassiveEffects() 
+    public List<StatusEffect> getPassiveEffects() 
     {
-        return new ArrayList<>();
+        return stats.getItemStatusEffects();
     }
 }

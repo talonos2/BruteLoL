@@ -71,9 +71,10 @@ public class Rammus extends AbstractLolCharacter
     }
         
     @Override
-    public Collection<? extends StatusEffect> getPassiveEffects() 
+    public List<StatusEffect> getPassiveEffects() 
     {
         List<StatusEffect> toReturn = new ArrayList<>();
+        toReturn.addAll(super.getPassiveEffects());
         toReturn.add(StatusEffect.RAM_SPIKED_SHELL);
         return toReturn;
     }

@@ -6,6 +6,7 @@
 
 package brutelol.items.instances;
 
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
 
@@ -27,7 +28,7 @@ public class MercurialScimitar extends Item
         
         this.makeAvailableOnAllMaps();
         
-        this.setComplicatedUnique(CUnique.QUICKSILVER);
+        this.statusEffects.add(StatusEffect.ITEM_QUICKSILVER);
         
         this.pOptimal = true;
     }

@@ -1,12 +1,16 @@
 package brutelol.characters.lib;
 
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.items.abstracts.BUnique;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,6 +21,13 @@ import java.util.Set;
  */
 public class BuildStats 
 {
+    
+    private List<StatusEffect> statusEffects = new ArrayList<>();
+
+    List<StatusEffect> getItemStatusEffects() 
+    {
+        return Collections.unmodifiableList(statusEffects);
+    }
 
     public enum ChampStat
     {
@@ -61,7 +72,6 @@ public class BuildStats
     private ItemSet items = null;
 
     private Set<BUnique> basicUniques = EnumSet.noneOf(BUnique.class);
-    private Set<CUnique> compUniques = EnumSet.noneOf(CUnique.class);
     
     //TODO: This will probably need to change as we work on build paths. For now, it's hardcoded.
     public double level = 18;
@@ -115,7 +125,6 @@ public class BuildStats
             manaRegen += i.getManaRegen();
             
             basicUniques.addAll(i.getAllBasicUniques());
-            compUniques.addAll(i.getAllComplicatedUniques());
             
             //Group all notes under one if statement to improve performance.
             if (mathNotes != null) 
@@ -136,6 +145,8 @@ public class BuildStats
                 addToNotes(i.getHealthRegen(), ChampStat.HEALTH_REGEN, i);
                 addToNotes(i.getManaRegen(), ChampStat.MANA_REGEN, i);
             }
+            
+            statusEffects.addAll(i.getAllStatusEffects());
         }
         
         //Add character attributes:
@@ -159,12 +170,8 @@ public class BuildStats
         
         //Here, we add unique effects from items. Any effects that 
         //are target-independant and affects basic statistics can go here.
-        //Also, "Basic" Uniques are ones that characters cannot access.
         
-        //Complicated Uniques:
-        if (compUniques.contains(CUnique.BLOODTHIRSTER))     {this.lifeSteal += .2;}
-        
-        //Basic Uniques
+        if (basicUniques.contains(CUnique.BLOODTHIRSTER))     {this.lifeSteal += .2;}
         if (basicUniques.contains(BUnique.INFINITY_EDGE))     {this.addedCritDamage += .5;}
         
         if (mathNotes != null)
@@ -199,11 +206,6 @@ public class BuildStats
         }
     }
 
-    public boolean hasUnique(CUnique unique) 
-    {
-        return compUniques.contains(unique);
-    }
-    
     //And all that above was the constructor, basically. When we are done,
     //we get this list of attributes, then used to calculate heuristic components
     //in an abstract LoL character.

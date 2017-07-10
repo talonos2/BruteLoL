@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 
-package brutelol.items.abstracts;
+package brutelol.characters.instances.abilities;
 
 /**
  *
  * @author Talonos
  */
-public enum BUnique 
+public class UnimplementedEffect extends StatusEffect
 {
-    INFINITY_EDGE,      //+50% to crit damage
-    LAST_WHISPER,       //+35% Armor Pen
-    BLOODTHIRSTER,      //+20% lifesteal
+    
 }
