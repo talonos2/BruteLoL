@@ -6,8 +6,11 @@
 
 package brutelol.fights;
 
+import brutelol.characters.instances.abilities.RamDefensiveBallCurlEffect;
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.characters.lib.AbstractLolCharacter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,7 @@ public class Combatant
     
     private double damageTaken;
     private double manaUsed;
+    private List<StatusEffect> statusEffects = new ArrayList<>();
     
     public Combatant(AbstractLolCharacter c)
     {
@@ -43,6 +47,8 @@ public class Combatant
         {
             cooldownMap.put(a, a.getCooldown(this)*(1-(prep*.95)));
         }
+        
+        statusEffects.addAll(c.getPassiveEffects());
         
     }
     
@@ -109,6 +115,31 @@ public class Combatant
     public double getCDR() 
     {
         return wrappedChar.getStats().cooldownReduction;
+    }
+
+    public int getLevel() 
+    {
+        return wrappedChar.getLevel();
+    }
+
+    public void gainStatusEffect(StatusEffect toAdd) 
+    {
+        this.statusEffects.add(toAdd);
+    }
+
+    public void loseStatusEffect(StatusEffect toRemove) 
+    {
+        this.statusEffects.remove(toRemove);
+    }
+    
+    public Iterable<StatusEffect> getStatusEffects()
+    {
+        return Collections.unmodifiableList(statusEffects);
+    }
+
+    public boolean hasEffect(StatusEffect toFind) 
+    {
+        return statusEffects.contains(toFind);
     }
     
 }

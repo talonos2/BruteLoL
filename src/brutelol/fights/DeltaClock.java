@@ -28,7 +28,7 @@ public class DeltaClock
     {
         if (t == 0)
         {
-            throw new IllegalArgumentException("Passing a 0 to the delta clock is silly.");
+            t=.01;
         }
         if (clock.isEmpty())  //If the clock is empty.
         {

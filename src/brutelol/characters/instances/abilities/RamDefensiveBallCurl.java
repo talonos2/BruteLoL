@@ -9,6 +9,7 @@ package brutelol.characters.instances.abilities;
 import brutelol.fights.Ability;
 import brutelol.fights.Combatant;
 import brutelol.fights.TimedFightEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +26,19 @@ public class RamDefensiveBallCurl extends Ability
     @Override
     public double getCooldown(Combatant user) 
     {
-        return 6*user.getCDR();
+        return 6*(1.0-user.getCDR());
     }
 
     @Override
-    public List<TimedFightEvent> resolve(Combatant user, List<Combatant> targets) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<TimedFightEvent> resolve(Combatant user, List<Combatant> targets) 
+    {
+        System.out.println("Rammus uses Defensive Ball Curl!");
+        TimedFightEvent ballCurlEnd = new RamDBCEndFightEvent(user, this);
+        user.gainStatusEffect(StatusEffect.RAM_DBC);
+        
+        List<TimedFightEvent> toReturn = new ArrayList<>();
+        toReturn.add(ballCurlEnd);
+        return toReturn;
     }
     
 }

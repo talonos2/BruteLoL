@@ -6,11 +6,13 @@
 
 package brutelol.characters.instances;
 
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.characters.lib.AbstractLolCharacter;
 import brutelol.characters.lib.BuildStats;
 import brutelol.charbuild.Build;
 import brutelol.fights.Ability;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -63,8 +65,16 @@ public class Rammus extends AbstractLolCharacter
     {
         List<Ability>toReturn = new ArrayList<>();
         toReturn.add(Ability.AUTO_ATTACK);
-        //toReturn.add(Ability.DEFENSIVE_BALL_CURL);
+        toReturn.add(Ability.DEFENSIVE_BALL_CURL);
         toReturn.add(Ability.TREMORS);
+        return toReturn;
+    }
+        
+    @Override
+    public Collection<? extends StatusEffect> getPassiveEffects() 
+    {
+        List<StatusEffect> toReturn = new ArrayList<>();
+        toReturn.add(StatusEffect.RAM_SPIKED_SHELL);
         return toReturn;
     }
 }

@@ -20,18 +20,44 @@ public class BasicAttack extends Ability
     @Override
     public List<TimedFightEvent> resolve(Combatant user, List<Combatant> targets) 
     {
-        //For now, just target whoever has the least health, I guess.  
         if (targets.isEmpty())
         {
             System.out.println(user+" has nothing left to attack!");
             return new ArrayList<>();
         }
+        
+        //For now, just target whoever has the least health, I guess.  
         Combatant target = Collections.min(targets, new HpComparator());
         
-        double damage = getBasePhysicalDamagePerAttack(user);
-        damage = this.applyArmor(damage, target);
+        //calculate basic attack damage;
+        double rawPhysicalDamage = getBasePhysicalDamagePerAttack(user);
+        
+        //Apply on-hit physical effects;
+        for (StatusEffect s : user.getStatusEffects())
+        {
+            rawPhysicalDamage += s.onHitPhysicalAddition(user, target);
+        }
+        
+        //Apply Magical on-hit effects
+        double magicDamage = 0;
+        for (StatusEffect s : user.getStatusEffects())
+        {
+            magicDamage += s.onHitMagicAddition(target, target);
+        }
+        
+        //Apply resists and sum damage
+        double reducedPhysicaldamage = this.applyArmor(rawPhysicalDamage, target);
+        double reducedMagicaldamage = this.applyMagicResist(magicDamage, target);
+        double damage = reducedPhysicaldamage + reducedMagicaldamage;
+        
         target.dealDamage(damage);
         System.out.println(user+" deals "+(int)damage+" damage to "+target);
+        //Handle Retributive On-Hits.
+        for (StatusEffect s : target.getStatusEffects())
+        {
+            s.doHitRetaliation(user, target, rawPhysicalDamage, 0);
+        }
+        //Kill target if dead
         if (target.isDead())
         {
             targets.remove(target);

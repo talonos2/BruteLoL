@@ -7,6 +7,7 @@
 package brutelol.characters.lib;
 
 import brutelol.Funcs;
+import brutelol.characters.instances.abilities.StatusEffect;
 import brutelol.charbuild.Build;
 import brutelol.charbuild.ItemSet;
 import brutelol.fights.Ability;
@@ -14,6 +15,7 @@ import brutelol.fights.Combatant;
 import brutelol.items.abstracts.CUnique;
 import brutelol.items.abstracts.Item;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -265,5 +267,15 @@ public abstract class AbstractLolCharacter implements ILolCharacter
     public Build getBuild() 
     {
         return b;
+    }
+
+    public int getLevel() 
+    {
+        return b.getLevel();
+    }
+
+    public Collection<? extends StatusEffect> getPassiveEffects() 
+    {
+        return new ArrayList<>();
     }
 }
